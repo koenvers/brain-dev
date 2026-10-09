@@ -76,6 +76,10 @@ Velden die je zoekt: titel, samenvatting, tags (en het type: `Kennis`/`Blog`).
 - Favicon: `favicon.svg` (tabvriendelijke versimplering, lichte achtergrond) met
   `favicon.png` als fallback; `logo-mark.svg` is uitsluitend het merkteken in de
   header (en de bron voor de OG-kaart).
+- Herkomst merkteken: `logo-mark.svg` is een **vectorreconstructie** van het
+  aangeleverde logo — het bronbestand ontbrak op schijf (plakken in de chat levert
+  geen bestand op). Lever je het origineel aan, vervang dan dat ene bestand;
+  markup, CSS en tests blijven gelijk.
 - `404.html` — eigen 404 met terugweg naar het overzicht. Gebruikt **absolute**
   paden (`/brain-dev/…`), want GitHub Pages serveert het vanaf elke diepe URL.
   Vermijdt dus per ongeluk relatieve links op die pagina.
