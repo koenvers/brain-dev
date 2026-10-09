@@ -1,5 +1,23 @@
 /* brain-dev — minimalistische stijl. Geen build-stap, geen externe fonts of libraries. */
 
+/* Zelfgehoste fonts (OFL-1.1, zie assets/fonts/OFL-1.1*.txt); local() first:
+   wie Inter/JetBrains Mono al geïnstalleerd heeft, downloadt niets. */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: local('Inter'), url('../fonts/inter-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: local('JetBrains Mono'), url('../fonts/jetbrains-mono.woff2') format('woff2');
+}
+
 :root {
   color-scheme: light dark;
 
@@ -150,6 +168,14 @@ main { padding: 36px 0 72px; }
   margin: 0 0 24px;
   color: var(--muted);
   font-size: 15px;
+}
+
+.tagline-stats {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--faint);
 }
 
 .search { position: relative; margin-bottom: 14px; }
@@ -381,6 +407,16 @@ main { padding: 36px 0 72px; }
   padding: 2px 0 2px 16px;
   border-left: 3px solid var(--accent);
   color: var(--muted);
+}
+
+kbd {
+  font-family: var(--mono);
+  font-size: 0.85em;
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  padding: 0 5px;
 }
 
 .article-meta .tag { cursor: default; }

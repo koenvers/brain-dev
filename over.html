@@ -14,6 +14,7 @@
   <meta property="og:description" content="Wat brain-dev is: twee contentstromen, platte HTML, geen build-stap.">
   <meta property="og:url" content="https://koenvers.github.io/brain-dev/over.html">
   <meta name="twitter:card" content="summary">
+  <link rel="alternate" type="application/rss+xml" title="brain-dev — feed" href="feed.xml">
 </head>
 <body>
   <header class="site-header">
@@ -32,11 +33,14 @@
     <a class="backlink" href="index.html">← terug naar het overzicht</a>
 
     <h1>Over</h1>
-    <div class="article-meta"><span>laatst bijgewerkt: 1 okt 2026</span></div>
+    <div class="article-meta"><span>laatst bijgewerkt: 9 okt 2026</span></div>
 
-    <p>brain-dev is een naslag- en notitieplek over AI, data science en tooling.
-       Twee stromen, bewust gescheiden:</p>
+    <p><strong>brain-dev</strong> is de persoonlijke naslag van Koen Verschuren
+       over AI, data science en tooling. Geschreven vooral omdat ik het zelf
+       weer op wil zoeken: als het hier staat, hoef ik het niet opnieuw uit te
+       zoeken — en als jij het ook nodig hebt, mag je het gebruiken.</p>
 
+    <h2>Twee stromen</h2>
     <ul>
       <li><strong>Kennisbank</strong> — tijdloze artikelen: architectuurnotities,
           technische diepgang, dingen die ik telkens weer uitzoek en niet meer
@@ -45,9 +49,22 @@
           experimenten. Minder gepolijst, sneller geschreven.</li>
     </ul>
 
+    <h2>Waar beginnen</h2>
+    <ul>
+      <li><a href="index.html?type=kennis">Kennisbank-overzicht</a> — alles wat
+          als naslag bedoeld is, op datum.</li>
+      <li><a href="index.html">Recentste content</a> — beide stromen door elkaar.</li>
+      <li><kbd>/</kbd> in de browser focust de zoekbalk; een tag aanklikken
+          filtert direct op die tag.</li>
+    </ul>
+
+    <h2>Hoe vaak</h2>
+    <p>Geen ritme beloofd. Ik publiceer wanneer er iets is dat ik op wil slaan;
+       elk stuk toont zijn eigen datum, zodat je zelf ziet hoe actueel het is.</p>
+
     <h2>Hoe het gebouwd is</h2>
-    <p>Platte HTML, één CSS-bestand, twee kleine JavaScript-bestanden. Geen
-       framework, geen build-stap, geen externe requests:</p>
+    <p>Platte HTML, één CSS-bestand, drie kleine JavaScript-bestanden,
+       zelfgehoste fonts. Geen framework, geen build-stap:</p>
 
     <ul>
       <li><code>content/index.js</code> bevat de zoekindex — enige bron van
@@ -56,15 +73,22 @@
           filteren volledig client-side.</li>
       <li><code>assets/js/highlight.js</code> is een mini syntax-highlighter
           voor codeblokken.</li>
+      <li><code>tools/build-meta.js</code> genereert sitemap en RSS-feed uit de
+          index; optioneel en handmatig te draaien — de site werkt er niet vanaf.</li>
     </ul>
 
     <p>Zoeken werkt op titel, samenvatting en tags, en draait volledig in de
        browser: geen netwerkvertraging, geen zoekdienst.</p>
 
-    <h2>Nieuwe content</h2>
-    <p>Een artikel toevoegen is: HTML-pagina maken onder <code>posts/</code>,
-       één regel toevoegen aan de index. Details staan in de README van het
-       repository.</p>
+    <h2>Meten</h2>
+    <p>Standaard uit. Zodra er een GoatCounter-account is (cookieloos,
+       privacyvriendelijk) vul je één regel in <code>assets/js/analytics.js</code>
+       in; zolang die leeg is, laadt de site niets extern en wordt er niets
+       geteld.</p>
+
+    <h2>Broncode en correcties</h2>
+    <p>Alles staat op <a href="https://github.com/koenvers/brain-dev">github.com/koenvers/brain-dev</a>.
+       Fouten of verbeteringen: open een issue of een pull request.</p>
   </main>
 
   <footer class="site-footer">
@@ -73,5 +97,6 @@
       <span>statisch · <a href="https://github.com/koenvers/brain-dev">broncode op GitHub</a></span>
     </div>
   </footer>
+  <script src="assets/js/analytics.js"></script>
 </body>
 </html>

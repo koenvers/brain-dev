@@ -14,6 +14,7 @@
   <meta property="og:description" content="Kennisartikelen en blogs over AI, data science en tooling. Doorzoekbaar, zonder build-stap.">
   <meta property="og:url" content="https://koenvers.github.io/brain-dev/">
   <meta name="twitter:card" content="summary">
+  <link rel="alternate" type="application/rss+xml" title="brain-dev — feed" href="feed.xml">
 </head>
 <body>
   <header class="site-header">
@@ -29,7 +30,10 @@
   </header>
 
   <main class="wrap">
-    <p class="tagline">Kennisartikelen en blogs over AI, data science en tooling.</p>
+    <p class="tagline">
+      Naslag en notities van Koen Verschuren over AI, data science en tooling.
+      <span class="tagline-stats" id="tagline-stats"></span>
+    </p>
 
     <div class="search">
       <label class="visually-hidden" for="q">Zoeken in titel, samenvatting en tags</label>
@@ -59,5 +63,6 @@
 
   <script src="content/index.js"></script>
   <script src="assets/js/app.js"></script>
+  <script src="assets/js/analytics.js"></script>
 </body>
 </html>

@@ -1,8 +1,8 @@
 # brain-dev
 
 Statische site (kennisbank + blog) voor GitHub Pages. Platte HTML, één
-CSS-bestand, twee kleine JS-bestanden. Geen Node, geen Jekyll, geen
-dependencies.
+CSS-bestand, vier kleine JS-bestanden, zelfgehoste fonts. Geen Node-build, geen
+Jekyll, geen dependencies (Node alleen voor tests en de meta-generator).
 
 ## Structuur
 
@@ -12,15 +12,19 @@ brain-dev/
 ├── over.html               over-pagina
 ├── 404.html                eigen 404 (absolute paden, vanaf elke diepe URL bruikbaar)
 ├── robots.txt              crawl-toegang + verwijzing naar de sitemap
-├── sitemap.xml             alle URL's met lastmod
+├── sitemap.xml             gegenereerd door tools/build-meta.js
+├── feed.xml                RSS 2.0, gegenereerd door tools/build-meta.js
 ├── content/
-│   └── index.js            ZOEKINDEX — enige bron van waarheid voor het overzicht
+│   └── index.js            ZOEKINDEX — enige bron van waarheid voor overzicht én feed
 ├── assets/
-│   ├── css/style.css       stijl, licht/donker via prefers-color-scheme
+│   ├── css/style.css       stijl, licht/donker via prefers-color-scheme, @font-face
+│   ├── fonts/              Inter + JetBrains Mono (woff2, OFL-1.1 licentie)
 │   └── js/
-│       ├── app.js          renderen, zoeken, filteren, URL-sync
-│       └── highlight.js    mini syntax-highlighter voor codeblokken
+│       ├── app.js          renderen, zoeken, filteren, URL-sync, statistiekregel
+│       ├── highlight.js    mini syntax-highlighter voor codeblokken
+│       └── analytics.js    meting (standaard uit; zie "Meten")
 ├── posts/                  artikelen (één HTML-bestand per stuk)
+├── tools/build-meta.js     genereert sitemap.xml + feed.xml uit de index
 ├── tests/run-tests.js      node tests/run-tests.js
 └── .nojekyll               schakelt de Jekyll-build van GitHub Pages uit
 ```
@@ -54,14 +58,16 @@ brain-dev/
 De index is meteen de zoekindex: er is niets te genereren of bij te werken.
 Velden die je zoekt: titel, samenvatting, tags (en het type: `Kennis`/`Blog`).
 
-3. **Sitemap bijwerken** in `sitemap.xml`: één `<url>`-blok met de nieuwe URL
-   en `<lastmod>` = de publicatiedatum. `tests/run-tests.js` faalt als een
-   index-entry niet in de sitemap staat of als `lastmod` afwijkt van `date`.
+3. **Meta-generator draaien** (als er Node is): `node tools/build-meta.js`
+   herschrijft `sitemap.xml` en `feed.xml` uit de index. Zonder Node: die twee
+   bestanden handmatig bijwerken. De tests falen als de bestanden niet meer
+   kloppen met de index of als `lastmod` afwijkt van `date`.
 
 ## Vindbaarheid
 
 - `robots.txt` — staat toe te crawlen en verwijst naar de sitemap.
-- `sitemap.xml` — alle pagina's met `lastmod` (zie stap 3).
+- `sitemap.xml` + `feed.xml` — uit de generator (zie stap 3); elke pagina heeft
+  een `<link rel="alternate" type="application/rss+xml">`.
 - Canonical + Open Graph/Twitter-meta bovenin elke HTML-pagina (afgeleid van
   `<title>` en `meta description`; pas je die aan, pas dan ook `og:title` /
   `og:description` aan). Geen `og:image`: er is geen afbeelding.
@@ -69,6 +75,21 @@ Velden die je zoekt: titel, samenvatting, tags (en het type: `Kennis`/`Blog`).
   paden (`/brain-dev/…`), want GitHub Pages serveert het vanaf elke diepe URL.
   Vermijdt dus per ongeluk relatieve links op die pagina.
 - Repo-link in de footer van elke pagina.
+
+## Meten (standaard uit)
+
+`assets/js/analytics.js` is op elke pagina geladen, maar laadt niets zolang
+`ACCOUNT` leeg is — dus geen externe requests, geen cookies, niets geteld.
+Activeren (handmatig, ~2 minuten):
+
+1. Account aanmaken op <https://www.goatcounter.com/signup> — **door een mens**:
+   de voorwaarden verbieden accounts die via automatisering geregistreerd worden.
+2. Het toegewezen code-veld invullen in `assets/js/analytics.js`:
+   `var ACCOUNT = 'jouw-code';` (→ `https://jouw-code.goatcounter.com/count`).
+3. `git commit -am "analytics aan" && git push`.
+
+Preview op localhost telt nooit mee; cookies zijn er niet (GoatCounter telt
+anoniem per paginaweergave).
 
 ## Zoeken en filteren
 
@@ -88,7 +109,8 @@ node tests/run-tests.js
 ```
 
 Dekt: indexvalidatie, bestandsverwijzingen, zoeken/filteren/sortering,
-datumnotatie, en de highlighter (escaping, XSS, roundtrip).
+datumnotatie, highlighter (escaping, XSS, roundtrip), vindbaarheid
+(sitemap/feed/canonical/OG/404), generator-idempotentie, fonts en analytics.
 
 ## GitHub Pages zetten
 
@@ -114,7 +136,8 @@ lokaal via `index.html` openen of `python -m http.server`.
 - **Kleuren:** CSS-variabelen bovenin `assets/css/style.css`; donkere modus in
   de `@media (prefers-color-scheme: dark)`-blok daaronder. Accentkleur:
   `--accent: #a3c9a8`.
-- **Fonts:** standaard `system-ui` + monospace; Wil je Inter/JetBrains Mono
-  echt laden, voeg dan zelf zelfgehoste WOFF2-bestanden toe (bewust geen
-  externe CDN).
+- **Fonts:** Inter (body) en JetBrains Mono (monospace) staan zelfgehost in
+  `assets/fonts/` (woff2, OFL-1.1). `src: local(...)` eerst: wie ze al
+  geïnstalleerd heeft downloadt niets. Vervang de bestanden en houd de
+  `@font-face`-regels gelijk; `font-display: swap` voorkomt lege tekst.
 - **Zoekvelden uitbreiden:** pas `haystack` in `assets/js/app.js` (`normalize`).

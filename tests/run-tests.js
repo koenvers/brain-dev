@@ -223,6 +223,69 @@ test('404-pagina bestaat en gebruikt absolute paden', () => {
   assert.ok(!/href="(?:\.\.\/|(?:assets|posts|content)\/)/.test(html), 'relatieve pad in 404');
 });
 
+console.log('feed, generator en assets');
+const BASE = 'https://koenvers.github.io/brain-dev';
+test('feed.xml: geldige structuur, alle items, niets rauw', () => {
+  const feed = fs.readFileSync(path.join(root, 'feed.xml'), 'utf8');
+  assert.ok(feed.startsWith('<?xml version="1.0" encoding="UTF-8"?>'));
+  assert.ok(feed.includes('<rss version="2.0"'));
+  assert.ok(feed.trim().endsWith('</rss>'));
+  assert.strictEqual((feed.match(/<item>/g) || []).length, RAW.length);
+  RAW.forEach((it) => {
+    assert.ok(feed.includes(`<guid isPermaLink="true">${BASE}/${it.url}</guid>`), 'guid: ' + it.url);
+    assert.ok(feed.includes(`<title>${it.title}</title>`), 'title: ' + it.title);
+    assert.ok(feed.includes(`<description>${it.summary}</description>`), 'desc: ' + it.title);
+    assert.ok(feed.includes(`<pubDate>`), 'pubDate ontbreekt');
+  });
+  const rauw = feed.replace(/&(amp|lt|gt|quot|apos|#\d+);/g, '');
+  assert.ok(!rauw.includes('&'), 'rauw & in feed');
+  assert.ok(!feed.includes('<![CDATA['), 'geen CDATA — alles geëscape');
+});
+test('generator is idempotent: hervatten levert identieke bestanden', () => {
+  const { execFileSync } = require('child_process');
+  const lees = () => ({
+    sm: fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8'),
+    feed: fs.readFileSync(path.join(root, 'feed.xml'), 'utf8')
+  });
+  const voor = lees();
+  execFileSync(process.execPath, [path.join(root, 'tools', 'build-meta.js')], { cwd: root });
+  const na = lees();
+  assert.strictEqual(na.sm, voor.sm, 'sitemap.xml wijkt af van generator');
+  assert.strictEqual(na.feed, voor.feed, 'feed.xml wijkt af van generator');
+});
+test('feed-link op elke pagina', () => {
+  const pages = ['index.html', 'over.html', '404.html']
+    .concat(fs.readdirSync(path.join(root, 'posts')).map((f) => 'posts/' + f));
+  pages.forEach((f) => {
+    const html = fs.readFileSync(path.join(root, f), 'utf8');
+    assert.ok(html.includes('type="application/rss+xml"'), f + ': feed-link');
+  });
+});
+test('analytics: gewired maar standaard uit', () => {
+  const src = fs.readFileSync(path.join(root, 'assets/js/analytics.js'), 'utf8');
+  assert.ok(/var ACCOUNT = ''/.test(src), 'ACCOUNT moet leeg zijn (niet geregistreerd via automatisering)');
+  assert.ok(src.includes('goatcounter'), 'laadfunctie ontbreekt');
+  assert.ok(src.includes('localhost'), 'localhost moet uitgesloten zijn');
+  const pages = ['index.html', 'over.html', '404.html']
+    .concat(fs.readdirSync(path.join(root, 'posts')).map((f) => 'posts/' + f));
+  pages.forEach((f) => {
+    assert.ok(fs.readFileSync(path.join(root, f), 'utf8').includes('analytics.js'), f + ': analytics-script');
+  });
+});
+test('fonts: zelfgehost, aanwezig en aangeroepen', () => {
+  const css = fs.readFileSync(path.join(root, 'assets/css/style.css'), 'utf8');
+  assert.strictEqual((css.match(/@font-face/g) || []).length, 2);
+  ['inter-latin.woff2', 'jetbrains-mono.woff2'].forEach((f) => {
+    assert.ok(css.includes(`url('../fonts/${f}')`), 'css mist ' + f);
+    const p = path.join(root, 'assets/fonts', f);
+    assert.ok(fs.existsSync(p), 'bestand ontbreekt: ' + f);
+    assert.ok(fs.statSync(p).size > 10000, 'verdacht klein: ' + f);
+  });
+  assert.ok(fs.existsSync(path.join(root, 'assets/fonts/OFL-1.1.txt')));
+  assert.ok(fs.existsSync(path.join(root, 'assets/fonts/OFL-1.1-inter.txt')));
+  assert.ok(!/https?:\/\/[^"']*\.(?:woff2?|ttf)/.test(css), 'geen externe font-URL');
+});
+
 console.log('DOM-integratie');
 test('DOMContentLoaded-listener overleeft het meegeleverde Event', () => {
   /* regressie: de listener kreeg het Event als root mee -> querySelectorAll-crash */

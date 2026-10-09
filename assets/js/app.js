@@ -226,6 +226,14 @@
       render();
     });
 
+    /* statistiekregel bovenaan het overzicht (uit de index, dus altijd actueel) */
+    var stats = document.getElementById('tagline-stats');
+    if (stats && items.length) {
+      var nieuwste = items.reduce(function (m, it) { return it.date > m ? it.date : m; }, '');
+      stats.textContent = items.length + (items.length === 1 ? ' artikel' : ' artikelen') +
+        ' · laatst bijgewerkt ' + fmtDate(nieuwste);
+    }
+
     render();
   }
 

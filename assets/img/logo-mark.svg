@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 330" width="360" height="330"
+     role="img" aria-label="brain-dev">
+  <g fill="none" stroke="#111111" stroke-width="15" stroke-linejoin="miter" stroke-linecap="butt">
+    <!-- buitenrand: brein als spraakwolk -->
+    <path d="M95 5 L223 1 L310 47 L353 117 L337 185 L300 215 L275 245 L243 317 L205 250 L140 255 L60 225 L18 180 L2 110 L37 45 Z"/>
+    <!-- linkervouw -->
+    <path d="M85 45 L45 105 L95 150 L60 205"/>
+    <!-- rechtervouw -->
+    <path d="M245 55 L305 115 L258 160"/>
+    <!-- mondlijn -->
+    <path d="M150 235 L300 200"/>
+    <!-- powersymbool -->
+    <path d="M173 45 L173 100"/>
+    <path d="M143 89 A40 40 0 1 0 203 89"/>
+  </g>
+</svg>

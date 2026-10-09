@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>brain-dev — kennisbank en blog</title>
+  <link>https://koenvers.github.io/brain-dev/</link>
+  <description>Kennisartikelen en blogs over AI, data science en tooling.</description>
+  <language>nl</language>
+  <lastBuildDate>Tue, 06 Oct 2026 22:00:00 GMT</lastBuildDate>
+  <atom:link href="https://koenvers.github.io/brain-dev/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Eerste week lokale LLM’s op een laptop</title>
+    <link>https://koenvers.github.io/brain-dev/posts/lokale-llm-laptop.html</link>
+    <guid isPermaLink="true">https://koenvers.github.io/brain-dev/posts/lokale-llm-laptop.html</guid>
+    <pubDate>Tue, 06 Oct 2026 22:00:00 GMT</pubDate>
+    <description>Wat er wel en niet op 16 GB geheugen draait, hoeveel tokens per seconde je echt haalt en waarom quantisatie geen detail is.</description>
+    <category>ai</category>
+    <category>experiment</category>
+  </item>
+  <item>
+    <title>Waarom deze kennisbank platte HTML is</title>
+    <link>https://koenvers.github.io/brain-dev/posts/platte-html-kennisbank.html</link>
+    <guid isPermaLink="true">https://koenvers.github.io/brain-dev/posts/platte-html-kennisbank.html</guid>
+    <pubDate>Wed, 30 Sep 2026 22:00:00 GMT</pubDate>
+    <description>Geen Jekyll, geen Node, geen dependencies: één JSON-index, één renderfunctie. Notities over wat dat oplevert en waar de grens ligt.</description>
+    <category>tooling</category>
+    <category>web</category>
+  </item>
+  <item>
+    <title>Vectorzoekindexen: waarom HNSW werkt</title>
+    <link>https://koenvers.github.io/brain-dev/posts/vectorzoekindexen-hnsw.html</link>
+    <guid isPermaLink="true">https://koenvers.github.io/brain-dev/posts/vectorzoekindexen-hnsw.html</guid>
+    <pubDate>Fri, 11 Sep 2026 22:00:00 GMT</pubDate>
+    <description>Brute-force zoeken op embeddings is exact maar O(n). HNSW bouwt een gelaagd graafnetwerk en zoekt in O(log n) — met drie knelpunten die je moet kennen voordat je de standaardparameters overneemt.</description>
+    <category>ai</category>
+    <category>retrieval</category>
+    <category>indexeren</category>
+  </item>
+  <item>
+    <title>Airflow-productie-DAG: patronen en valkuilen</title>
+    <link>https://koenvers.github.io/brain-dev/posts/airflow-dag-patronen.html</link>
+    <guid isPermaLink="true">https://koenvers.github.io/brain-dev/posts/airflow-dag-patronen.html</guid>
+    <pubDate>Sun, 02 Aug 2026 22:00:00 GMT</pubDate>
+    <description>Idempotente taken, een juiste retry-policy en geen-logica-in-de-DAG: de afspraken waarmee een DAG jaren later nog steeds te onderhouden is.</description>
+    <category>airflow</category>
+    <category>data-engineering</category>
+    <category>tooling</category>
+  </item>
+</channel>
+</rss>
