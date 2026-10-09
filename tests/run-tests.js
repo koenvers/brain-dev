@@ -335,6 +335,8 @@ test('favicon en og-image: aanwezig, bestanden bestaan, echte PNG', () => {
     const rel = m[1].replace('https://koenvers.github.io/brain-dev/', '');
     assert.ok(fs.existsSync(path.join(root, rel)), f + ': og:image-bestand ontbreekt');
     assert.ok(html.includes('name="twitter:image"'), f + ': twitter:image');
+    assert.ok(/name="twitter:card" content="summary_large_image"/.test(html),
+      f + ': twitter:card moet summary_large_image zijn bij een 1200x630 kaart');
   });
   ['assets/img/og.png', 'assets/img/favicon.png'].forEach((f) => {
     const buf = fs.readFileSync(path.join(root, f));
