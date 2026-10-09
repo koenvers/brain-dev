@@ -290,10 +290,13 @@ test('favicon en og-image: aanwezig, bestanden bestaan, echte PNG', () => {
     .concat(fs.readdirSync(path.join(root, 'posts')).map((f) => 'posts/' + f));
   pages.forEach((f) => {
     const html = fs.readFileSync(path.join(root, f), 'utf8');
-    assert.ok(html.includes('href="' + (f.startsWith('posts/') ? '../' : f === '404.html' ? '/brain-dev/' : '') +
-      'assets/img/logo-mark.svg"'), f + ': svg-favicon');
-    assert.ok(html.includes('assets/img/favicon.png'), f + ': png-favicon');
+    const pre = f.startsWith('posts/') ? '../' : f === '404.html' ? '/brain-dev/' : '';
+    assert.ok(html.includes(`href="${pre}assets/img/favicon.svg" type="image/svg+xml"`), f + ': svg-favicon');
+    assert.ok(html.includes(`href="${pre}assets/img/favicon.png" type="image/png"`), f + ': png-fallback');
+    assert.ok(!html.includes('logo-mark.svg" type="image/svg+xml"'), f + ': logo-mark.svg hoort geen favicon-link te zijn');
   });
+  assert.ok(fs.existsSync(path.join(root, 'assets/img/favicon.svg')), 'favicon.svg ontbreekt');
+  assert.ok(fs.existsSync(path.join(root, 'tools/og-card.html')), 'og-card.html (reproductiebron) ontbreekt');
   pages.filter((f) => f !== '404.html').forEach((f) => {
     const html = fs.readFileSync(path.join(root, f), 'utf8');
     const m = /property="og:image" content="([^"]+)"/.exec(html);

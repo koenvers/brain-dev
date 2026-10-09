@@ -19,7 +19,7 @@ brain-dev/
 ├── assets/
 │   ├── css/style.css       stijl, licht/donker via prefers-color-scheme, @font-face
 │   ├── fonts/              Inter + JetBrains Mono (woff2, OFL-1.1 licentie)
-│   ├── img/                logo-mark.svg (origineel), favicon.png, og.png (1200x630)
+│   ├── img/                logo-mark.svg (header), favicon.svg/.png, og.png (1200x630)
 │   └── js/
 │       ├── app.js          renderen, zoeken, filteren, URL-sync, statistiekregel
 │       ├── highlight.js    mini syntax-highlighter voor codeblokken
@@ -71,8 +71,11 @@ Velden die je zoekt: titel, samenvatting, tags (en het type: `Kennis`/`Blog`).
   een `<link rel="alternate" type="application/rss+xml">`.
 - Canonical + Open Graph/Twitter-meta bovenin elke HTML-pagina (afgeleid van
   `<title>` en `meta description`; pas je die aan, pas dan ook `og:title` /
-  `og:description` aan). `og:image` = `assets/img/og.png` (1200×630, opgebouwd
-  uit `logo-mark.svg`); vernieuw die kaart als het logo of de tagline verandert.
+  `og:description` aan). `og:image` = `assets/img/og.png` (1200×630);
+  reproduceerbaar door `tools/og-card.html` op 1200×630 te screenshot-en.
+- Favicon: `favicon.svg` (tabvriendelijke versimplering, lichte achtergrond) met
+  `favicon.png` als fallback; `logo-mark.svg` is uitsluitend het merkteken in de
+  header (en de bron voor de OG-kaart).
 - `404.html` — eigen 404 met terugweg naar het overzicht. Gebruikt **absolute**
   paden (`/brain-dev/…`), want GitHub Pages serveert het vanaf elke diepe URL.
   Vermijdt dus per ongeluk relatieve links op die pagina.
