@@ -120,10 +120,19 @@ a:hover { text-decoration: underline; }
 }
 
 .wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   font-family: var(--mono);
   font-size: 17px;
   font-weight: 600;
   letter-spacing: -0.02em;
+}
+
+.wordmark .mark {
+  display: block;
+  width: 26px;
+  height: 24px;
 }
 
 .wordmark:hover { text-decoration: none; }
@@ -485,4 +494,9 @@ pre code {
   .site-nav a { padding: 8px 10px; }
   .toolbar { gap: 6px; }
   .pill { padding: 7px 13px; }
+}
+
+/* Het merkteken is zwart lijnwerk; in dark mode draaien we het om. */
+@media (prefers-color-scheme: dark) {
+  .wordmark .mark { filter: invert(1); }
 }
