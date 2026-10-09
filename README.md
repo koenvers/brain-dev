@@ -85,20 +85,20 @@ Velden die je zoekt: titel, samenvatting, tags (en het type: `Kennis`/`Blog`).
   Vermijdt dus per ongeluk relatieve links op die pagina.
 - Repo-link in de footer van elke pagina.
 
-## Meten (standaard uit)
+## Meten (actief)
 
-`assets/js/analytics.js` is op elke pagina geladen, maar laadt niets zolang
-`ACCOUNT` leeg is — dus geen externe requests, geen cookies, niets geteld.
-Activeren (handmatig, ~2 minuten):
+`assets/js/analytics.js` laadt het GoatCounter-script op elke pagina zodra
+`ACCOUNT` gevuld is — nu `koenverschuren` →
+`https://koenverschuren.goatcounter.com/count`. Geen cookies, geen
+persoonsgegevens, alleen paginaweergaven; `localhost` en `file://` tellen niet
+mee (geen vervuiling van de cijfers door previews).
 
-1. Account aanmaken op <https://www.goatcounter.com/signup> — **door een mens**:
-   de voorwaarden verbieden accounts die via automatisering geregistreerd worden.
-2. Het toegewezen code-veld invullen in `assets/js/analytics.js`:
-   `var ACCOUNT = 'jouw-code';` (→ `https://jouw-code.goatcounter.com/count`).
-3. `git commit -am "analytics aan" && git push`.
-
-Preview op localhost telt nooit mee; cookies zijn er niet (GoatCounter telt
-anoniem per paginaweergave).
+- Dashboard: <https://koenverschuren.goatcounter.com>
+- Uitzetten: `var ACCOUNT = '';` in `assets/js/analytics.js` → er wordt niets
+  geladen (de tests eisen een geldige code zodra dit aan staat).
+- Account ooit opnieuw aanmaken: alleen **handmatig** op
+  <https://www.goatcounter.com/signup> — de voorwaarden verbieden registratie
+  via automatisering.
 
 ## Zoeken en filteren
 

@@ -261,15 +261,46 @@ test('feed-link op elke pagina', () => {
     assert.ok(html.includes('type="application/rss+xml"'), f + ': feed-link');
   });
 });
-test('analytics: gewired maar standaard uit', () => {
-  const src = fs.readFileSync(path.join(root, 'assets/js/analytics.js'), 'utf8');
-  assert.ok(/var ACCOUNT = ''/.test(src), 'ACCOUNT moet leeg zijn (niet geregistreerd via automatisering)');
-  assert.ok(src.includes('goatcounter'), 'laadfunctie ontbreekt');
-  assert.ok(src.includes('localhost'), 'localhost moet uitgesloten zijn');
+test('analytics: vuurt de juiste teller-URL, behalve op localhost/file', () => {
+  const script = path.join(root, 'assets/js/analytics.js');
+  const mod = require.resolve(script);
+  const run = (loc) => {
+    const aangemaakt = [];
+    global.location = loc;
+    global.document = {
+      createElement: () => ({
+        attrs: {},
+        setAttribute(k, v) { this.attrs[k] = v; },
+        head: null
+      }),
+      head: { appendChild: (el) => aangemaakt.push(el) }
+    };
+    delete require.cache[mod];
+    require(mod);
+    delete global.document;
+    delete global.location;
+    return aangemaakt;
+  };
+
+  // productie-achtig: script wordt aangemaakt met de juiste URLs
+  const normaal = run({ hostname: 'koenvers.github.io', protocol: 'https:' });
+  assert.strictEqual(normaal.length, 1, 'script moet 1x aangemaakt worden');
+  assert.strictEqual(normaal[0].attrs['data-goatcounter'],
+    'https://koenverschuren.goatcounter.com/count', 'teller-URL');
+  assert.strictEqual(normaal[0].src, 'https://gc.zgo.at/count.js', 'laad-URL');
+  assert.strictEqual(normaal[0].async, true, 'async');
+
+  // previews mogen niet tellen
+  assert.strictEqual(run({ hostname: 'localhost', protocol: 'http:' }).length, 0, 'localhost moet overslaan');
+  assert.strictEqual(run({ hostname: '127.0.0.1', protocol: 'http:' }).length, 0, '127.0.0.1 moet overslaan');
+  assert.strictEqual(run({ hostname: 'example.org', protocol: 'file:' }).length, 0, 'file:// moet overslaan');
+
   const pages = ['index.html', 'over.html', '404.html']
     .concat(fs.readdirSync(path.join(root, 'posts')).map((f) => 'posts/' + f));
   pages.forEach((f) => {
-    assert.ok(fs.readFileSync(path.join(root, f), 'utf8').includes('analytics.js'), f + ': analytics-script');
+    const html = fs.readFileSync(path.join(root, f), 'utf8');
+    const n = (html.match(/<script src="[^"]*analytics\.js"><\/script>/g) || []).length;
+    assert.strictEqual(n, 1, f + ': analytics.js moet exact 1x als scripttag geladen worden');
   });
 });
 test('fonts: zelfgehost, aanwezig en aangeroepen', () => {
