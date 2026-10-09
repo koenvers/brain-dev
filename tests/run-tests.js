@@ -173,6 +173,56 @@ test('onbekende taal valt terug op neutraal', () => {
   assert.strictEqual(strip(hl.highlight('foo <bar>', 'zzz')), 'foo <bar>');
 });
 
+console.log('vindbaarheid');
+test('sitemap verwijst alleen naar bestaande bestanden', () => {
+  const sm = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
+  const locs = [...sm.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+  assert.ok(locs.length >= 6, 'te weinig URLs: ' + locs.length);
+  locs.forEach((u) => {
+    assert.ok(u.startsWith('https://koenvers.github.io/brain-dev/'), u);
+    const rel = u.replace('https://koenvers.github.io/brain-dev/', '');
+    const file = rel === '' ? 'index.html' : rel;
+    assert.ok(fs.existsSync(path.join(root, file)), 'ontbreekt: ' + file);
+  });
+});
+test('elke index-entry staat in de sitemap (met lastmod)', () => {
+  const sm = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
+  RAW.forEach((it) => {
+    assert.ok(sm.includes('/' + it.url), 'sitemap mist: ' + it.url);
+    const blok = sm.split('<url>').find((b) => b.includes(it.url));
+    const lastmod = /<lastmod>(\d{4}-\d{2}-\d{2})<\/lastmod>/.exec(blok);
+    assert.ok(lastmod, 'geen lastmod bij ' + it.url);
+    assert.strictEqual(lastmod[1], it.date, 'lastmod != datum bij ' + it.url);
+  });
+});
+test('robots.txt wijst naar de sitemap', () => {
+  const rb = fs.readFileSync(path.join(root, 'robots.txt'), 'utf8');
+  assert.ok(rb.includes('Sitemap: https://koenvers.github.io/brain-dev/sitemap.xml'));
+  assert.ok(!/Disallow:\s*\//.test(rb));
+});
+test('canonical en Open Graph op elke contentpagina', () => {
+  const pages = ['index.html', 'over.html']
+    .concat(fs.readdirSync(path.join(root, 'posts')).map((f) => 'posts/' + f));
+  pages.forEach((f) => {
+    const html = fs.readFileSync(path.join(root, f), 'utf8');
+    const canon = /rel="canonical" href="([^"]+)"/.exec(html);
+    assert.ok(canon, f + ': canonical');
+    assert.ok(canon[1].startsWith('https://koenvers.github.io/brain-dev/'), f + ': ' + canon[1]);
+    assert.ok(html.includes('property="og:title"'), f + ': og:title');
+    assert.ok(html.includes('property="og:description"'), f + ': og:description');
+    assert.ok(html.includes('property="og:url"'), f + ': og:url');
+    assert.ok(html.includes('name="twitter:card"'), f + ': twitter:card');
+    assert.ok(html.includes('href="https://github.com/koenvers/brain-dev"'), f + ': repo-link');
+    if (f.startsWith('posts/')) assert.ok(html.includes('article:published_time'), f + ': published_time');
+  });
+});
+test('404-pagina bestaat en gebruikt absolute paden', () => {
+  const html = fs.readFileSync(path.join(root, '404.html'), 'utf8');
+  assert.ok(html.includes('404'));
+  assert.ok(html.includes('href="/brain-dev/"'), 'startpagina-ontsnapping');
+  assert.ok(!/href="(?:\.\.\/|(?:assets|posts|content)\/)/.test(html), 'relatieve pad in 404');
+});
+
 console.log('DOM-integratie');
 test('DOMContentLoaded-listener overleeft het meegeleverde Event', () => {
   /* regressie: de listener kreeg het Event als root mee -> querySelectorAll-crash */

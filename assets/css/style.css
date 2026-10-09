@@ -433,6 +433,9 @@ pre code {
   color: var(--faint);
 }
 
+.site-footer a { color: inherit; }
+.site-footer a:hover { color: var(--muted); }
+
 @media (max-width: 560px) {
   .item-head { flex-wrap: wrap; gap: 6px 10px; }
   .count { width: 100%; margin-left: 0; }

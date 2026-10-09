@@ -10,6 +10,9 @@ dependencies.
 brain-dev/
 ├── index.html              overzicht: zoeken + filterpills, rendert uit de index
 ├── over.html               over-pagina
+├── 404.html                eigen 404 (absolute paden, vanaf elke diepe URL bruikbaar)
+├── robots.txt              crawl-toegang + verwijzing naar de sitemap
+├── sitemap.xml             alle URL's met lastmod
 ├── content/
 │   └── index.js            ZOEKINDEX — enige bron van waarheid voor het overzicht
 ├── assets/
@@ -22,7 +25,7 @@ brain-dev/
 └── .nojekyll               schakelt de Jekyll-build van GitHub Pages uit
 ```
 
-## Nieuw item toevoegen (2 stappen, geen build)
+## Nieuw item toevoegen (3 stappen, geen build)
 
 1. **Pagina maken.** Kopieer een bestaand bestand uit `posts/` en pas titel,
    meta-blok en content aan. Codeblokken: `<pre><code class="language-python">…</code></pre>`
@@ -50,6 +53,22 @@ brain-dev/
 
 De index is meteen de zoekindex: er is niets te genereren of bij te werken.
 Velden die je zoekt: titel, samenvatting, tags (en het type: `Kennis`/`Blog`).
+
+3. **Sitemap bijwerken** in `sitemap.xml`: één `<url>`-blok met de nieuwe URL
+   en `<lastmod>` = de publicatiedatum. `tests/run-tests.js` faalt als een
+   index-entry niet in de sitemap staat of als `lastmod` afwijkt van `date`.
+
+## Vindbaarheid
+
+- `robots.txt` — staat toe te crawlen en verwijst naar de sitemap.
+- `sitemap.xml` — alle pagina's met `lastmod` (zie stap 3).
+- Canonical + Open Graph/Twitter-meta bovenin elke HTML-pagina (afgeleid van
+  `<title>` en `meta description`; pas je die aan, pas dan ook `og:title` /
+  `og:description` aan). Geen `og:image`: er is geen afbeelding.
+- `404.html` — eigen 404 met terugweg naar het overzicht. Gebruikt **absolute**
+  paden (`/brain-dev/…`), want GitHub Pages serveert het vanaf elke diepe URL.
+  Vermijdt dus per ongeluk relatieve links op die pagina.
+- Repo-link in de footer van elke pagina.
 
 ## Zoeken en filteren
 
