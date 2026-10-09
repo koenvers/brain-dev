@@ -436,4 +436,14 @@ pre code {
 @media (max-width: 560px) {
   .item-head { flex-wrap: wrap; gap: 6px 10px; }
   .count { width: 100%; margin-left: 0; }
+
+  /* hint overlapt de placeholder op smalle schermen; ruimte vrijmaken voor de wis-knop */
+  .search .hint { display: none; }
+  .search input { padding-right: 44px; }
+
+  /* ruimere touch-targets */
+  .site-nav { gap: 6px; }
+  .site-nav a { padding: 8px 10px; }
+  .toolbar { gap: 6px; }
+  .pill { padding: 7px 13px; }
 }

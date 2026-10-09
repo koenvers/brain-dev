@@ -54,7 +54,8 @@ Velden die je zoekt: titel, samenvatting, tags (en het type: `Kennis`/`Blog`).
 ## Zoeken en filteren
 
 - Zoekveld bovenaan `index.html`; matches op titel + samenvatting + tags,
-  hoofdletteronafhankelijk, meerdere woorden = EN.
+  hoofdletteronafhankelijk, meerdere woorden = EN. Zoeken is een
+  substring-match: `ai` vindt ook `Airflow`.
 - Pills: Alle content / Alleen Kennisbank / Alleen Blog.
 - `/` focust de zoekbalk, `Esc` wist de zoekopdracht, klik op een tag = zoeken
   op die tag.
