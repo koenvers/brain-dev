@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<!-- brain-dev — OG/social-kaart (1200x630). Reproduceerbaar, geen build-stap:
+     node is niet nodig; screenshot deze pagina op 1200x630 en sla op als
+     assets/img/og.png (zie README). -->
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 100 900;
+    src: local('Inter'), url('../assets/fonts/inter-latin.woff2') format('woff2');
+  }
+  html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    background: #FAFAFA;
+    color: #111111;
+    font-family: 'Inter', system-ui, sans-serif;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 34px;
+  }
+  .mark { width: 220px; height: 203px; display: block; }
+  h1 { margin: 0; font-size: 92px; font-weight: 700; letter-spacing: -0.035em; line-height: 1; }
+  .ai { color: #3F7A4E; background: #DCEBDF; border-radius: 10px; padding: 0 12px; }
+  p { margin: 0; font-size: 32px; color: #6b6b6b; letter-spacing: -0.01em; }
+  .rule { width: 1080px; height: 1px; background: #E4E4E4; margin-top: 4px; }
+</style>
+</head>
+<body>
+  <img class="mark" src="../assets/img/logo-mark.svg" alt="">
+  <h1>br<span class="ai">ai</span>n-dev</h1>
+  <p>Naslag en notities over AI, data science en tooling.</p>
+  <div class="rule"></div>
+</body>
+</html>

@@ -19,6 +19,7 @@ brain-dev/
 ├── assets/
 │   ├── css/style.css       stijl, licht/donker via prefers-color-scheme, @font-face
 │   ├── fonts/              Inter + JetBrains Mono (woff2, OFL-1.1 licentie)
+│   ├── img/                logo-mark.svg (origineel), favicon.png, og.png (1200x630)
 │   └── js/
 │       ├── app.js          renderen, zoeken, filteren, URL-sync, statistiekregel
 │       ├── highlight.js    mini syntax-highlighter voor codeblokken
@@ -70,7 +71,8 @@ Velden die je zoekt: titel, samenvatting, tags (en het type: `Kennis`/`Blog`).
   een `<link rel="alternate" type="application/rss+xml">`.
 - Canonical + Open Graph/Twitter-meta bovenin elke HTML-pagina (afgeleid van
   `<title>` en `meta description`; pas je die aan, pas dan ook `og:title` /
-  `og:description` aan). Geen `og:image`: er is geen afbeelding.
+  `og:description` aan). `og:image` = `assets/img/og.png` (1200×630, opgebouwd
+  uit `logo-mark.svg`); vernieuw die kaart als het logo of de tagline verandert.
 - `404.html` — eigen 404 met terugweg naar het overzicht. Gebruikt **absolute**
   paden (`/brain-dev/…`), want GitHub Pages serveert het vanaf elke diepe URL.
   Vermijdt dus per ongeluk relatieve links op die pagina.
@@ -112,21 +114,22 @@ Dekt: indexvalidatie, bestandsverwijzingen, zoeken/filteren/sortering,
 datumnotatie, highlighter (escaping, XSS, roundtrip), vindbaarheid
 (sitemap/feed/canonical/OG/404), generator-idempotentie, fonts en analytics.
 
-## GitHub Pages zetten
+## GitHub Pages (actief)
 
-1. Repo aanmaken en pushen:
+Repo: <https://github.com/koenvers/brain-dev> · site:
+<https://koenvers.github.io/brain-dev/> (Pages: `main` / `(root)`, `.nojekyll`
+houdt de Jekyll-build buiten de deur).
 
-   ```bash
-   git init
-   git add .
-   git commit -m "brain-dev: eerste versie"
-   git remote add origin https://github.com/<gebruiker>/brain-dev.git
-   git push -u origin main
-   ```
+Wijzigingen publiceren:
 
-2. GitHub → repo → **Settings → Pages → Source: Deploy from a branch** →
-   `main` / `(root)` → Save.
-3. Site: `https://<gebruiker>.github.io/brain-dev/`.
+```bash
+node tools/build-meta.js   # als de index veranderde (sitemap + feed)
+node tests/run-tests.js    # moet groen
+git add -A && git commit -m "…" && git push
+```
+
+Bouw duurt enkele tientallen seconden; status via Settings → Pages of de
+API (`pages/builds/latest` → `status: built`).
 
 Alle links en assets zijn relatief, dus de site werkt ook onder een subpad en
 lokaal via `index.html` openen of `python -m http.server`.

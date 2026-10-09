@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Vereenvoudigd merkteken voor 16-32px: silhouette + powersymbool opgeblazen,
+       inwendige vouwlijnen weg (die lopen op tab-formaat dicht op elkaar). -->
+  <rect width="32" height="32" rx="7" fill="#FAFAFA"/>
+  <g transform="translate(4.2 5) scale(0.0655)" fill="none" stroke="#111111"
+     stroke-linejoin="miter" stroke-linecap="butt">
+    <path stroke-width="34"
+          d="M8 75 L93 7 L221 3 L311 47 L351 115 L335 183 L278 235 L238 315 L191 237 L15 195 L0 115 Z"/>
+    <g transform="translate(176 150) scale(1.8) translate(-171 -115)">
+      <path stroke-width="19" d="M171 60 L171 115"/>
+      <path stroke-width="19" d="M195 80.6 A42 42 0 1 1 147 80.6"/>
+    </g>
+  </g>
+</svg>

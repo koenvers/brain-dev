@@ -285,6 +285,33 @@ test('fonts: zelfgehost, aanwezig en aangeroepen', () => {
   assert.ok(fs.existsSync(path.join(root, 'assets/fonts/OFL-1.1-inter.txt')));
   assert.ok(!/https?:\/\/[^"']*\.(?:woff2?|ttf)/.test(css), 'geen externe font-URL');
 });
+test('favicon en og-image: aanwezig, bestanden bestaan, echte PNG', () => {
+  const pages = ['index.html', 'over.html', '404.html']
+    .concat(fs.readdirSync(path.join(root, 'posts')).map((f) => 'posts/' + f));
+  pages.forEach((f) => {
+    const html = fs.readFileSync(path.join(root, f), 'utf8');
+    assert.ok(html.includes('href="' + (f.startsWith('posts/') ? '../' : f === '404.html' ? '/brain-dev/' : '') +
+      'assets/img/logo-mark.svg"'), f + ': svg-favicon');
+    assert.ok(html.includes('assets/img/favicon.png'), f + ': png-favicon');
+  });
+  pages.filter((f) => f !== '404.html').forEach((f) => {
+    const html = fs.readFileSync(path.join(root, f), 'utf8');
+    const m = /property="og:image" content="([^"]+)"/.exec(html);
+    assert.ok(m, f + ': og:image');
+    const rel = m[1].replace('https://koenvers.github.io/brain-dev/', '');
+    assert.ok(fs.existsSync(path.join(root, rel)), f + ': og:image-bestand ontbreekt');
+    assert.ok(html.includes('name="twitter:image"'), f + ': twitter:image');
+  });
+  ['assets/img/og.png', 'assets/img/favicon.png'].forEach((f) => {
+    const buf = fs.readFileSync(path.join(root, f));
+    assert.ok(buf.length > 1000, f + ': verdacht klein');
+    assert.deepStrictEqual([...buf.subarray(0, 4)], [0x89, 0x50, 0x4e, 0x47], f + ': geen PNG-signatuur');
+  });
+  const og = fs.readFileSync(path.join(root, 'assets/img/og.png'));
+  assert.ok(og.length > 30000, 'og.png te licht voor een 1200x630 kaart');
+  assert.strictEqual(og.readUInt32BE(16), 1200, 'og.png breedte');
+  assert.strictEqual(og.readUInt32BE(20), 630, 'og.png hoogte');
+});
 
 console.log('DOM-integratie');
 test('DOMContentLoaded-listener overleeft het meegeleverde Event', () => {
