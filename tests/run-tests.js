@@ -173,6 +173,29 @@ test('onbekende taal valt terug op neutraal', () => {
   assert.strictEqual(strip(hl.highlight('foo <bar>', 'zzz')), 'foo <bar>');
 });
 
+console.log('DOM-integratie');
+test('DOMContentLoaded-listener overleeft het meegeleverde Event', () => {
+  /* regressie: de listener kreeg het Event als root mee -> querySelectorAll-crash */
+  const nodes = [{ className: 'language-js', textContent: 'const x = 1;', innerHTML: '' }];
+  const listeners = {};
+  global.document = {
+    readyState: 'loading',
+    addEventListener: (type, fn) => { listeners[type] = fn; },
+    querySelectorAll: (sel) => { assert.strictEqual(sel, 'pre code'); return nodes; }
+  };
+  try {
+    const mod = require.resolve(path.join(root, 'assets', 'js', 'highlight.js'));
+    delete require.cache[mod];
+    require(mod);
+    assert.strictEqual(typeof listeners.DOMContentLoaded, 'function');
+    listeners.DOMContentLoaded({ type: 'DOMContentLoaded' });
+    assert.ok(nodes[0].innerHTML.includes('tok-kw'), nodes[0].innerHTML);
+    assert.ok(nodes[0].innerHTML.includes('tok-num'), nodes[0].innerHTML);
+  } finally {
+    delete global.document;
+  }
+});
+
 console.log('');
 console.log(failed === 0
   ? `alle ${passed} tests geslaagd`

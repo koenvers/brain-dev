@@ -110,7 +110,8 @@
   }
   if (typeof document !== 'undefined') {
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', highlightAll);
+      /* let op: de listener krijgt het Event mee — niet als root doorgeven */
+      document.addEventListener('DOMContentLoaded', function () { highlightAll(); });
     } else {
       highlightAll();
     }
