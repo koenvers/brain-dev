@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Over — brain-dev</title>
+  <meta name="description" content="Wat brain-dev is: twee contentstromen, platte HTML, geen build-stap.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23A3C9A8'/%3E%3Ctext x='16' y='23' font-family='monospace' font-size='18' text-anchor='middle' fill='%23111111'%3Eb%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="index.html">br<span class="ai">ai</span>n-dev</a>
+      <nav class="site-nav" aria-label="Hoofdmenu">
+        <a href="index.html" data-type="alles">Alles</a>
+        <a href="index.html?type=kennis" data-type="kennis">Kennisbank</a>
+        <a href="index.html?type=blog" data-type="blog">Blog</a>
+        <a href="over.html">Over</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap article">
+    <a class="backlink" href="index.html">← terug naar het overzicht</a>
+
+    <h1>Over</h1>
+    <div class="article-meta"><span>laatst bijgewerkt: 1 okt 2026</span></div>
+
+    <p>brain-dev is een naslag- en notitieplek over AI, data science en tooling.
+       Twee stromen, bewust gescheiden:</p>
+
+    <ul>
+      <li><strong>Kennisbank</strong> — tijdloze artikelen: architectuurnotities,
+          technische diepgang, dingen die ik telkens weer uitzoek en niet meer
+          kwijt wil.</li>
+      <li><strong>Blog</strong> — korte updates, observaties en hands-on
+          experimenten. Minder gepolijst, sneller geschreven.</li>
+    </ul>
+
+    <h2>Hoe het gebouwd is</h2>
+    <p>Platte HTML, één CSS-bestand, twee kleine JavaScript-bestanden. Geen
+       framework, geen build-stap, geen externe requests:</p>
+
+    <ul>
+      <li><code>content/index.js</code> bevat de zoekindex — enige bron van
+          waarheid voor het overzicht.</li>
+      <li><code>assets/js/app.js</code> rendert de lijst en verzorgt zoeken en
+          filteren volledig client-side.</li>
+      <li><code>assets/js/highlight.js</code> is een mini syntax-highlighter
+          voor codeblokken.</li>
+    </ul>
+
+    <p>Zoeken werkt op titel, samenvatting en tags, en draait volledig in de
+       browser: geen netwerkvertraging, geen zoekdienst.</p>
+
+    <h2>Nieuwe content</h2>
+    <p>Een artikel toevoegen is: HTML-pagina maken onder <code>posts/</code>,
+       één regel toevoegen aan de index. Details staan in de README van het
+       repository.</p>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>brain-dev</span>
+      <span>statisch · GitHub Pages</span>
+    </div>
+  </footer>
+</body>
+</html>

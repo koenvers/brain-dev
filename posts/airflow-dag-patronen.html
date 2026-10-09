@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Airflow-productie-DAG: patronen en valkuilen — brain-dev</title>
+  <meta name="description" content="Idempotente taken, retry-beleid en scheiding tussen orchestratie en logica: afspraken voor DAG's die jaren onderhoudbaar blijven.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23A3C9A8'/%3E%3Ctext x='16' y='23' font-family='monospace' font-size='18' text-anchor='middle' fill='%23111111'%3Eb%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="../index.html">br<span class="ai">ai</span>n-dev</a>
+      <nav class="site-nav" aria-label="Hoofdmenu">
+        <a href="../index.html" data-type="alles">Alles</a>
+        <a href="../index.html?type=kennis" data-type="kennis">Kennisbank</a>
+        <a href="../index.html?type=blog" data-type="blog">Blog</a>
+        <a href="../over.html">Over</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap article">
+    <a class="backlink" href="../index.html">← terug naar het overzicht</a>
+
+    <h1>Airflow-productie-DAG: patronen en valkuilen</h1>
+    <div class="article-meta">
+      <span class="badge badge-kennis">[Kennis]</span>
+      <span>3 aug 2026</span>
+      <span>·</span>
+      <span>12 min</span>
+      <span>·</span>
+      <span class="item-tags">
+        <span class="tag">airflow</span>
+        <span class="tag">data-engineering</span>
+        <span class="tag">tooling</span>
+      </span>
+    </div>
+
+    <p>Een DAG is een contract met de toekomst: jij schrijft hem nu, iemand
+       anders — mogelijk jij over twee jaar — moet hem begrijpen wanneer hij
+       om 03:00 faalt. Deze patronen zijn wat dat verschil klein houdt.</p>
+
+    <h2>1. Orchestratie in de DAG, logica in een module</h2>
+
+    <p>De DAG beschrijft wát er wanneer draait; hoe een taak transformeert
+       hoort in importeerbare code, testbaar zonder Airflow.</p>
+
+    <pre><code class="language-python">from airflow.decorators import dag, task
+from datetime import datetime
+
+import greenhouse_transforms as gt  # puur, testbaar zonder Airflow
+
+@dag(start_date=datetime(2026, 1, 1), schedule="0 4 * * *",
+     catchup=False, tags=["sensoren"])
+def sensor_aggregatie():
+    @task
+    def laad():
+        return gt.laad_ruwe_registraties()
+
+    @task
+    def aggregeer(regels):
+        return gt.aggregeer_dagelijkse_reeks(regels)
+
+    aggregeer(laad())
+
+sensor_aggregatie()</code></pre>
+
+    <p>De module <code>greenhouse_transforms</code> is met gewone unit tests te
+       dekken; de DAG zelf blijft dun en bevat geen zakelijke logica.</p>
+
+    <h2>2. Idempotentie boven alles</h2>
+
+    <p>Elke task moet opnieuw kunnen draaien zonder schade. Concreet:</p>
+
+    <ul>
+      <li>Schrijf naar een tijdelijke tabel of bestand en swap hernoem je
+          resultaat atomisch.</li>
+      <li>Gebruik <code>INSERT ... ON CONFLICT DO UPDATE</code> in plaats van
+          blind <code>INSERT</code>.</li>
+      <li>Noem bestanden met de logical date, niet met de wall-clock time:
+          een herstart van dezelfde run overschrijft zichzelf.</li>
+    </ul>
+
+    <pre><code class="language-sql">INSERT INTO greenhouse.daily_agg (day, sensor_id, avg_c)
+VALUES (:day, :sensor_id, :avg_c)
+ON CONFLICT (day, sensor_id) DO UPDATE SET avg_c = EXCLUDED.avg_c;</code></pre>
+
+    <h2>3. Retry-beleid is een domeinbeslissing</h2>
+
+    <p>De default (<code>retries=0</code>) negeert de realiteit: netwerken
+       haperen. Maar oneindig herhalen maskeert defecten. Mijn basislijn:</p>
+
+    <pre><code class="language-python">default_args = {
+    "retries": 3,
+    "retry_delay": timedelta(minutes=5),
+    "retry_exponential_backoff": True,
+    "execution_timeout": timedelta(hours=2),
+}</code></pre>
+
+    <p>Twee vallen daarbuiten: een taak die op een external API faalt met 4xx
+       hoort niet te retry'en (keuze in de code), en een taak die nooit
+       meer dan enkele seconden duurt heeft een <code>execution_timeout</code>
+       nodig die dat afdwingt.</p>
+
+    <h2>4. Traps</h2>
+
+    <ul>
+      <li><strong><code>catchup=True</code> vergeten</strong> — bij een
+          <code>start_date</code> in het verleden start Airflow een backfill
+          die niemand wilde.</li>
+      <li><strong>Groeiende <code>rendered</code>-velden</strong> — templating
+          op grote payloads maakt de metadata-database traag; geef grote
+          waarden door via XCom met een externe backend ofsla ze als bestand.</li>
+      <li><strong>Dependencies via <code>>></code> in plaats van expliciete
+          argumenten</strong> — leesbaarheid verdwijnt zodra een DAG meer dan
+          een handvol taken heeft.</li>
+      <li><strong> Secrets in code</strong> — Airflow heeft een secrets-backend;
+          gebruik <code>Variable.get</code> of connections, nooit literals.</li>
+    </ul>
+
+    <h2>Controlelijst vóór productie</h2>
+
+    <ol>
+      <li>Draait een herhaling van dezelfde run zonder duplicate rows?</li>
+      <li>Is elke task voorzien van een realistische timeout?</li>
+      <li>Is <code>catchup</code> expliciet gezet?</li>
+      <li>Bevat de DAG geen logica die ook zonder Airflow zou moeten
+          bestaan?</li>
+      <li>Geven de logs bij een fout de werkelijke oorzaak, of alleen
+          "task failed"?</li>
+    </ol>
+
+    <p>Checken kan lokaal met <code>airflow dags test</code> voor een enkele
+       run zonder scheduler — goedkoper dan het in productie ontdekken.</p>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>brain-dev</span>
+      <span>statisch · GitHub Pages</span>
+    </div>
+  </footer>
+
+  <script src="../assets/js/highlight.js"></script>
+</body>
+</html>

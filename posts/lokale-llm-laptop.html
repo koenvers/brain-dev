@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Eerste week lokale LLM’s op een laptop — brain-dev</title>
+  <meta name="description" content="Wat er op 16 GB geheugen draait, tokens per seconde bij verschillende quantisaties, en waarom de keuze ertoe doet.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23A3C9A8'/%3E%3Ctext x='16' y='23' font-family='monospace' font-size='18' text-anchor='middle' fill='%23111111'%3Eb%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="../index.html">br<span class="ai">ai</span>n-dev</a>
+      <nav class="site-nav" aria-label="Hoofdmenu">
+        <a href="../index.html" data-type="alles">Alles</a>
+        <a href="../index.html?type=kennis" data-type="kennis">Kennisbank</a>
+        <a href="../index.html?type=blog" data-type="blog">Blog</a>
+        <a href="../over.html">Over</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap article">
+    <a class="backlink" href="../index.html">← terug naar het overzicht</a>
+
+    <h1>Eerste week lokale LLM’s op een laptop</h1>
+    <div class="article-meta">
+      <span class="badge badge-blog">[Blog]</span>
+      <span>7 okt 2026</span>
+      <span>·</span>
+      <span>6 min</span>
+      <span>·</span>
+      <span class="item-tags">
+        <span class="tag">ai</span>
+        <span class="tag">experiment</span>
+      </span>
+    </div>
+
+    <p>Een week lang alles lokaal gedaan wat normaal naar een API gaat: samenvatten,
+       code uitleggen, kleine classificatieklusjes. Doel was niet snelheid maar
+       inzicht — wat verlies je precies als je quantisatie toepast?</p>
+
+    <h2>De setup</h2>
+
+    <pre><code class="language-bash"># model ophalen en server starten (llama.cpp)
+llama-server -m models/qwen2.5-7b-instruct-q4_k_m.gguf \
+  --host 127.0.0.1 --port 8080 --ctx-size 8192 -t 8
+
+# groei meten terwijl er geladen wordt
+watch -n1 'ps -o rss= -p $(pgrep llama-server)'</code></pre>
+
+    <p>16 GB geheugen, geïntegreerde GPU, 8 threads. De praktische grens: een
+       7B-model in Q4_K_M (~4,5 GB) laat ruimte over voor een context van 8k.
+       In Q8 (~8 GB) begint het te wisselen met de browser erbij en is de
+       latency verdwenen — dat is de echte vloer, niet de geheugensom.</p>
+
+    <h2>Wat ik meet</h2>
+
+    <ul>
+      <li><strong>Q4_K_M</strong> — snelst, merkbare kwaliteitsdaling op
+          redeneren; goed voor samenvatten en classificeren.</li>
+      <li><strong>Q6_K</strong> — het midden dat ik voor code-uitleg gebruik.</li>
+      <li><strong>Q8_0</strong> — langzaam op mijn hardware, en het verschil
+          tegenover Q6 was in mijn testen klein.</li>
+    </ul>
+
+    <p>De kern van wat ik leerde zit in die laatste regel: de vorm van
+       <em>hoe</em> je quantisatiet verschil uit — hemelsbreed tussen Q4 en Q6,
+       nauwelijks tussen Q6 en Q8. Zonder de meting had ik Q8 als "veiligste
+       keuze" genomen en elke dag tien seconden per prompt betaald.</p>
+
+    <h2>Waar het schuurt</h2>
+
+    <ul>
+      <li>Geen streaming-dashboard: tokens/sec meten doe ik met
+          <code>--prompt-processing</code>-stats of een simpele timer.</li>
+      <li>Tool-calling is firmware-afhankelijk; lokale servers ondersteunen
+          niet elk schema dat een API wel begrijpt.</li>
+      <li>Kleinere modellen hallucineren bij lange instructies sneller — de
+          systeemprompt moet kort en eenduidig zijn.</li>
+    </ul>
+
+    <pre><code class="language-bash"># nulmeting: hoeveel tokens/sec haal ik echt?
+llama-cli -m models/qwen2.5-7b-instruct-q4_k_m.gguf \
+  -p "Schrijf 200 woorden over broeikaskasmodellen." -n 256 -t 8 \
+  2>&1 | grep -E "eval time|tokens per sec"</code></pre>
+
+    <h2>Conclusie voor nu</h2>
+
+    <p>Lokaal is serieus bruikbaar voor tekstbewerking binnen een van tevoren
+       afgebakende scope. Voor alles wat met actuele kennis of lange contexten
+       te maken heeft blijft een API de betere keuze. De metingen staan in
+       <code>experiments/</code> in het repo, zodat ik over een half jaar het
+      zelfde kan herhalen met een nieuw model.</p>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>brain-dev</span>
+      <span>statisch · GitHub Pages</span>
+    </div>
+  </footer>
+
+  <script src="../assets/js/highlight.js"></script>
+</body>
+</html>

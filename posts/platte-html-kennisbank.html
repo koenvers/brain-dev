@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Waarom deze kennisbank platte HTML is — brain-dev</title>
+  <meta name="description" content="Notities over de keuze voor platte HTML met een JS-index: wat het oplevert en waar de grens ligt.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23A3C9A8'/%3E%3Ctext x='16' y='23' font-family='monospace' font-size='18' text-anchor='middle' fill='%23111111'%3Eb%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="../index.html">br<span class="ai">ai</span>n-dev</a>
+      <nav class="site-nav" aria-label="Hoofdmenu">
+        <a href="../index.html" data-type="alles">Alles</a>
+        <a href="../index.html?type=kennis" data-type="kennis">Kennisbank</a>
+        <a href="../index.html?type=blog" data-type="blog">Blog</a>
+        <a href="../over.html">Over</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap article">
+    <a class="backlink" href="../index.html">← terug naar het overzicht</a>
+
+    <h1>Waarom deze kennisbank platte HTML is</h1>
+    <div class="article-meta">
+      <span class="badge badge-blog">[Blog]</span>
+      <span>1 okt 2026</span>
+      <span>·</span>
+      <span>4 min</span>
+      <span>·</span>
+      <span class="item-tags">
+        <span class="tag">tooling</span>
+        <span class="tag">web</span>
+      </span>
+    </div>
+
+    <p>Ik heb de afweging Jekyll tegenover platte HTML gemaakt zoals ik elke
+       afweging maak: wat gaat er kapot als ik de complexste optie kies? Bij
+       een site met enkele tientallen pagina's is het antwoord: niet veel, maar
+       ook niet veel dat ik terugkrijg.</p>
+
+    <h2>Wat de Jekyll-route had opgeleverd</h2>
+
+    <p><code>_posts</code> met front-matter, een collectie voor kennisartikelen,
+       een <code>search.json</code> die GitHub Pages zelf bouwt. Prima — maar
+       GitHub Pages bouwt met een vaste Ruby-versie, een vaste set plugins en
+       een build die ik niet lokaal reproduceer zonder <code>bundle install</code>.
+       Elk probleem met die pipeline los ik op afstand op.</p>
+
+    <h2>Wat platte HTML oplevert</h2>
+
+    <ul>
+      <li>Geen build-fase: wat in de repo staat, staat in productie.</li>
+      <li>Lokaal openen werkt — <code>index.html</code> dubbelklikken en de
+          site doet het, inclusief zoeken.</li>
+      <li>De zoekindex is een JS-bestand dat als script geladen wordt: geen
+          <code>fetch</code>, dus ook geen CORS- of netwerkgedoe. Zoeken is
+          een array-filter, direct.</li>
+      <li>Eén bron van waarheid (<code>content/index.js</code>) betekent dat
+          het overzicht en de index niet uit elkaar kunnen lopen — zolang je
+          de stappen volgt bij het toevoegen van content.</li>
+    </ul>
+
+    <h2>De kosten</h2>
+
+    <p>Twee, eerlijk gemeld. Ten eerste is er geen redactie-flow: nieuwe
+       content betekent een HTML-pagina kopiëren en een regel toevoegen aan de
+       index. Dat is twee minuten werk en geen formulier. Ten tweede: zonder
+       JS geen lijst. Voor een persoonlijke naslag accepteer ik dat; zou dit
+       een site voor derden zijn, zou ik server-side rendering willen.</p>
+
+    <pre><code class="language-bash"># lokaal bekijken zonder server
+start index.html
+
+# of via een simpele static server
+python -m http.server 8000</code></pre>
+
+    <h2>Wanneer ik het zou herzien</h2>
+
+    <p>Bij meer dan ~200 items wordt het handmatige indexwerk vervelend, en
+       bij echte redacteuren al veel eerder. De afstappunt is dan een
+       generator die uit markdown de HTML en de index schrijft — nog steeds
+       statische output, maar niet meer handmatig. Zolang dat niet het geval
+       is, blijft het bij wat het is: bestanden, een browser, geen bouwlaag
+       ertussen.</p>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>brain-dev</span>
+      <span>statisch · GitHub Pages</span>
+    </div>
+  </footer>
+
+  <script src="../assets/js/highlight.js"></script>
+</body>
+</html>
