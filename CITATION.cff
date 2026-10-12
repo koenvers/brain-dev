@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use this site or its content in your work, please cite it as below."
+title: "brain-dev"
+abstract: "Statische kennisbank en blog over AI, data science en tooling."
+authors:
+  - family-names: Verschuren
+    given-names: Koen
+    orcid: "https://orcid.org/0009-0002-7395-0034"
+url: "https://koenvers.github.io/brain-dev/"
+repository-code: "https://github.com/koenvers/brain-dev"
+keywords:
+  - kennisbank
+  - blog
+  - AI
+  - data science
+  - tooling
