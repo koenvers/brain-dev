@@ -707,3 +707,38 @@ abbr[title] {
   .article-toc { padding: 12px 14px 4px; }
   .article details { padding: 8px 11px; }
 }
+
+/* --- Artikel: tabellen ------------------------------------------------ */
+
+/* Cijfertabel zonder rasterlijnen: alleen een kopregel en een dunne
+   scheiding per rij, zodat de getallen leesbaar blijven naast de lopende
+   tekst. De rechterkolom is rechts uitgelijnd op de cijfers. */
+.article table {
+  width: 100%;
+  margin: 0 0 20px;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.article th {
+  padding: 0 10px 6px 0;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 400;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.article td {
+  padding: 5px 10px 5px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.article th.num,
+.article td.num {
+  padding-right: 0;
+  text-align: right;
+}
