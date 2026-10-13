@@ -1,7 +1,7 @@
 # brain-dev
 
 Statische site (kennisbank + blog) voor GitHub Pages. Platte HTML, één
-CSS-bestand, vier kleine JS-bestanden, zelfgehoste fonts. Geen Node-build, geen
+CSS-bestand, vier kleine JS-bestanden, systeemfonts. Geen Node-build, geen
 Jekyll, geen dependencies (Node alleen voor tests en de meta-generator).
 
 ## Structuur
@@ -17,8 +17,7 @@ brain-dev/
 ├── content/
 │   └── index.js            ZOEKINDEX — enige bron van waarheid voor overzicht én feed
 ├── assets/
-│   ├── css/style.css       stijl, licht/donker via prefers-color-scheme, @font-face
-│   ├── fonts/              Inter + JetBrains Mono (woff2, OFL-1.1 licentie)
+│   ├── css/style.css       stijl, licht/donker via prefers-color-scheme, systeemfonts
 │   ├── img/                logo-mark.svg (header), favicon.svg/.png, og.png (1200x630)
 │   └── js/
 │       ├── app.js          renderen, zoeken, filteren, URL-sync, statistiekregel
@@ -126,7 +125,7 @@ mee (geen vervuiling van de cijfers door previews).
 - Zoekveld bovenaan `index.html`; matches op titel + samenvatting + tags,
   hoofdletteronafhankelijk, meerdere woorden = EN. Zoeken is een
   substring-match: `ai` vindt ook `Airflow`.
-- Pills: Alle content / Alleen Kennisbank / Alleen Blog. Daaronder een tagrij
+- Filters: `alles` / `kennis` / `blog` (kleine letters, platte tekstlinks). Daaronder een tagrij
   met de meest gebruikte tags: klik = filteren op die tag, nog een klik heft het
   filter op. Klikken op een tag in een item zet dezelfde tagfilter.
 - Vindt een zoekopdracht niets, dan zegt de lege staat wat er niet gevonden is
@@ -144,7 +143,7 @@ node tests/run-tests.js
 
 Dekt: indexvalidatie, bestandsverwijzingen, zoeken/filteren/sorteren (type, tag,
 vrije tekst), datumnotatie, highlighter (escaping, XSS, roundtrip), vindbaarheid
-(sitemap/feed/canonical/OG/404), generator-idempotentie, fonts en analytics.
+(sitemap/feed/canonical/OG/404), generator-idempotentie, systeemfonts en analytics.
 
 ## GitHub Pages (actief)
 
@@ -169,10 +168,13 @@ lokaal via `index.html` openen of `python -m http.server`.
 ## Aanpassen
 
 - **Kleuren:** CSS-variabelen bovenin `assets/css/style.css`; donkere modus in
-  de `@media (prefers-color-scheme: dark)`-blok daaronder. Accentkleur:
-  `--accent: #a3c9a8`.
-- **Fonts:** Inter (body) en JetBrains Mono (monospace) staan zelfgehost in
-  `assets/fonts/` (woff2, OFL-1.1). `src: local(...)` eerst: wie ze al
-  geïnstalleerd heeft downloadt niets. Vervang de bestanden en houd de
-  `@font-face`-regels gelijk; `font-display: swap` voorkomt lege tekst.
+  de `@media (prefers-color-scheme: dark)`-blok daaronder. Eén accentkleur
+  (`--accent-strong`) voor links, het actieve filter en focus; de rest is
+  monochroom. Wisselen naar Hacker News-oranje (`#ff6600`) of terminalblauw
+  (`#3b5bdb`) is één regel, zie het commentaar bij de variabelen.
+- **Fonts:** systeemfonts, geen webfonts. `--sans` en `--mono` staan bovenin
+  `style.css` en verwijzen naar `system-ui` en `ui-monospace`. Inter en
+  JetBrains Mono zijn eruit gehaald omdat twee woff2-bestanden 88 kB van de
+  107 kB van een koude paginalading waren; de map `assets/fonts/` bestaat niet
+  meer. De test `geen webfonts` houdt dat zo.
 - **Zoekvelden uitbreiden:** pas `haystack` in `assets/js/app.js` (`normalize`).

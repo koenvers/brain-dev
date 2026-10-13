@@ -397,18 +397,16 @@ test('analytics: vuurt de juiste teller-URL, behalve op localhost/file', () => {
     assert.strictEqual(n, 1, f + ': analytics.js moet exact 1x als scripttag geladen worden');
   });
 });
-test('fonts: zelfgehost, aanwezig en aangeroepen', () => {
+test('geen webfonts: systeemstack, geen fontbestanden en geen externe font-URL', () => {
   const css = fs.readFileSync(path.join(root, 'assets/css/style.css'), 'utf8');
-  assert.strictEqual((css.match(/@font-face/g) || []).length, 2);
-  ['inter-latin.woff2', 'jetbrains-mono.woff2'].forEach((f) => {
-    assert.ok(css.includes(`url('../fonts/${f}')`), 'css mist ' + f);
-    const p = path.join(root, 'assets/fonts', f);
-    assert.ok(fs.existsSync(p), 'bestand ontbreekt: ' + f);
-    assert.ok(fs.statSync(p).size > 10000, 'verdacht klein: ' + f);
-  });
-  assert.ok(fs.existsSync(path.join(root, 'assets/fonts/OFL-1.1.txt')));
-  assert.ok(fs.existsSync(path.join(root, 'assets/fonts/OFL-1.1-inter.txt')));
+  assert.strictEqual((css.match(/@font-face/g) || []).length, 0, 'geen @font-face meer');
+  assert.ok(/--sans:\s*system-ui/.test(css), 'systeemstack voor de tekst');
+  assert.ok(/--mono:\s*ui-monospace/.test(css), 'systeemstack voor monospace');
+  assert.ok(!/\.woff2?|\.ttf/.test(css), 'geen fontbestanden in de CSS');
   assert.ok(!/https?:\/\/[^"']*\.(?:woff2?|ttf)/.test(css), 'geen externe font-URL');
+  assert.ok(!fs.existsSync(path.join(root, 'assets', 'fonts')), 'de fontmap hoort weg te zijn');
+  const og = fs.readFileSync(path.join(root, 'tools', 'og-card.html'), 'utf8');
+  assert.ok(!/\.woff2?|@font-face/.test(og), 'ook de OG-kaart gebruikt systeemfonts');
 });
 test('favicon en og-image: aanwezig, bestanden bestaan, echte PNG', () => {
   const pages = ['index.html', 'over.html', '404.html']

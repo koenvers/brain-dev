@@ -4,7 +4,7 @@
 (function () {
   'use strict';
 
-  var TYPE_LABEL = { kennis: 'Kennisbank', blog: 'Blog' };
+  var TYPE_LABEL = { kennis: 'kennis', blog: 'blog' };
   var MAANDEN = ['jan', 'feb', 'mrt', 'apr', 'mei', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
   var TAGBAR_MAX = 8;   /* tag-pills boven de lijst */
   var SUGGEST_MAX = 6;  /* tagsuggesties bij een leeg resultaat */
@@ -168,7 +168,7 @@
     var b = el('button', cls || 'tag', tag);
     b.type = 'button';
     b.dataset.tag = tag;
-    b.title = 'Filter op tag "' + tag + '"';
+    b.title = 'filter: ' + tag;
     return b;
   }
 
@@ -270,10 +270,10 @@
       var suggest = items.length ? popularTags(items, SUGGEST_MAX, state.tag) : [];
       if (suggest.length === 0) { emptyTags.hidden = true; return; }
       emptyTags.hidden = false;
-      emptyTags.appendChild(el('span', 'empty-label', 'Populaire tags:'));
+      emptyTags.appendChild(el('span', 'empty-label', 'tags:'));
       suggest.forEach(function (t) { emptyTags.appendChild(tagButton(t)); });
       if (state.q.trim() !== '' || state.tag !== '' || state.type !== 'alles') {
-        var reset = el('button', 'reset', 'wis alle filters');
+        var reset = el('button', 'reset', 'wis filters');
         reset.type = 'button';
         emptyTags.appendChild(reset);
       }

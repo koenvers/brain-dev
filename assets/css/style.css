@@ -1,22 +1,9 @@
 /* brain-dev — minimalistische stijl. Geen build-stap, geen externe fonts of libraries. */
 
-/* Zelfgehoste fonts (OFL-1.1, zie assets/fonts/OFL-1.1*.txt); local() first:
-   wie Inter/JetBrains Mono al geïnstalleerd heeft, downloadt niets. */
-@font-face {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 100 900;
-  font-display: swap;
-  src: local('Inter'), url('../fonts/inter-latin.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  font-style: normal;
-  font-weight: 100 800;
-  font-display: swap;
-  src: local('JetBrains Mono'), url('../fonts/jetbrains-mono.woff2') format('woff2');
-}
+/* Geen webfonts: systeemfonts. Inter en JetBrains Mono zijn eruit gehaald omdat
+   twee woff2-bestanden 88 kB van de 107 kB van een koude paginalading waren.
+   De systeemstack levert op elke platform een schreefloze en een monospace
+   variant, zonder download en zonder flikkering. */
 
 :root {
   color-scheme: light dark;
@@ -25,12 +12,15 @@
   --surface: #ffffff;
   --text: #111111;
   --muted: #666666;
-  --faint: #8a8a8a;
+  --faint: #6f6f6f;   /* was #8a8a8a: dat haalde de 4,5:1 niet voor kleine tekst */
   --line: #e4e4e4;
 
-  --accent: #a3c9a8;          /* pastelgroen uit het logo */
+  /* Eén functionele accentkleur, voor links, het actieve filter en focus.
+     Wisselen is één regel; de rest van de interface is monochroom.
+       Hacker News-oranje  #ff6600
+       terminalblauw       #3b5bdb  (of klassiek #0000ee) */
+  --accent: #a3c9a8;          /* pastelgroen uit het logo, alleen nog voor randen */
   --accent-strong: #3f7a4e;   /* leesbare tekstvariant op licht */
-  --accent-soft: rgba(163, 201, 168, 0.38);
 
   --code-bg: #f3f3f3;
   --tok-kw: #2f6b41;
@@ -38,8 +28,8 @@
   --tok-num: #8a5a2b;
   --tok-com: #8a8a8a;
 
-  --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -53,7 +43,6 @@
 
     --accent: #a3c9a8;
     --accent-strong: #a3c9a8;
-    --accent-soft: rgba(163, 201, 168, 0.16);
 
     --code-bg: #1b1b1b;
     --tok-kw: #a3c9a8;
@@ -73,7 +62,7 @@ body {
   color: var(--text);
   font-family: var(--sans);
   font-size: 16px;
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
 a { color: var(--text); text-decoration: none; }
@@ -139,9 +128,6 @@ a:hover { text-decoration: underline; }
 
 .wordmark .ai {
   color: var(--accent-strong);
-  background: var(--accent-soft);
-  border-radius: 3px;
-  padding: 0 2px;
 }
 
 .site-nav {
@@ -175,6 +161,7 @@ main { padding: 26px 0 56px; }
 
 .tagline {
   margin: 0 0 8px;
+  max-width: 68ch;    /* maatregel: 760px op 14px geeft ruim 100 tekens per regel */
   color: var(--muted);
   font-size: 14px;
 }
@@ -376,6 +363,7 @@ main { padding: 26px 0 56px; }
 
 .item-summary {
   margin: 3px 0 0;
+  max-width: 72ch;
   color: var(--muted);
   font-size: 13.5px;
 }
@@ -524,7 +512,7 @@ main { padding: 26px 0 56px; }
 .article blockquote {
   margin: 20px 0;
   padding: 2px 0 2px 16px;
-  border-left: 3px solid var(--accent);
+  border-left: 2px solid var(--line);
   color: var(--muted);
 }
 
