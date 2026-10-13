@@ -1,6 +1,6 @@
 # brain-dev
 
-Statische site (kennisbank + whitepapers + blog + code) voor GitHub Pages. Platte
+Statische site (kennisbank + whitepapers + blog + software) voor GitHub Pages. Platte
 HTML, één CSS-bestand, vier kleine JS-bestanden, systeemfonts. Geen Node-build,
 geen Jekyll, geen dependencies (Node alleen voor tests en de meta-generator).
 
@@ -23,7 +23,7 @@ brain-dev/
 │       ├── highlight.js    mini syntax-highlighter voor codeblokken
 │       └── analytics.js    meting (standaard uit; zie "Meten")
 ├── posts/                  artikelen (één HTML-bestand per stuk)
-├── repos/                  projectpagina's van open-source repo's (type 'repo', dezelfde chrome als posts/)
+├── software/               softwarepagina's (type 'software', dezelfde chrome als posts/)
 ├── tools/build-meta.js     genereert sitemap.xml + feed.xml uit de index
 ├── tests/run-tests.js      node tests/run-tests.js
 └── .nojekyll               schakelt de Jekyll-build van GitHub Pages uit
@@ -31,8 +31,8 @@ brain-dev/
 
 ## Nieuw item toevoegen (3 stappen, geen build)
 
-1. **Pagina maken.** Kopieer een bestaand bestand uit `posts/` (of uit `repos/`
-   voor een projectpagina) en pas titel, meta-blok en content aan. Codeblokken:
+1. **Pagina maken.** Kopieer een bestaand bestand uit `posts/` (of uit `software/`
+   voor een softwarepagina) en pas titel, meta-blok en content aan. Codeblokken:
    `<pre><code class="language-python">…</code></pre>`
    (ondersteund: `python`, `js`, `bash`, `sql`, `css`, `json`; alles wat
    onbekend is krijgt neutrale opmaak).
@@ -57,10 +57,10 @@ brain-dev/
 
    ```js
    {
-     type: 'kennis',                       // 'kennis', 'whitepaper', 'blog' of 'repo'
+     type: 'knowledge',                    // 'knowledge', 'whitepaper', 'blog' of 'software'
      title: 'Titel van het stuk',
      url: 'posts/mijn-stuk.html',          // relatief ten opzichte van index.html; een
-                                           // projectpagina staat in repos/
+                                           // softwarepagina staat in software/
      summary: 'Eén samenvatting van 1-2 zinnen — wordt getoond en geïndexeerd.',
      date: '2026-10-09',                   // YYYY-MM-DD
      minutes: 7,                           // leestijd in minuten
@@ -89,7 +89,7 @@ brain-dev/
 
 De index is meteen de zoekindex: er is niets te genereren of bij te werken.
 Velden die je zoekt: titel, samenvatting, subtag, tags (en het type:
-`knowledge`/`whitepaper`/`blog`/`code`).
+`knowledge`/`whitepaper`/`blog`/`software`).
 
 3. **Meta-generator draaien** (als er Node is): `node tools/build-meta.js`
    herschrijft `sitemap.xml` en `feed.xml` uit de index. Zonder Node: die twee
@@ -138,15 +138,19 @@ mee (geen vervuiling van de cijfers door previews).
   hoofdletteronafhankelijk, meerdere woorden = EN. Zoeken is een
   substring-match: `ai` vindt ook `Airflow`.
 - Secties (typefilter) zitten in de navigatie: `all` / `knowledge` /
-  `whitepapers` / `blog` / `code`; de
+  `whitepapers` / `blog` / `software`; de
   resultaatregel staat onder de tagrij. Daaronder een tagrij
   met de meest gebruikte tags: klik = filteren op die tag, nog een klik heft het
   filter op. Klikken op een tag in een item zet dezelfde tagfilter.
+- Het type onder de titel is in het overzicht een knop: klikken zet dat
+  typefilter. Op een pagina is hetzelfde woord een link naar
+  `../index.html?type=<type>`, zodat je vanuit een artikel in die sectie
+  uitkomt.
 - Vindt een zoekopdracht niets, dan zegt de lege staat wat er niet gevonden is
   (zoekterm of tag) en staan er populaire tags als alternatief, plus "wis alle
   filters" als er een filter actief is.
 - `/` focust de zoekbalk; `Esc` wist de zoekopdracht en verlaat daarna het veld.
-- Status zit in de URL: `index.html?type=kennis&q=airflow&tag=retrieval`, deelbaar
+- Status zit in de URL: `index.html?type=knowledge&q=airflow&tag=retrieval`, deelbaar
   en overleft een refresh. Alles client-side, geen `fetch`, geen netwerkverkeer.
 
 ## Tests
@@ -159,7 +163,7 @@ Dekt: indexvalidatie, bestandsverwijzingen, zoeken/filteren/sorteren (type, tag,
 vrije tekst), datumnotatie, highlighter (escaping, XSS, roundtrip), vindbaarheid
 (sitemap/feed/canonical/OG/404), generator-idempotentie, systeemfonts en analytics.
 De pagina-tests (canonical, OG, favicon, feed-link, analytics) lopen over `posts/`
-én `repos/`.
+én `software/`.
 
 ## GitHub Pages (actief)
 

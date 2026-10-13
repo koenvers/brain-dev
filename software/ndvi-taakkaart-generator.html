@@ -3,17 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>NDVI Taakkaart Generator — brain-dev</title>
-  <meta name="description" content="Open-source browsertool die van drone-NDVI (GeoTIFF) een variabele-dosering taakkaart maakt: automatische banddetectie, BRP-percelen via PDOK en export naar Shapefile, ISOXML, GeoJSON en CSV.">
+  <title>NDVItoTaskmap: taakkaarten uit drone-NDVI — brain-dev</title>
+  <meta name="description" content="Open-source browsertool die van drone-NDVI (GeoTIFF) een variabele-dosering taakkaart maakt: automatische banddetectie, BRP-percelen via PDOK en export naar Shapefile, ISOXML, GeoJSON en CSV. Gepubliceerd in de Research Software Directory met DOI.">
   <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="../assets/img/favicon.png" type="image/png" sizes="64x64">
   <link rel="stylesheet" href="../assets/css/style.css">
-  <link rel="canonical" href="https://brain-dev.nl/repos/ndvi-taakkaart-generator.html">
+  <link rel="canonical" href="https://brain-dev.nl/software/ndvi-taakkaart-generator.html">
   <meta property="og:site_name" content="brain-dev">
   <meta property="og:type" content="article">
-  <meta property="og:title" content="NDVI Taakkaart Generator — brain-dev">
-  <meta property="og:description" content="Open-source browsertool die van drone-NDVI (GeoTIFF) een variabele-dosering taakkaart maakt: automatische banddetectie, BRP-percelen via PDOK en export naar Shapefile, ISOXML, GeoJSON en CSV.">
-  <meta property="og:url" content="https://brain-dev.nl/repos/ndvi-taakkaart-generator.html">
+  <meta property="og:title" content="NDVItoTaskmap: taakkaarten uit drone-NDVI — brain-dev">
+  <meta property="og:description" content="Open-source browsertool die van drone-NDVI (GeoTIFF) een variabele-dosering taakkaart maakt: automatische banddetectie, BRP-percelen via PDOK en export naar Shapefile, ISOXML, GeoJSON en CSV. Gepubliceerd in de Research Software Directory met DOI.">
+  <meta property="og:url" content="https://brain-dev.nl/software/ndvi-taakkaart-generator.html">
   <meta property="article:published_time" content="2026-10-13T00:00:00+02:00">
   <meta name="twitter:card" content="summary_large_image">
   <meta property="og:image" content="https://brain-dev.nl/assets/img/og.png">
@@ -29,10 +29,10 @@
       <a class="wordmark" href="../index.html"><img class="mark" src="../assets/img/logo-mark.svg" alt="" width="26" height="24">br<span class="ai">ai</span>n-dev</a>
       <nav class="site-nav" aria-label="Hoofdmenu">
         <a href="../index.html" data-type="alles">Alles</a>
-        <a href="../index.html?type=kennis" data-type="kennis">Kennisbank</a>
+        <a href="../index.html?type=knowledge" data-type="knowledge">Kennisbank</a>
         <a href="../index.html?type=whitepaper" data-type="whitepaper">Whitepapers</a>
         <a href="../index.html?type=blog" data-type="blog">Blog</a>
-        <a href="../index.html?type=repo" data-type="repo">Code</a>
+        <a href="../index.html?type=software" data-type="software">Software</a>
       </nav>
     </div>
   </header>
@@ -40,9 +40,9 @@
   <main class="wrap article">
     <a class="backlink" href="../index.html">← terug naar het overzicht</a>
 
-    <h1 id="top">NDVI Taakkaart Generator</h1>
+    <h1 id="top">NDVItoTaskmap: taakkaarten uit drone-NDVI</h1>
     <div class="article-meta">
-      <span class="badge badge-repo">code</span>
+      <a class="badge badge-software" href="../index.html?type=software">software</a>
       <time datetime="2026-10-13">13 okt 2026</time>
       <span>·</span>
       <span>5 min</span>
@@ -57,17 +57,17 @@
     <p>Een dronevlucht levert een <abbr title="Normalized Difference Vegetation Index">NDVI</abbr>-kaart
        waarop te zien is waar het gewas achterblijft. Een tractor-terminal of
        <abbr title="Farm Management Information System">FMIS</abbr> werkt daar niet mee: die wil een
-       taakbestand met een dosering per cel en een rijrichting. De NDVI Taakkaart Generator doet die
-       stap in de browser. Je laadt een multispectrale GeoTIFF, kiest de percelen en exporteert een
-       taakkaart in het formaat dat je terminal of FMIS inleest. De broncode staat in
-       <a href="https://github.com/HASUniversity/NDVItoTaskmap">HASUniversity/NDVItoTaskmap</a> onder
-       de <a href="https://choosealicense.com/licenses/mit/">MIT-licentie</a>.</p>
+       taakbestand met een dosering per cel en een rijrichting. Deze tool, in de repository
+       <em>NDVI Taakkaart Generator</em> geheten, doet die stap in de browser. Je laadt een
+       multispectrale GeoTIFF, kiest de percelen en exporteert een taakkaart in het formaat dat je
+       terminal of FMIS inleest.</p>
 
-    <p>Er is geen installatie en geen account nodig: de repository klonen, een lokale webserver
-       starten en de pagina openen. De verwerking gebeurt volledig in de browser, dus de
-       dronebeelden gaan niet naar een server. Alleen de perceelgrenzen komen van buiten, live uit
-       de <abbr title="Basisregistratie Gewaspercelen">BRP</abbr> van
-       <a href="https://www.pdok.nl/">PDOK</a>.</p>
+    <p>Officieel heet de software <strong>NDVItoTaskmap</strong>; onder die naam staat hij in de
+       <a href="https://research-software-directory.org/software/ndvitotaskmap">Research Software
+       Directory</a>, met de omschrijving, de licentie, de trefwoorden en de citeerbare
+       <abbr title="Digital Object Identifier">DOI</abbr>. Je meldt je niet aan en er is geen
+       installatie nodig: de pagina openen in een browser is genoeg, en de dronebeelden blijven op je
+       eigen machine.</p>
 
     <nav class="article-toc" id="inhoud" aria-label="Inhoud">
       <h2>Inhoud</h2>
@@ -75,7 +75,7 @@
         <li><a href="#stappen">De zes stappen van de wizard</a></li>
         <li><a href="#functies">Wat er in zit</a></li>
         <li><a href="#exporteren">Exporteren naar de terminal</a></li>
-        <li><a href="#draaien">Lokaal draaien</a></li>
+        <li><a href="#draaien">Zelf draaien</a></li>
         <li><a href="#opbouw">Opbouw en techniek</a></li>
         <li><a href="#stand">Stand van zaken</a></li>
         <li><a href="#begrippen">Begrippen</a></li>
@@ -181,18 +181,19 @@
        GeoKeys en <code>GDAL_NODATA=nan</code> — de GeoTIFF wordt binair opgebouwd met
        <code>DataView</code>, zonder hulpbibliotheek.</p>
 
-    <h2 id="draaien">4. Lokaal draaien</h2>
+    <h2 id="draaien">4. Zelf draaien</h2>
 
     <p>De applicatie gebruikt ES-modules, en browsers weigeren die via het
-       <code>file://</code>-protocol. Een lokale webserver is dus genoeg, meer niet.</p>
+       <code>file://</code>-protocol. Een lokale webserver is dus genoeg, meer niet. De
+       repository en de installatie-instructies staan achter <strong>Get started</strong> op de
+       RSD-pagina.</p>
 
     <pre><code class="language-bash">git clone https://github.com/HASUniversity/NDVItoTaskmap.git
 cd NDVItoTaskmap
 python -m http.server 8080   # of: npx serve .</code></pre>
 
-    <p>Daarna open je <code>http://localhost:8080</code>. In VS Code kan het ook met de extensie
-       Live Server. Alle bibliotheken zitten in de repository, dus na het klonen is er geen
-       internetverbinding nodig, behalve voor de PDOK-percelen.</p>
+    <p>Daarna open je <code>http://localhost:8080</code>. Alle bibliotheken zitten in de repository,
+       dus na het klonen is er geen internetverbinding nodig, behalve voor de PDOK-percelen.</p>
 
     <h2 id="opbouw">5. Opbouw en techniek</h2>
 
@@ -201,7 +202,8 @@ python -m http.server 8080   # of: npx serve .</code></pre>
        de classificatie, <code>brp.js</code> voor de perceelgrenzen en de gewashistorie,
        <code>taskmap.js</code> voor de klasseneditor en de rijrichting, <code>export.js</code> voor
        de vier uitvoerformaten, en <code>i18n.js</code> voor Nederlands en Engels. Geen framework,
-       geen Node.js en geen build-stap.</p>
+       geen Node.js en geen build-stap: de berekening loopt volledig in de browser, zonder server
+       die meerekent.</p>
 
     <p>De gebruikte bibliotheken zijn meegeleverd in <code>static/vendor/</code>, dus zonder
        <abbr title="Content Delivery Network">CDN</abbr>-afhankelijkheid:
@@ -214,10 +216,25 @@ python -m http.server 8080   # of: npx serve .</code></pre>
 
     <h2 id="stand">6. Stand van zaken</h2>
 
-    <p>De repository is openbaar en de versie staat vast: release <strong>v1.0.0</strong> is
-       gepubliceerd op 8 oktober 2026 met de functielijst erin. Wat er sindsdien in de
-       <a href="https://github.com/HASUniversity/NDVItoTaskmap/blob/main/CHANGELOG.md">changelog</a>
-       staat, is nog niet in een release uitgebracht:</p>
+    <p>De software is gepubliceerd op 8 oktober 2026, onder HAS green academy, en staat in de
+       Research Software Directory als open source met de
+       <a href="https://choosealicense.com/licenses/mit/">MIT-licentie</a>. Versie
+       <strong>v1.0.0</strong> is dezelfde dag gearchiveerd bij Zenodo, met twee
+       <abbr title="Digital Object Identifier">DOI</abbr>'s:</p>
+
+    <ul>
+      <li><strong>10.5281/zenodo.23235413</strong> — de versie-DOI van v1.0.0. Gebruik deze als je
+          verwijst naar wat er in deze release zit.</li>
+      <li><strong>10.5281/zenodo.23235412</strong> — de concept-DOI voor alle versies samen; die
+          blijft gelijk en wijst naar de nieuwste release.</li>
+    </ul>
+
+    <p>De RSD-pagina noemt dertien trefwoorden, waaronder precision-agriculture, vegetation-index,
+       task-map, taakkaart, isoxml, isobus, brp, uav, drone-mapping, NDVI en GeoTIFF. De RSD is de
+       plek waar de software officieel beschreven staat; de broncode en de installatie-instructies
+       hangen daar achter <strong>Get started</strong>.</p>
+
+    <p>Wat er in de repository al wel staat maar nog niet in een release zit:</p>
 
     <ul>
       <li>De bodemlijn van WDVI is van een vaste waarde 1.2 naar een slider gegaan, met 1.0 als
@@ -228,22 +245,10 @@ python -m http.server 8080   # of: npx serve .</code></pre>
           ZIP-handtekeningen stond omgekeerd, waardoor de Shapefile-export niet opende.</li>
     </ul>
 
-    <p>Op 13 oktober 2026 geteld via de GitHub-API: 23 commits tussen 14 maart en 12 oktober 2026,
-       drie sterren, één fork, geen openstaande issues en geen GitHub Actions-workflows. De
-       afspraken over README, changelog en een syntaxcontrole staan als instructies in de
-       repository, niet in een pijplijn.</p>
-
-    <p>Wat er verder bij hoort: de licentie is MIT met "Contributors" als rechthebbende, en de
-       <a href="https://github.com/HASUniversity/NDVItoTaskmap/blob/main/CITATION.cff">CITATION.cff</a>
-       bevat naam, ORCID, affiliatie en de licentie, zodat GitHub de knop "Cite this repository"
-       toont. Een DOI via Zenodo is er op het moment van schrijven niet: in de Zenodo-index staat
-       geen record voor deze repository, dus citeren gaat voorlopig met de repository-URL. Er is ook
-       geen online demo; de tool draait per ontwerp lokaal, omdat de dronebeelden de browser niet
-       verlaten.</p>
-
-    <p>Eén beperking zit in de databron: de perceelgrenzen en gewasregistraties komen live uit de
-       BRP, en hoe ver de historie teruggaat hangt aan de publicatiecyclus van
-       <abbr title="Rijksdienst voor Ondernemend Nederland">RVO</abbr>. Buiten Nederland is er geen
+    <p>Twee dingen om te weten voor je ermee aan de slag gaat. Er is geen online demo: de beelden
+       verlaten de browser niet, dus je draait de tool lokaal. En de perceelgrenzen komen live uit de
+       BRP, waarvan de historie afhangt van de publicatiecyclus van
+       <abbr title="Rijksdienst voor Ondernemend Nederland">RVO</abbr>; buiten Nederland is er geen
        perceellaag.</p>
 
     <h2 id="begrippen">7. Begrippen</h2>
@@ -270,23 +275,26 @@ python -m http.server 8080   # of: npx serve .</code></pre>
       <dt>FMIS</dt>
       <dd>Farm Management Information System: de bedrijfssoftware waarin percelen, gewassen en
           werkzaamheden worden bijgehouden.</dd>
+      <dt>Research Software Directory</dt>
+      <dd>het platform waar Nederlandse instellingen hun onderzoekssoftware presenteren, met
+          licentie, trefwoorden en de koppeling naar het archief.
+          <a href="https://research-software-directory.org/">research-software-directory.org</a></dd>
     </dl>
 
     <h2 id="bronnen">8. Bronnen</h2>
 
-    <p>Alles hierboven komt uit de repository zelf, plus de documentatie van de twee externe
-       diensten.</p>
+    <p>De officiële pagina van de software, het archief met de DOI, en de documentatie van de
+       externe diensten die de tool gebruikt.</p>
 
     <ul class="references">
-      <li>NDVItoTaskmap. (2026). <em>README</em> [Functies, workflow, exportformaten, techniek].
-          <a href="https://github.com/HASUniversity/NDVItoTaskmap">https://github.com/HASUniversity/NDVItoTaskmap</a></li>
-      <li>NDVItoTaskmap. (2026). <em>Changelog</em> [WDVI-slider, classificatiemethoden, eenheden,
-          ZIP-correctie].
-          <a href="https://github.com/HASUniversity/NDVItoTaskmap/blob/main/CHANGELOG.md">https://github.com/HASUniversity/NDVItoTaskmap/blob/main/CHANGELOG.md</a></li>
-      <li>NDVItoTaskmap. (2026, 8 oktober). <em>v1.0.0: Initial public release</em> [Release notes].
-          <a href="https://github.com/HASUniversity/NDVItoTaskmap/releases/tag/v1.0.0">https://github.com/HASUniversity/NDVItoTaskmap/releases/tag/v1.0.0</a></li>
-      <li>NDVItoTaskmap. (2026). <em>CITATION.cff</em> [Auteursmetadata en licentie].
-          <a href="https://github.com/HASUniversity/NDVItoTaskmap/blob/main/CITATION.cff">https://github.com/HASUniversity/NDVItoTaskmap/blob/main/CITATION.cff</a></li>
+      <li>NDVItoTaskmap. (2026). <em>Research Software Directory</em> [Omschrijving, licentie,
+          trefwoorden, koppeling naar de broncode]. Geraadpleegd op 13 oktober 2026, van
+          <a href="https://research-software-directory.org/software/ndvitotaskmap">https://research-software-directory.org/software/ndvitotaskmap</a></li>
+      <li>Verschuren, K. (2026). <em>NDVItoTaskmap: v1.0.0 — Initial public release</em> [Software,
+          versie-DOI]. Zenodo.
+          <a href="https://doi.org/10.5281/zenodo.23235413">https://doi.org/10.5281/zenodo.23235413</a></li>
+      <li>Verschuren, K. (2026). <em>NDVItoTaskmap</em> [Concept-DOI, alle versies]. Zenodo.
+          <a href="https://doi.org/10.5281/zenodo.23235412">https://doi.org/10.5281/zenodo.23235412</a></li>
       <li>PDOK. (z.d.). <em>BRP Gewaspercelen WFS (GetCapabilities)</em>. Geraadpleegd op 13 oktober 2026, van
           <a href="https://service.pdok.nl/rvo/gewaspercelen/wfs/v1_0?request=GetCapabilities&amp;service=WFS">https://service.pdok.nl/rvo/gewaspercelen/wfs/v1_0</a></li>
       <li>Leaflet. (z.d.). <em>Leaflet — een JavaScript-bibliotheek voor interactieve kaarten</em>.

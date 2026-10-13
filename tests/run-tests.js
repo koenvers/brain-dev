@@ -27,10 +27,10 @@ const RAW = global.window.BRAINDEV_INDEX;
 const app = require(path.join(root, 'assets', 'js', 'app.js'));
 const hl = require(path.join(root, 'assets', 'js', 'highlight.js'));
 
-/* Contentpagina's: artikelen in posts/, projectpagina's in repos/. Ze delen
+/* Contentpagina's: artikelen in posts/, softwarepagina's in software/. Ze delen
    dezelfde chrome (canonical, Open Graph, favicon, feed-link, analytics), dus
    de pagina-tests lopen over beide mappen. */
-const CONTENT_DIRS = ['posts', 'repos'];
+const CONTENT_DIRS = ['posts', 'software'];
 const contentPages = () => CONTENT_DIRS
   .flatMap((dir) => fs.readdirSync(path.join(root, dir)).map((f) => dir + '/' + f));
 const chromePages = () => ['index.html', '404.html'].concat(contentPages());
@@ -43,7 +43,7 @@ test('alle items zijn geldig en worden genormaliseerd', () => {
   const items = app.loadIndex(RAW);
   assert.strictEqual(items.length, RAW.length);
   items.forEach((it) => {
-    assert.ok(['kennis', 'blog', 'whitepaper', 'repo'].indexOf(it.type) !== -1, it.title + ': type');
+    assert.ok(['knowledge', 'blog', 'whitepaper', 'software'].indexOf(it.type) !== -1, it.title + ': type');
     assert.ok(it.title.length > 0);
     assert.ok(it.summary.length > 0);
     assert.ok(Array.isArray(it.tags) && it.tags.length > 0);
@@ -57,7 +57,7 @@ test('ongeldige items worden overgeslagen', () => {
     { type: 'blog', title: '', url: 'x.html', date: '2026-01-01' },
     { type: 'blog', title: 'x', url: '', date: '2026-01-01' },
     { type: 'blog', title: 'x', url: 'x.html', date: 'gisteren' },
-    { type: 'kennis', title: 'x', url: 'x.html', date: '2026-1-1' },
+    { type: 'knowledge', title: 'x', url: 'x.html', date: '2026-1-1' },
     /* een type dat alleen op Object.prototype bestaat is geen geldig type */
     { type: 'constructor', title: 'x', url: 'x.html', date: '2026-01-01' },
     { type: 'toString', title: 'x', url: 'x.html', date: '2026-01-01' }
@@ -94,6 +94,17 @@ test('elke contentpagina verwijst naar bestaande assets (script/css-pad)', () =>
   });
 });
 
+test('het type op de pagina linkt naar die sectie in het overzicht', () => {
+  RAW.forEach((it) => {
+    const html = fs.readFileSync(path.join(root, it.url), 'utf8');
+    const m = /<a class="badge badge-([a-z]+)" href="([^"]+)">([^<]+)<\/a>/.exec(html);
+    assert.ok(m, it.url + ': type-link ontbreekt in de meta');
+    assert.strictEqual(m[1], it.type, it.url + ': badge-klasse');
+    assert.strictEqual(m[3], it.type, it.url + ': label');
+    assert.strictEqual(m[2], '../index.html?type=' + it.type, it.url + ': linkdoel');
+  });
+});
+
 console.log('filteren en zoeken');
 const items = app.loadIndex(RAW);
 
@@ -102,7 +113,7 @@ const items = app.loadIndex(RAW);
    tests horen niet door elkaar te lopen. */
 const FIXTURE = [
   {
-    type: 'kennis', title: 'Vectorzoekindexen en HNSW', url: 'x.html', date: '2026-09-12',
+    type: 'knowledge', title: 'Vectorzoekindexen en HNSW', url: 'x.html', date: '2026-09-12',
     summary: 'Brute-force zoeken is exact maar traag; HNSW zoekt in O(log n).',
     minutes: 9, tags: ['ai', 'retrieval']
   },
@@ -117,31 +128,30 @@ const FIXTURE = [
     minutes: 14, tags: ['whitepaper', 'onderzoek']
   },
   {
-    type: 'repo', title: 'Taakkaartgenerator uit dronebeeld', url: 'w.html', date: '2026-10-13',
+    type: 'software', title: 'Taakkaartgenerator uit dronebeeld', url: 'w.html', date: '2026-10-13',
     summary: 'Van multispectrale GeoTIFF naar een doseringsbestand voor de tractor.',
-    minutes: 5, tags: ['remote-sensing', 'opensource'],
-    repo: 'https://github.com/HASUniversity/NDVItoTaskmap'
+    minutes: 5, tags: ['remote-sensing', 'opensource']
   }
 ];
 const fx = app.loadIndex(FIXTURE);
 
 test('type-filter levert alleen die type', () => {
-  const kennis = app.filter(fx, 'kennis', '');
-  assert.ok(kennis.length > 0);
-  kennis.forEach((it) => assert.strictEqual(it.type, 'kennis'));
+  const knowledge = app.filter(fx, 'knowledge', '');
+  assert.ok(knowledge.length > 0);
+  knowledge.forEach((it) => assert.strictEqual(it.type, 'knowledge'));
   const blog = app.filter(fx, 'blog', '');
   assert.ok(blog.length > 0);
   blog.forEach((it) => assert.strictEqual(it.type, 'blog'));
   const whitepaper = app.filter(fx, 'whitepaper', '');
   assert.ok(whitepaper.length > 0);
   whitepaper.forEach((it) => assert.strictEqual(it.type, 'whitepaper'));
-  const repo = app.filter(fx, 'repo', '');
-  assert.ok(repo.length > 0);
-  repo.forEach((it) => assert.strictEqual(it.type, 'repo'));
+  const software = app.filter(fx, 'software', '');
+  assert.ok(software.length > 0);
+  software.forEach((it) => assert.strictEqual(it.type, 'software'));
   assert.strictEqual(app.filter(fx, 'alles', '').length, fx.length);
 });
 test('zoeken op titel, samenvatting en tags', () => {
-  assert.ok(app.filter(fx, 'alles', 'HNSW').some((it) => it.type === 'kennis'));    // titel
+  assert.ok(app.filter(fx, 'alles', 'HNSW').some((it) => it.type === 'knowledge'));    // titel
   assert.ok(app.filter(fx, 'alles', 'retrieval').length >= 1);                      // tag
   assert.ok(app.filter(fx, 'alles', 'quantisatie').length >= 1);                    // samenvatting
   assert.strictEqual(app.filter(fx, 'alles', 'bestaat-niet-ook-niet').length, 0);
@@ -177,7 +187,7 @@ test('tagfilter en zoekopdracht werken samen (EN)', () => {
 test('type- en tagfilter stapelen', () => {
   const blog = app.filter(fx, 'blog', '', 'ai');
   blog.forEach((it) => assert.strictEqual(it.type, 'blog'));
-  assert.strictEqual(app.filter(fx, 'kennis', '', 'experiment').length, 0);
+  assert.strictEqual(app.filter(fx, 'knowledge', '', 'experiment').length, 0);
 });
 test('resolveTag: bestaande tag in de spelling van de index, anders leeg', () => {
   assert.strictEqual(app.resolveTag(fx, 'AI'), 'ai');
@@ -202,23 +212,23 @@ test('popularTags: meest gebruikt eerst, exclude laat de actieve tag weg', () =>
 test('emptyMessage benoemt wat er niet gevonden is', () => {
   assert.ok(app.emptyMessage({ type: 'alles', q: 'zzz', tag: '' }, fx.length).includes('zzz'));
   assert.ok(app.emptyMessage({ type: 'alles', q: '', tag: 'ai' }, fx.length).includes('ai'));
-  assert.ok(app.emptyMessage({ type: 'kennis', q: '', tag: '' }, fx.length).length > 0);
+  assert.ok(app.emptyMessage({ type: 'knowledge', q: '', tag: '' }, fx.length).length > 0);
   assert.strictEqual(app.emptyMessage({ type: 'alles', q: '', tag: '' }, 0), 'The index is empty.');
 });
 test('repo en updated zijn optioneel en worden gevalideerd', () => {
   const [vol] = app.loadIndex([{
-    type: 'kennis', title: 'x', url: 'x.html', date: '2026-01-01',
+    type: 'knowledge', title: 'x', url: 'x.html', date: '2026-01-01',
     updated: '2026-02-01', repo: 'https://github.com/koenvers/brain-dev'
   }]);
   assert.strictEqual(vol.updated, '2026-02-01');
   assert.strictEqual(vol.repo, 'https://github.com/koenvers/brain-dev');
 
-  const [leeg] = app.loadIndex([{ type: 'kennis', title: 'x', url: 'x.html', date: '2026-01-01' }]);
+  const [leeg] = app.loadIndex([{ type: 'knowledge', title: 'x', url: 'x.html', date: '2026-01-01' }]);
   assert.strictEqual(leeg.updated, '');
   assert.strictEqual(leeg.repo, '');
 
   const [fout] = app.loadIndex([{
-    type: 'kennis', title: 'x', url: 'x.html', date: '2026-01-01',
+    type: 'knowledge', title: 'x', url: 'x.html', date: '2026-01-01',
     updated: 'gisteren', repo: 'javascript:alert(1)'
   }]);
   assert.strictEqual(fout.updated, '', 'ongeldige datum negeren');
@@ -226,7 +236,7 @@ test('repo en updated zijn optioneel en worden gevalideerd', () => {
 });
 test('subtag is optioneel; alleen kleine letters, spaties en streepjes worden overgenomen', () => {
   const met = (subtag) => app.loadIndex([{
-    type: 'kennis', title: 'x', url: 'x.html', date: '2026-01-01', subtag: subtag
+    type: 'knowledge', title: 'x', url: 'x.html', date: '2026-01-01', subtag: subtag
   }])[0].subtag;
 
   assert.strictEqual(met('fundingradar'), 'fundingradar');
@@ -238,12 +248,12 @@ test('subtag is optioneel; alleen kleine letters, spaties en streepjes worden ov
     assert.strictEqual(met(fout), '', 'ongeldige subtag: ' + String(fout));
   });
 
-  const [zonder] = app.loadIndex([{ type: 'kennis', title: 'x', url: 'x.html', date: '2026-01-01' }]);
+  const [zonder] = app.loadIndex([{ type: 'knowledge', title: 'x', url: 'x.html', date: '2026-01-01' }]);
   assert.strictEqual(zonder.subtag, '', 'ontbrekend veld');
 });
 test('subtag is vindbaar in de zoekopdracht', () => {
   const [it] = app.loadIndex([{
-    type: 'kennis', title: 'Een handleiding', url: 'x.html', date: '2026-01-01',
+    type: 'knowledge', title: 'Een handleiding', url: 'x.html', date: '2026-01-01',
     subtag: 'under construction'
   }]);
   assert.strictEqual(app.filter([it], 'alles', 'construction').length, 1);

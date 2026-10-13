@@ -362,15 +362,13 @@ main { padding: 26px 0 56px; }
   white-space: nowrap;
 }
 
-/* Kennis en whitepaper zijn beide naslag: hetzelfde accent, één functionele
-   kleur. Alleen een blog krijgt de neutrale grijstint. */
-.badge-kennis,
-.badge-whitepaper { color: var(--accent-strong); }
+/* Kennis, whitepaper en software zijn naslag of het artefact zelf: hetzelfde
+   accent, één functionele kleur. Alleen een blog krijgt de neutrale grijstint. */
+.badge-knowledge,
+.badge-whitepaper,
+.badge-software { color: var(--accent-strong); }
 
 .badge-blog { color: var(--faint); }
-
-/* Een repo is geen naslag maar het artefact zelf: de tussenliggende grijstint. */
-.badge-repo { color: var(--muted); }
 
 /* Project of status waar een stuk onder valt (indexveld `subtag`). De haken
    horen bij de vorm, niet bij de waarde: ze komen hier vandaan, zodat het
@@ -378,6 +376,20 @@ main { padding: 26px 0 56px; }
 .subtag { color: var(--subtag); }
 .subtag::before { content: '['; }
 .subtag::after { content: ']'; }
+
+/* In het overzicht is het type een knop (klik zet dat typefilter): alleen de
+   knopranden en de cursor hoeven daar nog van af. */
+.item-subtitle .badge {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.item-subtitle .badge:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
 
 .item-title {
   font-size: 15.5px;
@@ -553,6 +565,13 @@ kbd {
 
 .article-meta .tag { cursor: default; }
 .article-meta .tag:hover { color: var(--muted); border-color: var(--line); }
+
+/* Het type in de meta linkt naar die sectie in het overzicht. */
+.article-meta a.badge { cursor: pointer; }
+.article-meta a.badge:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
 
 /* --- Code ------------------------------------------------------------ */
 

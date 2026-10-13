@@ -4,10 +4,11 @@
 (function () {
   'use strict';
 
-  /* Type -> het woord in de marge. Dit object is de enige plek waar de types
-     staan: het bepaalt welke regels de index accepteert (isPlainItem) en hoe
-     de sectie in de URL heet (?type=…). */
-  var TYPE_LABEL = { kennis: 'knowledge', blog: 'blog', whitepaper: 'whitepaper', repo: 'code' };
+  /* De vier types. Dit is de enige plek waar ze staan: het bepaalt welke regels
+     de index accepteert (isPlainItem), welk woord er onder de titel staat en hoe
+     de sectie in de URL heet (?type=…). Het label ís het type, zodat overzicht,
+     pagina en URL hetzelfde woord gebruiken. */
+  var TYPES = ['knowledge', 'whitepaper', 'blog', 'software'];
   var MAANDEN = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   var TAGBAR_MAX = 8;   /* tag-pills boven de lijst */
   var SUGGEST_MAX = 6;  /* tagsuggesties bij een leeg resultaat */
@@ -36,10 +37,10 @@
     return typeof s === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(s);
   }
 
-  /* Ook een type dat alleen op Object.prototype bestaat ('constructor',
-     'toString') mag geen geldig item of een geldige URL-parameter zijn. */
+  /* Alleen een van die vier is een geldig type. Een waarde die toevallig op
+     Object.prototype bestaat ('constructor', 'toString') valt hier ook buiten. */
   function isType(t) {
-    return Object.prototype.hasOwnProperty.call(TYPE_LABEL, t);
+    return TYPES.indexOf(t) !== -1;
   }
 
   function isPlainItem(it) {
@@ -74,7 +75,7 @@
       tags: tags,
       tagsLower: tags.map(function (t) { return t.toLowerCase(); }),
       /* alles waarop gezocht wordt, klein opgeslagen */
-      haystack: (it.title + ' ' + summary + ' ' + subtag + ' ' + tags.join(' ') + ' ' + TYPE_LABEL[it.type]).toLowerCase()
+      haystack: (it.title + ' ' + summary + ' ' + subtag + ' ' + tags.join(' ') + ' ' + it.type).toLowerCase()
     };
   }
 
@@ -99,7 +100,7 @@
     return true;
   }
 
-  /* type: 'alles' | 'kennis' | 'blog'; tag: '' = geen tagfilter.
+  /* type: 'alles' of een van de types in TYPES; tag: '' = geen tagfilter.
      Resultaat gesorteerd op datum, nieuw eerst. */
   function filter(items, type, query, tag) {
     var tokens = tokenize(query);
@@ -193,6 +194,16 @@
     return b;
   }
 
+  /* Het type onder de titel is een knop: klikken zet dat typefilter, net als de
+     sectie in de navigatie. */
+  function typeButton(type) {
+    var b = el('button', 'badge badge-' + type, type);
+    b.type = 'button';
+    b.dataset.typeFilter = type;
+    b.title = 'filter: ' + type;
+    return b;
+  }
+
   function itemNode(it) {
     var li = el('li', 'item');
 
@@ -203,7 +214,7 @@
     /* Type en het optionele sub-tag-label staan als subtitel onder de titel,
        niet ervoor: de titel is het eerste wat je leest. */
     var subtitel = el('p', 'item-subtitle');
-    subtitel.appendChild(el('span', 'badge badge-' + it.type, TYPE_LABEL[it.type]));
+    subtitel.appendChild(typeButton(it.type));
     if (it.subtag) subtitel.appendChild(el('span', 'subtag', it.subtag));
     li.appendChild(subtitel);
 
@@ -404,6 +415,8 @@
       if (!t || !t.closest) return;
       var tag = t.closest('[data-tag]');
       if (tag) { applyTag(tag.dataset.tag); return; }
+      var type = t.closest('[data-type-filter]');
+      if (type) { state.type = type.dataset.typeFilter; render(); return; }
       if (t.closest('.reset')) resetFilters();
     });
 
