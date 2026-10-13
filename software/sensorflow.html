@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SensorFlow: sensordata van de fieldlabs op één plek — brain-dev</title>
+  <meta name="description" content="Django-applicatie met een API voor fieldlabs, devices, sensoren en observaties in de begrippen van de OGC SensorThings-standaard, plus een systeemmonitor die laat zien welke apparaten stil zijn komen te liggen.">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../assets/img/favicon.png" type="image/png" sizes="64x64">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="canonical" href="https://brain-dev.nl/software/sensorflow.html">
+  <meta property="og:site_name" content="brain-dev">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="SensorFlow: sensordata van de fieldlabs op één plek — brain-dev">
+  <meta property="og:description" content="Django-applicatie met een API voor fieldlabs, devices, sensoren en observaties in de begrippen van de OGC SensorThings-standaard, plus een systeemmonitor die laat zien welke apparaten stil zijn komen te liggen.">
+  <meta property="og:url" content="https://brain-dev.nl/software/sensorflow.html">
+  <meta property="article:published_time" content="2026-10-11T00:00:00+02:00">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:image" content="https://brain-dev.nl/assets/img/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="brain-dev — kennisbank en blog over AI, data science en tooling">
+  <meta name="twitter:image" content="https://brain-dev.nl/assets/img/og.png">
+  <link rel="alternate" type="application/rss+xml" title="brain-dev — feed" href="../feed.xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="../index.html"><img class="mark" src="../assets/img/logo-mark.svg" alt="" width="26" height="24">br<span class="ai">ai</span>n-dev</a>
+      <nav class="site-nav" aria-label="Hoofdmenu">
+        <a href="../index.html" data-type="alles">Alles</a>
+        <a href="../index.html?type=knowledge" data-type="knowledge">Kennisbank</a>
+        <a href="../index.html?type=whitepaper" data-type="whitepaper">Whitepapers</a>
+        <a href="../index.html?type=blog" data-type="blog">Blog</a>
+        <a href="../index.html?type=software" data-type="software">Software</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap article">
+    <a class="backlink" href="../index.html">← terug naar het overzicht</a>
+
+    <h1 id="top">SensorFlow: sensordata van de fieldlabs op één plek</h1>
+    <div class="article-meta">
+      <a class="badge badge-software" href="../index.html?type=software">software</a>
+      <time datetime="2026-10-11">11 okt 2026</time>
+      <span>·</span>
+      <span>6 min</span>
+      <span>·</span>
+      <span class="item-tags">
+        <a class="tag" href="../index.html?q=sensoren">sensoren</a>
+        <a class="tag" href="../index.html?q=api">api</a>
+        <a class="tag" href="../index.html?q=dashboard">dashboard</a>
+      </span>
+    </div>
+
+    <p>Sensoren in de fieldlabs schrijven hun metingen naar één database, maar een meting zegt
+       weinig als niet duidelijk is welk apparaat hem stuurde, bij welke locatie hij hoort en of hij
+       nog leeft. SensorFlow legt die registratie vast: fieldlabs, devices, sensoren en observaties,
+       in de begrippen van de OGC SensorThings-standaard, met een monitor die bijhoudt wat er stil
+       is gevallen.</p>
+
+    <nav class="article-toc" id="inhoud" aria-label="Inhoud">
+      <h2>Inhoud</h2>
+      <ol>
+        <li><a href="#wat">Wat de applicatie doet</a></li>
+        <li><a href="#toegang">Toegang</a></li>
+        <li><a href="#opbouw">Opbouw</a></li>
+        <li><a href="#monitor">De systeemmonitor</a></li>
+        <li><a href="#cli">Controle vanaf de opdrachtregel</a></li>
+        <li><a href="#stand">Stand van zaken</a></li>
+        <li><a href="#bronnen">Bronnen</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="wat">1. Wat de applicatie doet</h2>
+
+    <ul>
+      <li><strong>API</strong>: beheer en uitlezing van fieldlabs, devices, sensoren en
+          observaties, gedocumenteerd met een OpenAPI-specificatie op <code>/api/docs</code>.</li>
+      <li><strong>Systeemmonitor</strong>: de toestand van het netwerk, met de devices die te lang
+          stil zijn.</li>
+      <li><strong>Beheer</strong>: registratie van apparaten, sensoren, parameters en de LoRaWAN-
+          identificatie per device (applicatie, AppEUI, DevEUI, JoinEUI, DevAddr). Sleutels staan er
+          bewust niet in.</li>
+      <li><strong>Gegevensinvoer</strong>: de metingen komen binnen via
+          <a href="https://nodered.org/">Node-RED</a>, dat de berichten naar de database schrijft.</li>
+      <li><strong>Kosten per sensortype</strong>: een tarief per stuk, waarmee het overzicht de
+          devices met data in de gekozen periode omrekent naar een bedrag. Elk bedrag op die pagina
+          is ingevoerd, niet gemeten, en een type zonder tarief blijft leeg in plaats van nul.</li>
+    </ul>
+
+    <h2 id="toegang">2. Toegang</h2>
+
+    <p>De applicatie draait op
+       <a href="https://sensorflow.has.nl/">sensorflow.has.nl</a>. De hoofd-URL stuurt door naar
+       <code>/dashboard/</code>, en dat dashboard is alleen voor staff- en admin-accounts: zonder
+       sessie kom je uit op het inlogscherm van het beheer (gecontroleerd op 11 oktober 2026,
+       status 302 naar <code>/admin/login/</code>). Er is een aparte omgeving op
+       <code>sensorflow-dev.has.nl</code>.</p>
+
+    <h2 id="opbouw">3. Opbouw</h2>
+
+    <p>Django met <a href="https://django-ninja.dev/">Django Ninja</a> voor de API, en PostgreSQL met
+       PostGIS voor de geografische velden. De ruimtelijke functies lopen via ruwe SQL in plaats van
+       via GeoDjango: die keuze houdt de installatie klein en de query's expliciet. De begrippen
+       volgen de <a href="https://www.ogc.org/standards/sensorthings">OGC
+       SensorThings-standaard</a>, maar dit is geen SensorThings-server: het is een eigen
+       implementatie met dezelfde woorden voor fieldlab, device, sensor en observatie.</p>
+
+    <p>De code, de docstrings en de commitboodschappen zijn Engels; de teksten in de interface
+       blijven Nederlands, inclusief de sleutels in de JSON die de voorkant leest. De
+       productieomgeving draait op een vaste Python-versie van de App Service-runtime, en de
+       bouwstraat controleert elke wijziging op lint, opmaak en types.</p>
+
+    <h2 id="monitor">4. De systeemmonitor</h2>
+
+    <p>De monitor toont wat er gemeten is en berekent geen samengesteld oordeel: geen
+       gezondheidsscore, alleen aantallen en tijdstippen.</p>
+
+    <ul>
+      <li><strong>Kerncijfers</strong>: fieldlabs, actieve devices tegenover het totaal, sensoren,
+          offline devices en het aantal metingen in de afgelopen 24 uur.</li>
+      <li><strong>Offline devices</strong>: per apparaat het aantal uur dat het stil is, de laatste
+          meting en het aantal metingen, met zoeken, filteren op duur en sorteren per kolom.</li>
+      <li><strong>Activiteit</strong>: metingen per uur, met een keuze tussen 24 uur en 7 dagen. De
+          grafiek tekent alleen afgeronde blokken, zodat het blok waar je in kijkt niet half gevuld
+          lijkt.</li>
+      <li><strong>Fieldlabs</strong>: een overzicht met per locatie hoeveel devices en sensoren er
+          in de periode iets stuurden, en een grafiek per fieldlab. Die grafiek staat op een
+          logaritmische as, omdat de fieldlabs in metingen per uur een factor tientallen van elkaar
+          verschillen.</li>
+      <li><strong>Verversen</strong>: de pagina haalt elke 15 seconden de stand op, met een
+          schakelaar om dat uit te zetten. De gekozen periode staat in de URL en is dus deelbaar.</li>
+    </ul>
+
+    <p>De monitor telt offline apparaten per device, niet per sensor. Dat onderscheid staat ook zo
+       in de pagina, omdat een device meerdere sensoren kan hebben.</p>
+
+    <h2 id="cli">5. Controle vanaf de opdrachtregel</h2>
+
+    <p>Naast de pagina is er een beheercommando dat hetzelfde beeld in tekst of JSON geeft, of er een
+       mail over stuurt. Het draait niet automatisch mee; je start het zelf of vanuit een planner.</p>
+
+    <pre><code class="language-bash">python manage.py check_system_health                  # leesbaar rapport
+python manage.py check_system_health --json           # JSON voor monitoring
+python manage.py check_system_health --email          # mail bij kritieke gevallen
+python manage.py check_system_health --threshold 24   # andere offline-drempel</code></pre>
+
+    <h2 id="stand">6. Stand van zaken</h2>
+
+    <p>De laatste commit in deze repository is van 11 oktober 2026. Het project staat in de
+       privérepository <em>HASUniversity/sensorflow</em>. De readme noemt de MIT-licentie, maar er
+       staat geen licentiebestand in de repository; de licentie is dus nog niet vastgelegd op de
+       plek waar een andere instelling hem kan vinden.</p>
+
+    <h2 id="bronnen">7. Bronnen</h2>
+
+    <ul class="references">
+      <li><a href="https://www.ogc.org/standards/sensorthings">OGC SensorThings</a>: de standaard
+          waaruit de begrippen fieldlab, device, sensor en observatie komen.</li>
+      <li><a href="https://nodered.org/">Node-RED</a>: de stroomgebaseerde tool die de metingen naar
+          de database schrijft.</li>
+      <li><a href="https://django-ninja.dev/">Django Ninja</a>: de API-laag met de
+          OpenAPI-specificatie.</li>
+    </ul>
+
+    <p><a class="backlink" href="#top">↑ terug naar boven</a></p>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>brain-dev</span>
+      <span>statisch · <a href="https://github.com/koenvers/brain-dev">broncode op GitHub</a></span>
+      <span><a href="mailto:k.verschuren@has.nl">k.verschuren@has.nl</a> · <a href="https://www.linkedin.com/in/koenverschuren">LinkedIn</a></span>
+    </div>
+  </footer>
+
+  <script src="../assets/js/highlight.js"></script>
+  <script src="../assets/js/analytics.js"></script>
+</body>
+</html>

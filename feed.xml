@@ -8,6 +8,26 @@
   <lastBuildDate>Mon, 12 Oct 2026 22:00:00 GMT</lastBuildDate>
   <atom:link href="https://brain-dev.nl/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
+    <title>Digital Food Forestry: het voedselbos als dashboard</title>
+    <link>https://brain-dev.nl/software/digital-food-forestry.html</link>
+    <guid isPermaLink="true">https://brain-dev.nl/software/digital-food-forestry.html</guid>
+    <pubDate>Mon, 12 Oct 2026 22:00:00 GMT</pubDate>
+    <description>Dashboard en backend voor het voedselbos bij Schuilenburg: percelen uit PostgreSQL op de kaart, bodemmonsters en verdichtingsmetingen per campagne, en de PDOK-luchtfoto per jaargang.</description>
+    <category>dashboard</category>
+    <category>bodem</category>
+    <category>leaflet</category>
+  </item>
+  <item>
+    <title>FundingRadar: subsidieregelingen vinden per onderzoeksgroep</title>
+    <link>https://brain-dev.nl/software/fundingradar.html</link>
+    <guid isPermaLink="true">https://brain-dev.nl/software/fundingradar.html</guid>
+    <pubDate>Mon, 12 Oct 2026 22:00:00 GMT</pubDate>
+    <description>Interne webapplicatie die subsidieregelingen dagelijks verzamelt, met AI uit de brondocumenten haalt en per onderzoeksgroep presenteert. PHP 8 op PostgreSQL, een Airflow-pijplijn en een read-only API met persoonlijke tokens.</description>
+    <category>subsidie</category>
+    <category>onderzoek</category>
+    <category>ai</category>
+  </item>
+  <item>
     <title>FundingRadar: van handmatig subsidiezoeken naar een dagelijkse radar</title>
     <link>https://brain-dev.nl/posts/fundingradar-whitepaper.html</link>
     <guid isPermaLink="true">https://brain-dev.nl/posts/fundingradar-whitepaper.html</guid>
@@ -36,6 +56,66 @@
     <category>onderzoekssoftware</category>
     <category>zenodo</category>
     <category>doi</category>
+  </item>
+  <item>
+    <title>Boveneind Realtime: koeienposities in de stal</title>
+    <link>https://brain-dev.nl/software/boveneind-realtime.html</link>
+    <guid isPermaLink="true">https://brain-dev.nl/software/boveneind-realtime.html</guid>
+    <pubDate>Sat, 10 Oct 2026 22:00:00 GMT</pubDate>
+    <description>Statisch Leaflet-dashboard dat de realtime posities van de melkkoeien op Hoeve Boveneind op een stalplattegrond zet, met negen stal-lagen, URL-opties voor schermen op de locatie en een offline variant voor demonstraties.</description>
+    <category>realtime</category>
+    <category>dashboard</category>
+    <category>veehouderij</category>
+  </item>
+  <item>
+    <title>GrantWrite: AI-hulp bij het schrijven van een aanvraag</title>
+    <link>https://brain-dev.nl/software/grantwrite.html</link>
+    <guid isPermaLink="true">https://brain-dev.nl/software/grantwrite.html</guid>
+    <pubDate>Sat, 10 Oct 2026 22:00:00 GMT</pubDate>
+    <description>Interne webapplicatie waarin onderzoekers een subsidieaanvraag opbouwen met AI-ondersteuning. De landingspagina is publiek, de toepassing staat achter een account, en een ONLYOFFICE-plugin brengt de assistentie naar de tekstverwerker.</description>
+    <category>subsidie</category>
+    <category>onderzoek</category>
+    <category>ai</category>
+  </item>
+  <item>
+    <title>SensorFlow: sensordata van de fieldlabs op één plek</title>
+    <link>https://brain-dev.nl/software/sensorflow.html</link>
+    <guid isPermaLink="true">https://brain-dev.nl/software/sensorflow.html</guid>
+    <pubDate>Sat, 10 Oct 2026 22:00:00 GMT</pubDate>
+    <description>Django-applicatie met een API voor fieldlabs, devices, sensoren en observaties in de begrippen van de OGC SensorThings-standaard, plus een systeemmonitor die laat zien welke apparaten stil zijn komen te liggen.</description>
+    <category>sensoren</category>
+    <category>api</category>
+    <category>dashboard</category>
+  </item>
+  <item>
+    <title>Maisdoolhof Generator: van BRP-perceel naar zaai-taakkaart</title>
+    <link>https://brain-dev.nl/software/maisdoolhof-generator.html</link>
+    <guid isPermaLink="true">https://brain-dev.nl/software/maisdoolhof-generator.html</guid>
+    <pubDate>Thu, 21 May 2026 22:00:00 GMT</pubDate>
+    <description>Browsertool die op een BRP-perceel een doolhofpatroon tekent en dat als zaai-taakkaart exporteert naar ISOXML, Shapefile, GeoJSON en CSV, met celgrootte, moeilijkheidsgraad en ingangen.</description>
+    <category>taakkaart</category>
+    <category>remote-sensing</category>
+    <category>prototype</category>
+  </item>
+  <item>
+    <title>BirdScan: vogelwaarnemingen met webcam</title>
+    <link>https://brain-dev.nl/software/birdscan.html</link>
+    <guid isPermaLink="true">https://brain-dev.nl/software/birdscan.html</guid>
+    <pubDate>Wed, 01 Apr 2026 22:00:00 GMT</pubDate>
+    <description>PHP-applicatie op PostgreSQL die vogelwaarnemingen toont: een live webcam, het weer uit Open-Meteo, weekstatistieken per soort en een REST-API op de waarnemingstabel.</description>
+    <category>monitoring</category>
+    <category>dashboard</category>
+    <category>php</category>
+  </item>
+  <item>
+    <title>Jasin de Kas: het kasklimaat in één antwoord</title>
+    <link>https://brain-dev.nl/software/jasindekas.html</link>
+    <guid isPermaLink="true">https://brain-dev.nl/software/jasindekas.html</guid>
+    <pubDate>Wed, 01 Apr 2026 22:00:00 GMT</pubDate>
+    <description>Kleine webpagina die het gemiddelde klimaat van vandaag uit de kas-databron leest en de vraag beantwoordt of je een jas nodig hebt. Bedoeld voor een scherm in of bij de kas.</description>
+    <category>dashboard</category>
+    <category>kas</category>
+    <category>sensoren</category>
   </item>
 </channel>
 </rss>

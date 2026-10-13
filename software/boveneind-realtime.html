@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Boveneind Realtime: koeienposities in de stal — brain-dev</title>
+  <meta name="description" content="Statisch Leaflet-dashboard dat de realtime posities van de melkkoeien op Hoeve Boveneind op een stalplattegrond zet, met negen stal-lagen, URL-opties voor schermen op de locatie en een offline variant voor demonstraties.">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../assets/img/favicon.png" type="image/png" sizes="64x64">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="canonical" href="https://brain-dev.nl/software/boveneind-realtime.html">
+  <meta property="og:site_name" content="brain-dev">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Boveneind Realtime: koeienposities in de stal — brain-dev">
+  <meta property="og:description" content="Statisch Leaflet-dashboard dat de realtime posities van de melkkoeien op Hoeve Boveneind op een stalplattegrond zet, met negen stal-lagen, URL-opties voor schermen op de locatie en een offline variant voor demonstraties.">
+  <meta property="og:url" content="https://brain-dev.nl/software/boveneind-realtime.html">
+  <meta property="article:published_time" content="2026-10-11T00:00:00+02:00">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:image" content="https://brain-dev.nl/assets/img/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="brain-dev — kennisbank en blog over AI, data science en tooling">
+  <meta name="twitter:image" content="https://brain-dev.nl/assets/img/og.png">
+  <link rel="alternate" type="application/rss+xml" title="brain-dev — feed" href="../feed.xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="../index.html"><img class="mark" src="../assets/img/logo-mark.svg" alt="" width="26" height="24">br<span class="ai">ai</span>n-dev</a>
+      <nav class="site-nav" aria-label="Hoofdmenu">
+        <a href="../index.html" data-type="alles">Alles</a>
+        <a href="../index.html?type=knowledge" data-type="knowledge">Kennisbank</a>
+        <a href="../index.html?type=whitepaper" data-type="whitepaper">Whitepapers</a>
+        <a href="../index.html?type=blog" data-type="blog">Blog</a>
+        <a href="../index.html?type=software" data-type="software">Software</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap article">
+    <a class="backlink" href="../index.html">← terug naar het overzicht</a>
+
+    <h1 id="top">Boveneind Realtime: koeienposities in de stal</h1>
+    <div class="article-meta">
+      <a class="badge badge-software" href="../index.html?type=software">software</a>
+      <time datetime="2026-10-11">11 okt 2026</time>
+      <span>·</span>
+      <span>5 min</span>
+      <span>·</span>
+      <span class="item-tags">
+        <a class="tag" href="../index.html?q=realtime">realtime</a>
+        <a class="tag" href="../index.html?q=dashboard">dashboard</a>
+        <a class="tag" href="../index.html?q=veehouderij">veehouderij</a>
+      </span>
+    </div>
+
+    <p>Waar loopt een koe, en hoe lang staat ze bij de melkrobot? Op Hoeve Boveneind hangen
+       sensoren die de positie per dier doorgeven. Dit dashboard tekent die posities op de
+       plattegrond van de stal, met de stal zelf als achtergrond: muren, ligboxen, roosters,
+       voergang en de robots. Het is één HTML-pagina met JavaScript, zonder server die de kaart
+       opbouwt.</p>
+
+    <h2 id="wat">Wat het dashboard doet</h2>
+
+    <ul>
+      <li><strong>Stalplattegrond</strong>: negen lagen uit GeoJSON-bestanden, elk met een eigen
+          kleur, van muur en ligbox tot melkrobot en waterbak. Elke laag is apart aan en uit te
+          zetten.</li>
+      <li><strong>Dieren op de kaart</strong>: de posities komen uit de locatiefeed en verversen
+          periodiek; een koe aanklikken toont het dier en zijn traject.</li>
+      <li><strong>Naam geven</strong>: een aparte pagina waar een dier zijn naam krijgt, met
+          sessiebeveiliging en <abbr title="Cross-Site Request Forgery">CSRF</abbr>-token.</li>
+      <li><strong>URL-opties</strong>: de weergave is via de URL te sturen, zodat je schermen op
+          de locatie kunt klaarzetten. <code>?names=off</code> haalt namen uit beeld voor een
+          openbaar scherm, <code>?cows=off</code> laat de dieren weg en
+          <code>?hide=robots,hekken</code> verbergt losse stal-lagen. Met <code>?cow=1001</code>
+          zet je één dier in beeld en met <code>?fit=cows</code> kader je op de dieren in plaats van
+          op de stal.</li>
+      <li><strong>Vector-export</strong>: dezelfde negen lagen gaan naar een CAD- en
+          Illustrator-bestand, met een DXF op ware grootte en een SVG en AI op schaal 1:100. Beide
+          komen uit precies de bestanden die de kaart tekent.</li>
+      <li><strong>Offline variant</strong>: een tweede map met een vastgelegde 24-uursstand, zonder
+          server of database, voor demonstraties en presentaties op locatie.</li>
+    </ul>
+
+    <h2 id="toegang">Toegang</h2>
+
+    <p>Het dashboard staat op
+       <a href="https://dilab.has.nl/showcases/boveneind_realtime/dashboard/">dilab.has.nl/showcases/boveneind_realtime/dashboard/</a>
+       en is zonder account te bekijken (gecontroleerd op 11 oktober 2026, status 200). Alleen de
+       dieren een naam geven vraagt een sessie.</p>
+
+    <h2 id="opbouw">Opbouw</h2>
+
+    <p>Eén pagina met vanilla JavaScript en
+       <a href="https://leafletjs.com/">Leaflet</a>, in de modus voor een eigen assenstelsel in
+       plaats van geografische coördinaten. De stal is geen breedtegraad en lengtegraad: de kaart
+       werkt daarom met de plattegrond als assenstelsel en de maten uit de bronbestanden. Er is
+       geen buildstap en geen pakketbeheer; de kaartlagen zitten als GeoJSON in de map.</p>
+
+    <p>De stalgegevens zijn ook de bron voor twee generator-scripts: één schrijft een DXF voor CAD,
+       één een SVG voor Illustrator, met eenzelfde laagindeling en dezelfde kleuren als het
+       dashboard. Een CSV met alle objecten, hun laag en hun zwaartepunt hoort erbij.</p>
+
+    <h2 id="stand">Stand van zaken</h2>
+
+    <p>De laatste commit in de map <code>showcases/Boveneind_Realtime</code> is van 11 oktober 2026.
+       De kaartpagina is de eerste versie; de offline variant en de vector-export zijn er later bij
+       gekomen. De broncode zit in de privérepository <em>AZ_dilab-prod</em>.</p>
+
+    <p><a class="backlink" href="#top">↑ terug naar boven</a></p>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>brain-dev</span>
+      <span>statisch · <a href="https://github.com/koenvers/brain-dev">broncode op GitHub</a></span>
+      <span><a href="mailto:k.verschuren@has.nl">k.verschuren@has.nl</a> · <a href="https://www.linkedin.com/in/koenverschuren">LinkedIn</a></span>
+    </div>
+  </footer>
+
+  <script src="../assets/js/highlight.js"></script>
+  <script src="../assets/js/analytics.js"></script>
+</body>
+</html>

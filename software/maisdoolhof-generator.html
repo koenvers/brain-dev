@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Maisdoolhof Generator: van BRP-perceel naar zaai-taakkaart — brain-dev</title>
+  <meta name="description" content="Browsertool die op een BRP-perceel een doolhofpatroon tekent en dat als zaai-taakkaart exporteert naar ISOXML, Shapefile, GeoJSON en CSV, met celgrootte, moeilijkheidsgraad en ingangen.">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../assets/img/favicon.png" type="image/png" sizes="64x64">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="canonical" href="https://brain-dev.nl/software/maisdoolhof-generator.html">
+  <meta property="og:site_name" content="brain-dev">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Maisdoolhof Generator: van BRP-perceel naar zaai-taakkaart — brain-dev">
+  <meta property="og:description" content="Browsertool die op een BRP-perceel een doolhofpatroon tekent en dat als zaai-taakkaart exporteert naar ISOXML, Shapefile, GeoJSON en CSV, met celgrootte, moeilijkheidsgraad en ingangen.">
+  <meta property="og:url" content="https://brain-dev.nl/software/maisdoolhof-generator.html">
+  <meta property="article:published_time" content="2026-05-22T00:00:00+02:00">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:image" content="https://brain-dev.nl/assets/img/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="brain-dev — kennisbank en blog over AI, data science en tooling">
+  <meta name="twitter:image" content="https://brain-dev.nl/assets/img/og.png">
+  <link rel="alternate" type="application/rss+xml" title="brain-dev — feed" href="../feed.xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="../index.html"><img class="mark" src="../assets/img/logo-mark.svg" alt="" width="26" height="24">br<span class="ai">ai</span>n-dev</a>
+      <nav class="site-nav" aria-label="Hoofdmenu">
+        <a href="../index.html" data-type="alles">Alles</a>
+        <a href="../index.html?type=knowledge" data-type="knowledge">Kennisbank</a>
+        <a href="../index.html?type=whitepaper" data-type="whitepaper">Whitepapers</a>
+        <a href="../index.html?type=blog" data-type="blog">Blog</a>
+        <a href="../index.html?type=software" data-type="software">Software</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap article">
+    <a class="backlink" href="../index.html">← terug naar het overzicht</a>
+
+    <h1 id="top">Maisdoolhof Generator: van BRP-perceel naar zaai-taakkaart</h1>
+    <div class="article-meta">
+      <a class="badge badge-software" href="../index.html?type=software">software</a>
+      <time datetime="2026-05-22">22 mei 2026</time>
+      <span>·</span>
+      <span>4 min</span>
+      <span>·</span>
+      <span class="item-tags">
+        <a class="tag" href="../index.html?q=taakkaart">taakkaart</a>
+        <a class="tag" href="../index.html?q=remote-sensing">remote-sensing</a>
+        <a class="tag" href="../index.html?q=prototype">prototype</a>
+      </span>
+    </div>
+
+    <p>Een maisdoolhof zaaien vraagt een patroon dat in een perceel past en een machine die het
+       patroon volgt. Meestal gaat dat met de hand: een schets, een meetlint en veel uitleg aan de
+       loonwerker. Deze tool doet dezelfde stap in de browser. Je kiest een perceel uit de
+       <abbr title="Basisregistratie Gewaspercelen">BRP</abbr>, laat een doolhof genereren, zet de
+       ingangen en exporteert een taakkaart die een terminal of
+       <abbr title="Farm Management Information System">FMIS</abbr> inleest.</p>
+
+    <h2 id="stappen">De stappen van de tool</h2>
+
+    <ol>
+      <li><strong>Percelen selecteren</strong>: inzoomen tot zoomniveau 14 of dieper, waarna de
+          BRP-percelen laden; één of meer percelen aanklikken. Gaten tussen percelen smaller dan een
+          instelbare breedte worden als brug overgestoken.</li>
+      <li><strong>Celgrootte en raster</strong>: de breedte van één cel, en dus van één pad.</li>
+      <li><strong>Doolhof genereren</strong>: een algoritme kiezen en de moeilijkheidsgraad instellen.</li>
+      <li><strong>Start en einde</strong>: op de rand van het doolhof de ingangen plaatsen.</li>
+      <li><strong>Patroon en logo</strong>: optioneel een tekst of afbeelding in het patroon
+          branden.</li>
+      <li><strong>Export taakkaart</strong>: het resultaat als taakbestand downloaden.</li>
+    </ol>
+
+    <h2 id="export">Wat er uit komt</h2>
+
+    <p>Vier formaten, dezelfde vier die de
+       <a href="ndvi-taakkaart-generator.html">NDVI Taakkaart Generator</a> schrijft:</p>
+
+    <table>
+      <thead>
+        <tr><th>Formaat</th><th>Waar het in gaat</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>ISOXML TaskData</td><td>ISOBUS-taskcontrollers in trekkers en zelfrijders</td></tr>
+        <tr><td>Shapefile</td><td>GIS-pakketten en machineportalen</td></tr>
+        <tr><td>GeoJSON</td><td>web-GIS en verdere verwerking</td></tr>
+        <tr><td>CSV</td><td>spreadsheets en bedrijfssoftware</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="toegang">Toegang</h2>
+
+    <p>De tool staat op
+       <a href="https://dilab.has.nl/showcases/taskmapmaze/">dilab.has.nl/showcases/taskmapmaze/</a>
+       en is zonder account te gebruiken (gecontroleerd op 22 mei 2026, status 200). De berekening
+       loopt in de browser; de percelen worden bij <abbr title="Publieke Dienstverlening Op de Kaart">PDOK</abbr>
+       opgehaald en de kaartachtergrond is de PDOK-luchtfoto.</p>
+
+    <h2 id="opbouw">Opbouw</h2>
+
+    <p>Eén HTML-pagina met ES-modules: <code>brp.js</code> voor de percelen uit de
+       BRP-gewaspercelen-<abbr title="Web Feature Service">WFS</abbr>, <code>maze.js</code> voor het
+       genereren, <code>map.js</code> voor de kaart, <code>export.js</code> voor de vier
+       bestandsformaten en <code>state.js</code> voor de gedeelde toestand. Leaflet en de overige
+       bibliotheken zitten in de repository, dus zonder afhankelijkheid van een
+       <abbr title="Content Delivery Network">CDN</abbr>. Er is geen server die meerekent en geen
+       buildstap.</p>
+
+    <h2 id="stand">Stand van zaken</h2>
+
+    <p>De laatste commit in de map <code>showcases/taskmapmaze</code> is van 22 mei 2026. De tool
+       deelt het exportdeel met de NDVI-taakkaartgenerator, maar is zelf een verkenning: het
+       doolhofpatroon is gegenereerd, niet ingemeten, en de bruikbaarheid in het veld hangt af van
+       de celgrootte die je kiest ten opzichte van de werkbreedte van de machine.</p>
+
+    <p><a class="backlink" href="#top">↑ terug naar boven</a></p>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>brain-dev</span>
+      <span>statisch · <a href="https://github.com/koenvers/brain-dev">broncode op GitHub</a></span>
+      <span><a href="mailto:k.verschuren@has.nl">k.verschuren@has.nl</a> · <a href="https://www.linkedin.com/in/koenverschuren">LinkedIn</a></span>
+    </div>
+  </footer>
+
+  <script src="../assets/js/highlight.js"></script>
+  <script src="../assets/js/analytics.js"></script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GrantWrite: AI-hulp bij het schrijven van een aanvraag — brain-dev</title>
+  <meta name="description" content="Interne webapplicatie waarin onderzoekers een subsidieaanvraag opbouwen met AI-ondersteuning. De landingspagina is publiek, de toepassing staat achter een account, en een ONLYOFFICE-plugin brengt de assistentie naar de tekstverwerker.">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../assets/img/favicon.png" type="image/png" sizes="64x64">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="canonical" href="https://brain-dev.nl/software/grantwrite.html">
+  <meta property="og:site_name" content="brain-dev">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="GrantWrite: AI-hulp bij het schrijven van een aanvraag — brain-dev">
+  <meta property="og:description" content="Interne webapplicatie waarin onderzoekers een subsidieaanvraag opbouwen met AI-ondersteuning. De landingspagina is publiek, de toepassing staat achter een account, en een ONLYOFFICE-plugin brengt de assistentie naar de tekstverwerker.">
+  <meta property="og:url" content="https://brain-dev.nl/software/grantwrite.html">
+  <meta property="article:published_time" content="2026-10-11T00:00:00+02:00">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:image" content="https://brain-dev.nl/assets/img/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="brain-dev — kennisbank en blog over AI, data science en tooling">
+  <meta name="twitter:image" content="https://brain-dev.nl/assets/img/og.png">
+  <link rel="alternate" type="application/rss+xml" title="brain-dev — feed" href="../feed.xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="../index.html"><img class="mark" src="../assets/img/logo-mark.svg" alt="" width="26" height="24">br<span class="ai">ai</span>n-dev</a>
+      <nav class="site-nav" aria-label="Hoofdmenu">
+        <a href="../index.html" data-type="alles">Alles</a>
+        <a href="../index.html?type=knowledge" data-type="knowledge">Kennisbank</a>
+        <a href="../index.html?type=whitepaper" data-type="whitepaper">Whitepapers</a>
+        <a href="../index.html?type=blog" data-type="blog">Blog</a>
+        <a href="../index.html?type=software" data-type="software">Software</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap article">
+    <a class="backlink" href="../index.html">← terug naar het overzicht</a>
+
+    <h1 id="top">GrantWrite: AI-hulp bij het schrijven van een aanvraag</h1>
+    <div class="article-meta">
+      <a class="badge badge-software" href="../index.html?type=software">software</a>
+      <time datetime="2026-10-11">11 okt 2026</time>
+      <span>·</span>
+      <span>4 min</span>
+      <span>·</span>
+      <span class="item-tags">
+        <a class="tag" href="../index.html?q=subsidie">subsidie</a>
+        <a class="tag" href="../index.html?q=onderzoek">onderzoek</a>
+        <a class="tag" href="../index.html?q=ai">ai</a>
+      </span>
+    </div>
+
+    <p>Een aanvraag schrijven kost onderzoekers dagen, en het meeste werk zit in het opnieuw
+       formuleren van wat er al in het projectplan staat. GrantWrite brengt dat samen in één
+       omgeving: de aanvraag, de projecten en een taalmodel dat meeschrijft. De applicatie draait
+       intern bij HAS green academy en hangt aan dezelfde database-server als FundingRadar, zodat
+       een gevonden regeling kan doorlopen naar een aanvraag.</p>
+
+    <h2 id="wat">Wat de applicatie doet</h2>
+
+    <ul>
+      <li><strong>Landingspagina</strong>: plugin downloaden, installatie-instructies en de functies,
+          met een inlogvenster in de kop en een doorverwijzing naar de toepassing als je vanuit
+          FundingRadar komt.</li>
+      <li><strong>Portal</strong>: inloggen, registreren en eigen projecten beheren, met de
+          aanvraagtekst per project.</li>
+      <li><strong>AI-ondersteuning</strong>: Azure OpenAI helpt bij het schrijven en herformuleren;
+          de AI-aanroepen lopen via de eigen API-laag van de applicatie.</li>
+      <li><strong>ONLYOFFICE-plugin</strong>: dezelfde assistentie binnen de tekstverwerker, met
+          <code>dist/grantwrite.plugin</code> als archief voor handmatige installatie. De
+          landingspagina leest de versie en de <code>sha256</code> uit het archief zelf, zodat er
+          nooit een versie op de pagina staat die de editor niet serveert.</li>
+      <li><strong>Doorverwijzing vanuit FundingRadar</strong>: een gevonden regeling kan de gebruiker
+          naar GrantWrite sturen. Van die URL wordt alleen de parameter <code>from_call</code>
+          overgenomen; het doelpad staat vast in de code.</li>
+    </ul>
+
+    <h2 id="toegang">Toegang</h2>
+
+    <p>De landingspagina staat op
+       <a href="https://dilab.has.nl/showcases/grantwrite/">dilab.has.nl/showcases/grantwrite/</a> en
+       is openbaar; de toepassing zelf staat in <code>portal.php</code> en vraagt een account
+       (beide gecontroleerd op 11 oktober 2026, status 200). Het beheer loopt via
+       <code>admin.php</code>.</p>
+
+    <h2 id="opbouw">Opbouw</h2>
+
+    <p>PHP 8 met <code>declare(strict_types=1)</code> en PSR-12, zonder framework en zonder
+       Composer, met PostgreSQL op Azure als gegevensopslag. De voorkant is vanilla JavaScript,
+       formulieren zijn tegen <abbr title="Cross-Site Request Forgery">CSRF</abbr> beveiligd en de
+       AI-routes lopen via de eigen API-laag.</p>
+
+    <p>De huisstijl komt uit de officiële HAS-tokens in plaats van een eigen groen. De
+       contrastverhoudingen daarvan worden in de testsuite nagerekend: een kleurwijziging die onder
+       <abbr title="Web Content Accessibility Guidelines, niveau AA">WCAG AA</abbr> zakt laat de
+       suite bewust falen. De suite dekt daarnaast de landingspagina, de doorverwijzing, de
+       URL-allowlist, de Bearer-tokens en het inlogvenster.</p>
+
+    <h2 id="stand">Stand van zaken</h2>
+
+    <p>De laatste commit in de map <code>showcases/grantwrite</code> is van 11 oktober 2026. De
+       broncode zit in de privérepository <em>AZ_dilab-prod</em>; een push naar <code>main</code>
+       gaat direct live, zonder stagingstap.</p>
+
+    <h2 id="begrippen">Begrippen</h2>
+
+    <dl>
+      <dt>Portal</dt>
+      <dd>het ingelogde deel van de applicatie, waar projecten en aanvragen staan.
+          <code>portal.php</code> is de enige plek die de doorverwijzing uit FundingRadar leest.</dd>
+      <dt>ONLYOFFICE</dt>
+      <dd>de tekstverwerker waarin de plugin draait, zodat de assistentie in het document zelf
+          beschikbaar is.</dd>
+    </dl>
+
+    <p><a class="backlink" href="#top">↑ terug naar boven</a></p>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>brain-dev</span>
+      <span>statisch · <a href="https://github.com/koenvers/brain-dev">broncode op GitHub</a></span>
+      <span><a href="mailto:k.verschuren@has.nl">k.verschuren@has.nl</a> · <a href="https://www.linkedin.com/in/koenverschuren">LinkedIn</a></span>
+    </div>
+  </footer>
+
+  <script src="../assets/js/highlight.js"></script>
+  <script src="../assets/js/analytics.js"></script>
+</body>
+</html>

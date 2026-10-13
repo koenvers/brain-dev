@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Digital Food Forestry: het voedselbos als dashboard — brain-dev</title>
+  <meta name="description" content="Dashboard en backend voor het voedselbos bij Schuilenburg: percelen uit PostgreSQL op de kaart, bodemmonsters en verdichtingsmetingen per campagne, en de PDOK-luchtfoto per jaargang.">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../assets/img/favicon.png" type="image/png" sizes="64x64">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="canonical" href="https://brain-dev.nl/software/digital-food-forestry.html">
+  <meta property="og:site_name" content="brain-dev">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Digital Food Forestry: het voedselbos als dashboard — brain-dev">
+  <meta property="og:description" content="Dashboard en backend voor het voedselbos bij Schuilenburg: percelen uit PostgreSQL op de kaart, bodemmonsters en verdichtingsmetingen per campagne, en de PDOK-luchtfoto per jaargang.">
+  <meta property="og:url" content="https://brain-dev.nl/software/digital-food-forestry.html">
+  <meta property="article:published_time" content="2026-10-13T00:00:00+02:00">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:image" content="https://brain-dev.nl/assets/img/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="brain-dev — kennisbank en blog over AI, data science en tooling">
+  <meta name="twitter:image" content="https://brain-dev.nl/assets/img/og.png">
+  <link rel="alternate" type="application/rss+xml" title="brain-dev — feed" href="../feed.xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="../index.html"><img class="mark" src="../assets/img/logo-mark.svg" alt="" width="26" height="24">br<span class="ai">ai</span>n-dev</a>
+      <nav class="site-nav" aria-label="Hoofdmenu">
+        <a href="../index.html" data-type="alles">Alles</a>
+        <a href="../index.html?type=knowledge" data-type="knowledge">Kennisbank</a>
+        <a href="../index.html?type=whitepaper" data-type="whitepaper">Whitepapers</a>
+        <a href="../index.html?type=blog" data-type="blog">Blog</a>
+        <a href="../index.html?type=software" data-type="software">Software</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap article">
+    <a class="backlink" href="../index.html">← terug naar het overzicht</a>
+
+    <h1 id="top">Digital Food Forestry: het voedselbos als dashboard</h1>
+    <div class="article-meta">
+      <a class="badge badge-software" href="../index.html?type=software">software</a>
+      <time datetime="2026-10-13">13 okt 2026</time>
+      <span>·</span>
+      <span>6 min</span>
+      <span>·</span>
+      <span class="item-tags">
+        <a class="tag" href="../index.html?q=dashboard">dashboard</a>
+        <a class="tag" href="../index.html?q=bodem">bodem</a>
+        <a class="tag" href="../index.html?q=leaflet">leaflet</a>
+      </span>
+    </div>
+
+    <p>Een voedselbos ontwikkelt zich over decennia, en de metingen die dat volgen staan in
+       verschillende tabellen: perceelgrenzen, bodemmonsters per campagne, verdichtingsmetingen per
+       meetpunt. Dit dashboard brengt die bij elkaar op één kaart van het perceel aan Het Volmeer
+       bij Schuilenburg, met de luchtfoto per jaar eronder zodat de ontwikkeling van kale akker naar
+       gesloten bos zichtbaar wordt.</p>
+
+    <h2 id="wat">Wat het dashboard toont</h2>
+
+    <ul>
+      <li><strong>Perceel</strong>: de grens uit de database op de kaart, met oppervlakte, omtrek,
+          middelpunt en de herkomst van de grens.</li>
+      <li><strong>Lagenpaneel</strong>: één schakelaar per gegevenslaag, met het aantal objecten
+          erachter: perceelgrenzen, bodemmonsters per jaar en de verdichting.</li>
+      <li><strong>Luchtfoto per jaargang</strong>: een tijdlijn met de
+          <abbr title="Publieke Dienstverlening Op de Kaart">PDOK</abbr>-orthofoto's vanaf 2016, met
+          jaar en resolutie. Onder de regelaar staat de opnameperiode van de gekozen jaargang, zoals
+          die in de metadata van de bron staat.</li>
+      <li><strong>Meetcampagnes</strong>: één rij per campagne met het aantal meetpunten, en
+          daarbinnen de keuze van de jaargang. De ruwe meetwaarden staan achter een uitklapper,
+          zodat de lange tabellen niet in de leesroute zitten.</li>
+      <li><strong>Hoogtekaart</strong>: de <abbr title="Actueel Hoogtebestand Nederland">AHN</abbr>
+          op maaiveldniveau, met de legenda van de bron: hoogteklassen in meters ten opzichte van
+          <abbr title="Normaal Amsterdams Peil">NAP</abbr>.</li>
+    </ul>
+
+    <p>Het dashboard toont wat er gemeten is en trekt zelf geen conclusies: de legenda, de
+       aantallen en de meetwaarden komen uit de brondata, niet uit een berekende beoordeling. Dat
+       is een ontwerpkeuze, zodat het oordeel over de bodem bij de onderzoeker blijft.</p>
+
+    <h2 id="toegang">Toegang</h2>
+
+    <p>Het dashboard staat op
+       <a href="https://dilab.has.nl/showcases/digital_food_forestry/">dilab.has.nl/showcases/digital_food_forestry/</a>
+       en is zonder account te bekijken (gecontroleerd op 13 oktober 2026, status 200). Het invoerdeel
+       waarin meetwaarden worden toegevoegd zit achter een login op
+       <code>inwin/login.php</code>.</p>
+
+    <h2 id="opbouw">Opbouw</h2>
+
+    <p>PHP 8.3 met <code>declare(strict_types=1)</code> en PDO met geparameteriseerde queries, zonder
+       framework en zonder Composer. De gegevens staan in PostgreSQL 16 op Azure, de kaart gebruikt
+       een lokale kopie van <a href="https://leafletjs.com/">Leaflet</a> in plaats van een
+       <abbr title="Content Delivery Network">CDN</abbr>, en er is geen buildstap.</p>
+
+    <p>De kaartlagen komen van
+       <a href="https://www.openstreetmap.org/">OpenStreetMap</a> en uit de PDOK-luchtfoto's per
+       jaargang. Achter de pagina staan JSON-eindpunten per onderdeel (gezondheid, percelen,
+       perceel, bodem, verdichting) en een reeks genummerde databasemigraties. De testsuite dekt de
+       geometrieberekeningen, de verdichtingsgegevens en de bodem-import.</p>
+
+    <h2 id="stand">Stand van zaken</h2>
+
+    <p>De laatste commit in de map <code>showcases/digital_food_forestry</code> is van
+       13 oktober 2026. De applicatie groeit mee met de meetrondes: een nieuwe campagne of een nieuwe
+       meetsoort wordt een extra keuzelijst en een extra laag, zonder dat de opbouw verandert. De
+       broncode zit in de privérepository <em>AZ_dilab-prod</em>.</p>
+
+    <h2 id="bronnen">Bronnen</h2>
+
+    <ul class="references">
+      <li><a href="https://www.pdok.nl/">PDOK</a>: het platform waar de overheid de
+          luchtfoto's en de perceelregistraties aanbiedt.</li>
+      <li><a href="https://www.openstreetmap.org/">OpenStreetMap</a>: de open kaartachtergrond,
+          beschikbaar onder de Open Database License.</li>
+      <li><a href="https://leafletjs.com/">Leaflet</a>: de JavaScript-bibliotheek voor de
+          interactieve kaart.</li>
+    </ul>
+
+    <p><a class="backlink" href="#top">↑ terug naar boven</a></p>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>brain-dev</span>
+      <span>statisch · <a href="https://github.com/koenvers/brain-dev">broncode op GitHub</a></span>
+      <span><a href="mailto:k.verschuren@has.nl">k.verschuren@has.nl</a> · <a href="https://www.linkedin.com/in/koenverschuren">LinkedIn</a></span>
+    </div>
+  </footer>
+
+  <script src="../assets/js/highlight.js"></script>
+  <script src="../assets/js/analytics.js"></script>
+</body>
+</html>

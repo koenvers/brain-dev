@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FundingRadar: subsidieregelingen vinden per onderzoeksgroep — brain-dev</title>
+  <meta name="description" content="Interne webapplicatie die subsidieregelingen dagelijks verzamelt, met AI uit de brondocumenten haalt en per onderzoeksgroep presenteert. PHP 8 op PostgreSQL, een Airflow-pijplijn en een read-only API met persoonlijke tokens.">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../assets/img/favicon.png" type="image/png" sizes="64x64">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="canonical" href="https://brain-dev.nl/software/fundingradar.html">
+  <meta property="og:site_name" content="brain-dev">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="FundingRadar: subsidieregelingen vinden per onderzoeksgroep — brain-dev">
+  <meta property="og:description" content="Interne webapplicatie die subsidieregelingen dagelijks verzamelt, met AI uit de brondocumenten haalt en per onderzoeksgroep presenteert. PHP 8 op PostgreSQL, een Airflow-pijplijn en een read-only API met persoonlijke tokens.">
+  <meta property="og:url" content="https://brain-dev.nl/software/fundingradar.html">
+  <meta property="article:published_time" content="2026-10-13T00:00:00+02:00">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:image" content="https://brain-dev.nl/assets/img/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="brain-dev — kennisbank en blog over AI, data science en tooling">
+  <meta name="twitter:image" content="https://brain-dev.nl/assets/img/og.png">
+  <link rel="alternate" type="application/rss+xml" title="brain-dev — feed" href="../feed.xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="../index.html"><img class="mark" src="../assets/img/logo-mark.svg" alt="" width="26" height="24">br<span class="ai">ai</span>n-dev</a>
+      <nav class="site-nav" aria-label="Hoofdmenu">
+        <a href="../index.html" data-type="alles">Alles</a>
+        <a href="../index.html?type=knowledge" data-type="knowledge">Kennisbank</a>
+        <a href="../index.html?type=whitepaper" data-type="whitepaper">Whitepapers</a>
+        <a href="../index.html?type=blog" data-type="blog">Blog</a>
+        <a href="../index.html?type=software" data-type="software">Software</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap article">
+    <a class="backlink" href="../index.html">← terug naar het overzicht</a>
+
+    <h1 id="top">FundingRadar: subsidieregelingen vinden per onderzoeksgroep</h1>
+    <div class="article-meta">
+      <a class="badge badge-software" href="../index.html?type=software">software</a>
+      <time datetime="2026-10-13">13 okt 2026</time>
+      <span>·</span>
+      <span>4 min</span>
+      <span>·</span>
+      <span class="item-tags">
+        <a class="tag" href="../index.html?q=subsidie">subsidie</a>
+        <a class="tag" href="../index.html?q=onderzoek">onderzoek</a>
+        <a class="tag" href="../index.html?q=ai">ai</a>
+      </span>
+    </div>
+
+    <p>Informatie over subsidieregelingen staat verspreid over de sites van
+       fondsverstrekkers, en per regeling moet iemand uitzoeken of hij bij het eigen onderzoek
+       past. FundingRadar haalt die regelingen dagelijks op, laat een taalmodel de kenmerken uit
+       de brondocumenten halen en zet het resultaat per onderzoeksgroep in een dashboard. De
+       applicatie draait intern bij HAS green academy; de achtergrond staat in de
+       <a href="../posts/fundingradar-whitepaper.html">whitepaper over FundingRadar</a>.</p>
+
+    <h2 id="wat">Wat de applicatie doet</h2>
+
+    <ul>
+      <li><strong>Dagelijks scrapen</strong>: een <abbr title="Apache Airflow">Airflow</abbr>-pijplijn
+          loopt langs de geregistreerde bronnen en zet gevonden pagina's in een wachtrij.</li>
+      <li><strong>Extractie in twee stappen</strong>: Azure OpenAI haalt de kenmerken van een
+          <em>call</em> in twee stappen uit het brondocument.</li>
+      <li><strong>Dashboard per onderzoeksgroep</strong>: een call met detailpagina, favorieten,
+          groepen, bronnen, thema's en instellingen per gebruiker.</li>
+      <li><strong>Wekelijkse digest</strong>: een mail met de nieuwe regelingen per groep.</li>
+      <li><strong>Read-only API</strong>: lees-eindpunten met een persoonlijk token in plaats van een
+          gedeeld databasewachtwoord, met een OpenAPI-specificatie op
+          <code>/api/v1/openapi.json</code>. Bedoeld voor scripts en MCP-clients van collega's.</li>
+    </ul>
+
+    <h2 id="toegang">Toegang</h2>
+
+    <p>De applicatie staat op
+       <a href="https://dilab.has.nl/showcases/fundingradar/">dilab.has.nl/showcases/fundingradar/</a>.
+       De hoofd-URL stuurt door naar het inlogscherm, dus zonder account kom je niet verder dan de
+       loginpagina (gecontroleerd op 13 oktober 2026: status 302 naar <code>login.php</code>). Een
+       account wordt aangemaakt via het registratieformulier; groepen en bronnen worden in het
+       beheer toegevoegd.</p>
+
+    <h2 id="opbouw">Opbouw</h2>
+
+    <p>De webapplicatie is PHP 8 met <code>declare(strict_types=1)</code> en PSR-12, zonder framework
+       en zonder Composer. De gegevens staan in PostgreSQL op Azure, de pijplijn draait als
+       Airflow-DAG's in de productierepository, en de voorkant is vanilla JavaScript met
+       CSRF-beveiligde formulieren. Er is geen npm- of Node-buildstap: de PHP-bestanden worden
+       direct geserveerd.</p>
+
+    <p>De <abbr title="Application Programming Interface">API</abbr> geeft per account precies de
+       acht lees-eindpunten terug waar dat account recht op heeft. Een token intrekken werkt per
+       token en direct, en per token is te zien wanneer hij voor het laatst is gebruikt.</p>
+
+    <h2 id="stand">Stand van zaken</h2>
+
+    <p>De laatste commit in de map <code>showcases/fundingradar</code> is van 13 oktober 2026. De
+       broncode zit in de privérepository <em>AZ_dilab-prod</em>, waar een push naar <code>main</code>
+       direct live gaat; er is geen stagingomgeving. De gebruikersinterface is Engelstalig.</p>
+
+    <h2 id="begrippen">Begrippen</h2>
+
+    <dl>
+      <dt>Call</dt>
+      <dd>een openstaande subsidieregeling met deadline, doelgroep en voorwaarden, zoals een
+          fondsverstrekker hem publiceert.</dd>
+      <dt>Bron</dt>
+      <dd>een website of feed waaruit de pijplijn calls ophaalt. Nieuwe bronnen worden in de
+          database geregistreerd, met de scrape-logica in de pijplijn.</dd>
+      <dt>Digest</dt>
+      <dd>het wekelijkse overzichtsbericht met nieuwe regelingen voor een onderzoeksgroep.</dd>
+    </dl>
+
+    <p><a class="backlink" href="#top">↑ terug naar boven</a></p>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>brain-dev</span>
+      <span>statisch · <a href="https://github.com/koenvers/brain-dev">broncode op GitHub</a></span>
+      <span><a href="mailto:k.verschuren@has.nl">k.verschuren@has.nl</a> · <a href="https://www.linkedin.com/in/koenverschuren">LinkedIn</a></span>
+    </div>
+  </footer>
+
+  <script src="../assets/js/highlight.js"></script>
+  <script src="../assets/js/analytics.js"></script>
+</body>
+</html>

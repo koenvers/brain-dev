@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jasin de Kas: het kasklimaat in één antwoord — brain-dev</title>
+  <meta name="description" content="Kleine webpagina die het gemiddelde klimaat van vandaag uit de kas-databron leest en de vraag beantwoordt of je een jas nodig hebt. Bedoeld voor een scherm in of bij de kas.">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../assets/img/favicon.png" type="image/png" sizes="64x64">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="canonical" href="https://brain-dev.nl/software/jasindekas.html">
+  <meta property="og:site_name" content="brain-dev">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Jasin de Kas: het kasklimaat in één antwoord — brain-dev">
+  <meta property="og:description" content="Kleine webpagina die het gemiddelde klimaat van vandaag uit de kas-databron leest en de vraag beantwoordt of je een jas nodig hebt. Bedoeld voor een scherm in of bij de kas.">
+  <meta property="og:url" content="https://brain-dev.nl/software/jasindekas.html">
+  <meta property="article:published_time" content="2026-04-02T00:00:00+02:00">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:image" content="https://brain-dev.nl/assets/img/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="brain-dev — kennisbank en blog over AI, data science en tooling">
+  <meta name="twitter:image" content="https://brain-dev.nl/assets/img/og.png">
+  <link rel="alternate" type="application/rss+xml" title="brain-dev — feed" href="../feed.xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="../index.html"><img class="mark" src="../assets/img/logo-mark.svg" alt="" width="26" height="24">br<span class="ai">ai</span>n-dev</a>
+      <nav class="site-nav" aria-label="Hoofdmenu">
+        <a href="../index.html" data-type="alles">Alles</a>
+        <a href="../index.html?type=knowledge" data-type="knowledge">Kennisbank</a>
+        <a href="../index.html?type=whitepaper" data-type="whitepaper">Whitepapers</a>
+        <a href="../index.html?type=blog" data-type="blog">Blog</a>
+        <a href="../index.html?type=software" data-type="software">Software</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap article">
+    <a class="backlink" href="../index.html">← terug naar het overzicht</a>
+
+    <h1 id="top">Jasin de Kas: het kasklimaat in één antwoord</h1>
+    <div class="article-meta">
+      <a class="badge badge-software" href="../index.html?type=software">software</a>
+      <time datetime="2026-04-02">2 apr 2026</time>
+      <span>·</span>
+      <span>3 min</span>
+      <span>·</span>
+      <span class="item-tags">
+        <a class="tag" href="../index.html?q=dashboard">dashboard</a>
+        <a class="tag" href="../index.html?q=kas">kas</a>
+        <a class="tag" href="../index.html?q=sensoren">sensoren</a>
+      </span>
+    </div>
+
+    <p>De klimaatcomputer in de kas meet continu temperatuur en luchtvochtigheid, en die waarden
+       staan in het datawarehouse. Deze pagina haalt het daggemiddelde op en zet er één antwoord
+       boven: heb je een jas nodig als je naar binnen loopt. Bedoeld voor een scherm bij de ingang,
+       niet voor analyse.</p>
+
+    <h2 id="wat">Wat de pagina doet</h2>
+
+    <ul>
+      <li><strong>Daggemiddelde uit de kas</strong>: de pagina leest de temperatuur en de
+          luchtvochtigheid van vandaag uit een view op de klimaattabellen.</li>
+      <li><strong>Advies in vier stappen</strong>: onder 12 °C, tussen 12 en 18 °C, tussen 18 en
+          21 °C, en daarboven krijgt elke band een eigen antwoord met een korte reden.</li>
+      <li><strong>Verversen</strong>: de pagina herlaadt zichzelf elke vijf minuten, zodat het
+          scherm blijft meelopen met de kas.</li>
+      <li><strong>Huisstijl</strong>: het HAS-logo en de merkkleuren, in een eigen lettertype dat
+          met de pagina meekomt.</li>
+    </ul>
+
+    <h2 id="toegang">Toegang</h2>
+
+    <p>De pagina staat op
+       <a href="https://dilab.has.nl/showcases/jasindekas/">dilab.has.nl/showcases/jasindekas/</a>
+       en is openbaar (gecontroleerd op 2 april 2026, status 200). Er is geen login: het is een
+       uitlezing van één samenvattend cijfer per dag, zonder individuele metingen of
+       persoonsgegevens.</p>
+
+    <h2 id="opbouw">Opbouw</h2>
+
+    <p>Eén PHP-bestand dat bij het laden een query op het datawarehouse doet en de uitkomst in de
+       pagina tekent. Valt de verbinding weg, dan meldt de pagina dat en blijft hij staan met een
+       voorbeeldwaarde, zodat het scherm niet leeg achterblijft. Er is geen framework, geen
+       buildstap en geen opslag: elke weergave is een nieuwe uitlezing van de view.</p>
+
+    <h2 id="stand">Stand van zaken</h2>
+
+    <p>De laatste commit in de map <code>showcases/jasindekas</code> is van 2 april 2026. De
+       databasegegevens horen in de omgeving van de webserver en niet in het bestand; in deze
+       showcase staan ze nog in de pagina zelf. Dat is bekend als bevinding
+       <strong>W-0001</strong> in de werklijst van het DI-lab, met als oplossing het roteren van het
+       wachtwoord en het verplaatsen naar de omgeving. Tot die twee stappen zijn uitgevoerd, is het
+       verstandig de showcase niet te koppelen aan nieuwe bronnen.</p>
+
+    <p><a class="backlink" href="#top">↑ terug naar boven</a></p>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>brain-dev</span>
+      <span>statisch · <a href="https://github.com/koenvers/brain-dev">broncode op GitHub</a></span>
+      <span><a href="mailto:k.verschuren@has.nl">k.verschuren@has.nl</a> · <a href="https://www.linkedin.com/in/koenverschuren">LinkedIn</a></span>
+    </div>
+  </footer>
+
+  <script src="../assets/js/highlight.js"></script>
+  <script src="../assets/js/analytics.js"></script>
+</body>
+</html>
