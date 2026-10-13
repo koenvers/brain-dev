@@ -113,8 +113,10 @@ Velden die je zoekt: titel, samenvatting, subtag, tags (en het type:
   geen bestand op). Lever je het origineel aan, vervang dan dat ene bestand;
   markup, CSS en tests blijven gelijk.
 - `404.html` — eigen 404 met terugweg naar het overzicht. Gebruikt **absolute**
-  paden (`/brain-dev/…`), want GitHub Pages serveert het vanaf elke diepe URL.
-  Vermijdt dus per ongeluk relatieve links op die pagina.
+  paden (`/`, `/assets/…`, `/feed.xml`), want GitHub Pages serveert het vanaf elke
+  diepe URL. Vermijdt dus per ongeluk relatieve links op die pagina. Op een
+  project-site zonder custom domain hoort daar het subpad in (`/<repo>/…`); met
+  `brain-dev.nl` serveert de site op de root en is dat dus `/…`.
 - Repo-link en contactgegevens (e-mail, LinkedIn) in de footer van elke pagina.
 
 ## Meten (actief)
