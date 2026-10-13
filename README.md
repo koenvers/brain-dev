@@ -37,6 +37,21 @@ brain-dev/
    (ondersteund: `python`, `js`, `bash`, `sql`, `css`, `json`; alles wat
    onbekend is krijgt neutrale opmaak).
 
+   De vorm staat los van het onderwerp: klikbare referenties naar de bron zelf,
+   afkortingen bij het eerste gebruik als `<abbr title>`, de begrippenlijst als
+   `<dl>`, een sectie Bronnen zodra er meer dan twee externe links zijn,
+   optionele uitweidingen in `<details>`, en koppen met een `id` waar de
+   inhoudsopgave naartoe linkt. Die eisen staan in de skill
+   `blogpost-schrijven` (Poort 4), met deze twee controles:
+
+   ```bash
+   # elk anker heeft een bestaand id
+   python -c "import re; h=open('posts/<naam>.html',encoding='utf-8').read(); a=set(re.findall(r'href=\"#([^\"]+)\"',h)); i=set(re.findall(r'id=\"([^\"]+)\"',h)); print('dode ankers:', sorted(a-i) or 'geen')"
+   ```
+
+   Nieuwe CSS hoort in `assets/css/style.css`, in een eigen sectie achteraan —
+   niet in een `<style>`-blok in de pagina.
+
 2. **Indexregel toevoegen** in `content/index.js`, bovenaan de lijst (volgorde
    maakt niet uit — het overzicht sorteert op datum, nieuw eerst):
 
