@@ -65,7 +65,7 @@ brain-dev/
      date: '2026-10-09',                   // YYYY-MM-DD
      minutes: 7,                           // leestijd in minuten
      tags: ['ai', 'tooling'],              // klein, aaneengesloten, herbruikbaar
-     subtag: 'fundingradar',               // optioneel: project of reeks → oranje label naast het type
+     subtag: 'under construction',         // optioneel: kort label naast het type → oranje, tussen haken
      updated: '2026-10-20',                // optioneel: laatste wijziging → sitemap-lastmod
      repo: 'https://github.com/…'          // optioneel: broncode → "code ↗" in het overzicht
     }
@@ -76,10 +76,11 @@ brain-dev/
    weg. Ongeldige waarden in die drie velden worden genegeerd, het item blijft
    staan.
 
-   `subtag` is geen tag maar een label voor het project of de reeks waar een stuk
-   bij hoort (bijvoorbeeld `fundingradar` bij een reeks rond één tool). Eén woord,
-   kleine letters, koppelstreepjes mogen; het staat in oranje naast het type in
-   het overzicht en op de artikelpagina. Meerdere sub-tags per item kan niet —
+   `subtag` is geen tag maar een kort label naast het type: het project waar een
+   stuk bij hoort (`fundingradar`) of de status ervan (`under construction`).
+   Kleine letters, spaties en koppelstreepjes mogen, hoogstens 24 tekens; het
+   label staat in oranje tussen blokhaken, in het overzicht en op de
+   artikelpagina. De haken komen uit de CSS, niet uit de waarde. Eén per item —
    is een tweede nodig, dan is dat een teken dat het een tag had moeten zijn.
 
    Een item met een ongeldige regel (verkeerd type, ontbrekende titel/url,
@@ -157,6 +158,8 @@ node tests/run-tests.js
 Dekt: indexvalidatie, bestandsverwijzingen, zoeken/filteren/sorteren (type, tag,
 vrije tekst), datumnotatie, highlighter (escaping, XSS, roundtrip), vindbaarheid
 (sitemap/feed/canonical/OG/404), generator-idempotentie, systeemfonts en analytics.
+De pagina-tests (canonical, OG, favicon, feed-link, analytics) lopen over `posts/`
+én `repos/`.
 
 ## GitHub Pages (actief)
 

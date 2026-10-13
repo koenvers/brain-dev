@@ -224,16 +224,17 @@ test('repo en updated zijn optioneel en worden gevalideerd', () => {
   assert.strictEqual(fout.updated, '', 'ongeldige datum negeren');
   assert.strictEqual(fout.repo, '', 'javascript:-URL weigeren');
 });
-test('subtag is optioneel; alleen een kleine-letter-slug wordt overgenomen', () => {
+test('subtag is optioneel; alleen kleine letters, spaties en streepjes worden overgenomen', () => {
   const met = (subtag) => app.loadIndex([{
     type: 'kennis', title: 'x', url: 'x.html', date: '2026-01-01', subtag: subtag
   }])[0].subtag;
 
   assert.strictEqual(met('fundingradar'), 'fundingradar');
-  assert.strictEqual(met('  fundingradar  '), 'fundingradar', 'witruimte negeren');
+  assert.strictEqual(met('  under construction  '), 'under construction', 'witruimte negeren');
   assert.strictEqual(met('grant-write'), 'grant-write', 'koppelstreepje mag');
   /* stil negeren: het item blijft staan, alleen het label verdwijnt */
-  ['FundingRadar', 'twee woorden', '<b>x</b>', 'a_b', '', 12, null].forEach((fout) => {
+  ['Under Construction', 'twee  spaties', '<b>x</b>', 'a_b', '', 12, null,
+   'dit label is veel te lang voor de marge'].forEach((fout) => {
     assert.strictEqual(met(fout), '', 'ongeldige subtag: ' + String(fout));
   });
 
@@ -243,9 +244,9 @@ test('subtag is optioneel; alleen een kleine-letter-slug wordt overgenomen', () 
 test('subtag is vindbaar in de zoekopdracht', () => {
   const [it] = app.loadIndex([{
     type: 'kennis', title: 'Een handleiding', url: 'x.html', date: '2026-01-01',
-    subtag: 'fundingradar'
+    subtag: 'under construction'
   }]);
-  assert.strictEqual(app.filter([it], 'alles', 'fundingradar').length, 1);
+  assert.strictEqual(app.filter([it], 'alles', 'construction').length, 1);
 });
 test('item-url met een schema (javascript:, data:) wordt overgeslagen', () => {
   assert.strictEqual(app.loadIndex([

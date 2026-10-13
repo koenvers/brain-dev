@@ -1,8 +1,8 @@
 /* brain-dev — zoekindex en enige bron van waarheid voor het overzicht.
    Elk nieuw artikel/blog krijgt hier één regel; het overzicht rendert hieruit.
    Velden: type ('kennis' | 'blog' | 'whitepaper' | 'repo'), title, url, summary, date (YYYY-MM-DD),
-           minutes (leestijd), tags (array), subtag (optioneel: project of reeks, kleine
-           letters, één woord). Slechte entries worden overgeslagen.
+           minutes (leestijd), tags (array), subtag (optioneel: kort label naast het type,
+           kleine letters). Slechte entries worden overgeslagen.
    Welk type een stuk krijgt staat in de skill `blogpost-schrijven`. */
 window.BRAINDEV_INDEX = [
   {
@@ -23,7 +23,7 @@ window.BRAINDEV_INDEX = [
     date: '2026-10-13',
     minutes: 12,
     tags: ['subsidie', 'onderzoek', 'ai'],
-    subtag: 'fundingradar'
+    subtag: 'under construction'
   },
   {
     type: 'kennis',

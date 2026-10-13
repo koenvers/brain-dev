@@ -16,10 +16,13 @@
      Zo kan een fout of kwaadwillende indexregel geen javascript:-URL injecteren. */
   var SCHEME = /^[a-z][a-z0-9+.-]*:/i;
 
-  /* Een sub-tag is het project of de reeks waar een stuk bij hoort ('fundingradar'),
-     naast de inhoudelijke tags. Eén woord in kleine letters; al het andere wordt
-     genegeerd (het item blijft staan, het label verdwijnt). */
-  var SUBTAG = /^[a-z0-9][a-z0-9-]*$/;
+  /* Een sub-tag is een kort label naast het type: het project waar een stuk bij
+     hoort ('fundingradar') of de status ervan ('under construction'). Kleine
+     letters, spaties en koppelstreepjes mogen; al het andere wordt genegeerd
+     (het item blijft staan, het label verdwijnt). De haken om het label komen
+     uit de CSS, niet uit de index. */
+  var SUBTAG = /^[a-z0-9]+(?:[ -][a-z0-9]+)*$/;
+  var SUBTAG_MAX = 24;
 
   function isLocalUrl(url) {
     return typeof url === 'string' && url !== '' && !SCHEME.test(url);
@@ -54,7 +57,7 @@
       : [];
     var summary = typeof it.summary === 'string' ? it.summary.trim() : '';
     var subtag = typeof it.subtag === 'string' ? it.subtag.trim() : '';
-    if (!SUBTAG.test(subtag)) subtag = '';
+    if (subtag.length > SUBTAG_MAX || !SUBTAG.test(subtag)) subtag = '';
     return {
       type: it.type,
       title: it.title.trim(),
@@ -65,7 +68,7 @@
       updated: isIsoDate(it.updated) ? it.updated : '',
       /* optioneel: broncode/repo van het beschreven project */
       repo: isHttpUrl(it.repo) ? it.repo.trim() : '',
-      /* optioneel: project of reeks waar dit stuk bij hoort */
+      /* optioneel: kort label naast het type (project of status) */
       subtag: subtag,
       minutes: typeof it.minutes === 'number' && it.minutes > 0 ? it.minutes : null,
       tags: tags,
@@ -193,13 +196,16 @@
   function itemNode(it) {
     var li = el('li', 'item');
 
-    var head = el('div', 'item-head');
-    head.appendChild(el('span', 'badge badge-' + it.type, TYPE_LABEL[it.type]));
-    if (it.subtag) head.appendChild(el('span', 'subtag', it.subtag));
     var a = el('a', 'item-title', it.title);
     a.href = it.url;
-    head.appendChild(a);
-    li.appendChild(head);
+    li.appendChild(a);
+
+    /* Type en het optionele sub-tag-label staan als subtitel onder de titel,
+       niet ervoor: de titel is het eerste wat je leest. */
+    var subtitel = el('p', 'item-subtitle');
+    subtitel.appendChild(el('span', 'badge badge-' + it.type, TYPE_LABEL[it.type]));
+    if (it.subtag) subtitel.appendChild(el('span', 'subtag', it.subtag));
+    li.appendChild(subtitel);
 
     if (it.summary) li.appendChild(el('p', 'item-summary', it.summary));
 

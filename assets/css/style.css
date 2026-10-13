@@ -343,13 +343,16 @@ main { padding: 26px 0 56px; }
   color: var(--faint);
 }
 
-.item-head {
+/* Subtitel onder de titel: het type en (indien gezet) het sub-tag-label. */
+.item-subtitle {
   display: flex;
   align-items: baseline;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  margin: 4px 0 0;
 }
 
-/* Type als klein woord in de marge, niet als badge met een achtergrond.
+/* Type als klein woord, niet als badge met een achtergrond.
    De sub-tag deelt die vorm en verschilt alleen in kleur. */
 .badge,
 .subtag {
@@ -369,8 +372,12 @@ main { padding: 26px 0 56px; }
 /* Een repo is geen naslag maar het artefact zelf: de tussenliggende grijstint. */
 .badge-repo { color: var(--muted); }
 
-/* Project of reeks waar een stuk bij hoort (indexveld `subtag`) */
+/* Project of status waar een stuk onder valt (indexveld `subtag`). De haken
+   horen bij de vorm, niet bij de waarde: ze komen hier vandaan, zodat het
+   overzicht en de artikelpagina hetzelfde label tonen. */
 .subtag { color: var(--subtag); }
+.subtag::before { content: '['; }
+.subtag::after { content: ']'; }
 
 .item-title {
   font-size: 15.5px;
@@ -598,8 +605,6 @@ pre code {
 .site-footer a:hover { color: var(--muted); }
 
 @media (max-width: 560px) {
-  .item-head { flex-wrap: wrap; gap: 6px 10px; }
-
   /* hint overlapt de placeholder op smalle schermen; ruimte vrijmaken voor de wis-knop */
   .search .hint { display: none; }
   .search input { padding-right: 44px; }
