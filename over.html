@@ -18,7 +18,7 @@
   <meta property="og:image" content="https://koenvers.github.io/brain-dev/assets/img/og.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="brain-dev — kennisbank en blog over AI, data science en tooling">
+  <meta property="og:image:alt" content="brain-dev — Koen Verschuren over de dataketen achter meten">
   <meta name="twitter:image" content="https://koenvers.github.io/brain-dev/assets/img/og.png">
   <link rel="alternate" type="application/rss+xml" title="brain-dev — feed" href="feed.xml">
 </head>
@@ -42,33 +42,31 @@
     <div class="article-meta"><span>laatst bijgewerkt: 13 okt 2026</span></div>
 
     <p><strong>brain-dev</strong> is waar ik opschrijf wat ik in projecten uitzoek:
-       de dataketen achter meten, computervisie en de tooling eromheen. Elk stuk komt
-       voort uit iets dat ik echt gebouwd of getest heb, met wat werkt, wat niet, en
-       waarom. Gebruik het gerust.</p>
+       de dataketen achter meten, computervisie en de tooling eromheen. Per stuk: wat
+       werkt, wat niet, en waarom. Gebruik het gerust.</p>
 
     <h2>Twee soorten stukken</h2>
     <ul>
-      <li><strong>Kennisbank</strong> — de aanpak uitgelegd: hoe een techniek of
+      <li><strong>Kennisbank</strong>: de aanpak uitgelegd, hoe een techniek of
           datastroom werkt, welke afwegingen je maakt en waar het misgaat.</li>
-      <li><strong>Blog</strong> — verslag van een experiment of project: wat het
-          opleverde, met de tegenvallers erbij.</li>
+      <li><strong>Blog</strong>: verslag van een experiment of project, met de
+          tegenvallers erbij.</li>
     </ul>
 
     <h2>Waar beginnen</h2>
     <ul>
-      <li><a href="index.html?type=kennis">Kennisbank-overzicht</a> — de stukken met
+      <li><a href="index.html?type=kennis">Kennisbank-overzicht</a>: de stukken met
           diepgang, op datum.</li>
-      <li><a href="index.html">Alles door elkaar</a> — beide soorten, nieuwste eerst.</li>
+      <li><a href="index.html">Alles door elkaar</a>: beide soorten, nieuwste eerst.</li>
       <li><kbd>/</kbd> focust de zoekbalk, <kbd>Esc</kbd> wist de zoekopdracht.
           Klik op een tag, in de tagrij of onder een stuk, om alleen dat
           onderwerp te zien; nog een klik heft het filter op.</li>
     </ul>
 
     <h2>Hoe vaak</h2>
-    <p>Er verschijnt iets wanneer een project genoeg heeft opgeleverd om op te
-       schrijven: geen schema, geen kalender. Wil je het niet missen, dan is de
-       <a href="feed.xml">RSS-feed</a> de rustigste route; de korte versie van elk
-       stuk gaat mee naar
+    <p>Ik publiceer wanneer er iets is dat ik op wil slaan. Geen schema, geen
+       kalender. Wil je het niet missen, dan is de <a href="feed.xml">RSS-feed</a>
+       de rustigste route; ik post er ook over op
        <a href="https://www.linkedin.com/in/koenverschuren">LinkedIn</a>.</p>
 
     <h2>Waar ik werk</h2>
@@ -77,20 +75,19 @@
        Groenpact. Dit zijn de onderzoeksgroepen waar ik bij betrokken ben:</p>
 
     <ul>
-      <li><a href="https://www.has.nl/onderzoek/lectoraten/lectoraat-data-intelligence-voor-duurzame-transities/">Lectoraat Data Intelligence voor duurzame transities</a>
-          — kenniskringlid: toegepaste datastromen voor landbouw en leefomgeving,
+      <li><a href="https://www.has.nl/onderzoek/lectoraten/lectoraat-data-intelligence-voor-duurzame-transities/">Lectoraat Data Intelligence voor duurzame transities</a>:
+          kenniskringlid, met toegepaste datastromen voor landbouw en leefomgeving,
           ETL en PostgreSQL.</li>
-      <li><a href="https://www.has.nl/onderzoek/lectoraten/lectoraat-dierenwelzijn-en-technologie/">Lectoraat Dierenwelzijn en Technologie</a>
-          — kenniskringlid: computervisie voor diergedrag en welzijn,
-          3D-beeldvorming.</li>
-      <li><a href="https://www.has.nl/onderzoek/lectoraten/lectoraat-horticulture-technologies/">Lectoraat Horticulture Technologies</a>
-          — daarnaast bij betrokken.</li>
+      <li><a href="https://www.has.nl/onderzoek/lectoraten/lectoraat-dierenwelzijn-en-technologie/">Lectoraat Dierenwelzijn en Technologie</a>:
+          kenniskringlid, met computervisie voor diergedrag en welzijn.</li>
+      <li><a href="https://www.has.nl/onderzoek/lectoraten/lectoraat-horticulture-technologies/">Lectoraat Horticulture Technologies</a>:
+          daarnaast bij betrokken.</li>
     </ul>
 
-    <p>Waar die dataketen in zit: bewegingsanalyse van dieren met computervisie,
-       de lichaamsconditie van paarden objectief meten met 3D-scans, dronebeelden
-       van percelen omzetten naar taakkaarten, en sensordata via LoRaWAN naar een
-       dashboard voor onderwijs en onderzoek.</p>
+    <p>Waar ik aan werk: computervisie voor het volgen van diergedrag, de
+       lichaamsconditie van paarden meten met 3D-scans, dronebeelden van percelen
+       vastleggen in multispectraal en RGB, en sensordata via LoRaWAN naar een
+       dashboard.</p>
 
     <h2>Contact</h2>
     <ul>
@@ -106,8 +103,8 @@
        zelfgehoste fonts. Geen framework, geen build-stap:</p>
 
     <ul>
-      <li><code>content/index.js</code> bevat de zoekindex — enige bron van
-          waarheid voor het overzicht, het zoeken en de feed.</li>
+      <li><code>content/index.js</code> bevat de zoekindex: enige bron van waarheid
+          voor het overzicht, het zoeken en de feed.</li>
       <li><code>assets/js/app.js</code> rendert de lijst en verzorgt zoeken en
           filteren (type, tag, vrije tekst) volledig client-side.</li>
       <li><code>assets/js/highlight.js</code> is een mini syntax-highlighter
@@ -115,7 +112,7 @@
       <li><code>assets/js/analytics.js</code> laadt de teller, en alleen buiten
           <code>localhost</code>.</li>
       <li><code>tools/build-meta.js</code> genereert sitemap en RSS-feed uit de
-          index; optioneel en handmatig te draaien — de site werkt er niet vanaf.</li>
+          index; optioneel en handmatig te draaien. De site werkt er niet vanaf.</li>
     </ul>
 
     <p>Zoeken werkt op titel, samenvatting en tags, en draait volledig in de

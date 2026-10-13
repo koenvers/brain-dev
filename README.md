@@ -70,8 +70,8 @@ brain-dev/
    ```
 
    `tags` zijn meteen ook de filterrij boven de lijst: de meest gebruikte tags
-   komen daar automatisch als pill te staan. `updated` en `repo` mogen weg —
-   ongeldige waarden in die twee velden worden genegeerd, het item blijft staan.
+   komen daar automatisch als pill te staan. `updated` en `repo` mogen weg.
+   Ongeldige waarden in die twee velden worden genegeerd, het item blijft staan.
 
    Een item met een ongeldige regel (verkeerd type, ontbrekende titel/url,
    datum niet `YYYY-MM-DD`) wordt door de code overgeslagen — de site blijft
@@ -133,9 +133,8 @@ mee (geen vervuiling van de cijfers door previews).
   (zoekterm of tag) en staan er populaire tags als alternatief, plus "wis alle
   filters" als er een filter actief is.
 - `/` focust de zoekbalk; `Esc` wist de zoekopdracht en verlaat daarna het veld.
-- Status zit in de URL: `index.html?type=kennis&q=airflow&tag=retrieval` —
-  deelbaar en overleft een refresh. Alles client-side, geen `fetch`, geen
-  netwerkverkeer.
+- Status zit in de URL: `index.html?type=kennis&q=airflow&tag=retrieval`, deelbaar
+  en overleft een refresh. Alles client-side, geen `fetch`, geen netwerkverkeer.
 
 ## Tests
 
