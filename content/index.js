@@ -1,17 +1,17 @@
 /* brain-dev — zoekindex en enige bron van waarheid voor het overzicht.
    Elk nieuw artikel/blog krijgt hier één regel; het overzicht rendert hieruit.
-   Velden: type ('kennis' | 'blog'), title, url, summary, date (YYYY-MM-DD),
+   Velden: type ('kennis' | 'blog' | 'whitepaper'), title, url, summary, date (YYYY-MM-DD),
            minutes (leestijd), tags (array). Slechte entries worden overgeslagen.
    Welk type een stuk krijgt staat in de skill `blogpost-schrijven`. */
 window.BRAINDEV_INDEX = [
   {
-    type: 'kennis',
+    type: 'whitepaper',
     title: 'FundingRadar: van handmatig subsidiezoeken naar een dagelijkse radar',
     url: 'posts/fundingradar-whitepaper.html',
     summary: 'Een whitepaper over wat er gebeurt als een hogeschool haar subsidiebronnen dagelijks laat doorzoeken: de aanleiding in de hbo-bekostiging, het knelpunt bij lectoraten, wat het systeem doet, de gemeten cijfers op 13 oktober 2026 en de metingen die er nog ontbreken.',
     date: '2026-10-13',
     minutes: 14,
-    tags: ['whitepaper', 'subsidie', 'onderzoek', 'ai']
+    tags: ['subsidie', 'onderzoek', 'ai']
   },
   {
     type: 'kennis',

@@ -4,7 +4,10 @@
 (function () {
   'use strict';
 
-  var TYPE_LABEL = { kennis: 'knowledge', blog: 'blog' };
+  /* Type -> het woord in de marge. Dit object is de enige plek waar de types
+     staan: het bepaalt welke regels de index accepteert (isPlainItem) en hoe
+     de sectie in de URL heet (?type=…). */
+  var TYPE_LABEL = { kennis: 'knowledge', blog: 'blog', whitepaper: 'whitepaper' };
   var MAANDEN = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   var TAGBAR_MAX = 8;   /* tag-pills boven de lijst */
   var SUGGEST_MAX = 6;  /* tagsuggesties bij een leeg resultaat */
@@ -25,9 +28,15 @@
     return typeof s === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(s);
   }
 
+  /* Ook een type dat alleen op Object.prototype bestaat ('constructor',
+     'toString') mag geen geldig item of een geldige URL-parameter zijn. */
+  function isType(t) {
+    return Object.prototype.hasOwnProperty.call(TYPE_LABEL, t);
+  }
+
   function isPlainItem(it) {
     return !!it && typeof it === 'object' &&
-      (it.type === 'kennis' || it.type === 'blog') &&
+      isType(it.type) &&
       typeof it.title === 'string' && it.title.trim() !== '' &&
       isLocalUrl(it.url) &&
       isIsoDate(it.date);
@@ -150,7 +159,7 @@
     if (typeof location !== 'undefined' && location.search) {
       var params = new URLSearchParams(location.search);
       var t = params.get('type');
-      if (t === 'kennis' || t === 'blog') state.type = t;
+      if (isType(t)) state.type = t;
       state.q = params.get('q') || '';
       state.tag = params.get('tag') || '';
     }

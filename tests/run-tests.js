@@ -35,7 +35,7 @@ test('alle items zijn geldig en worden genormaliseerd', () => {
   const items = app.loadIndex(RAW);
   assert.strictEqual(items.length, RAW.length);
   items.forEach((it) => {
-    assert.ok(it.type === 'kennis' || it.type === 'blog');
+    assert.ok(['kennis', 'blog', 'whitepaper'].indexOf(it.type) !== -1, it.title + ': type');
     assert.ok(it.title.length > 0);
     assert.ok(it.summary.length > 0);
     assert.ok(Array.isArray(it.tags) && it.tags.length > 0);
@@ -49,7 +49,10 @@ test('ongeldige items worden overgeslagen', () => {
     { type: 'blog', title: '', url: 'x.html', date: '2026-01-01' },
     { type: 'blog', title: 'x', url: '', date: '2026-01-01' },
     { type: 'blog', title: 'x', url: 'x.html', date: 'gisteren' },
-    { type: 'kennis', title: 'x', url: 'x.html', date: '2026-1-1' }
+    { type: 'kennis', title: 'x', url: 'x.html', date: '2026-1-1' },
+    /* een type dat alleen op Object.prototype bestaat is geen geldig type */
+    { type: 'constructor', title: 'x', url: 'x.html', date: '2026-01-01' },
+    { type: 'toString', title: 'x', url: 'x.html', date: '2026-01-01' }
   ];
   assert.strictEqual(app.loadIndex(bad).length, 0);
   assert.strictEqual(app.loadIndex('geen array').length, 0);
@@ -95,6 +98,11 @@ const FIXTURE = [
     type: 'blog', title: 'Eerste week lokaal werken', url: 'y.html', date: '2026-10-07',
     summary: 'Wat er op 16 GB geheugen draait en waar de quantisatie wringt.',
     minutes: 6, tags: ['ai', 'experiment']
+  },
+  {
+    type: 'whitepaper', title: 'Een whitepaper over de pijplijn', url: 'z.html', date: '2026-10-13',
+    summary: 'Wat er verandert als het zoeken naar regelingen uitbesteed wordt.',
+    minutes: 14, tags: ['whitepaper', 'onderzoek']
   }
 ];
 const fx = app.loadIndex(FIXTURE);
@@ -106,6 +114,9 @@ test('type-filter levert alleen die type', () => {
   const blog = app.filter(fx, 'blog', '');
   assert.ok(blog.length > 0);
   blog.forEach((it) => assert.strictEqual(it.type, 'blog'));
+  const whitepaper = app.filter(fx, 'whitepaper', '');
+  assert.ok(whitepaper.length > 0);
+  whitepaper.forEach((it) => assert.strictEqual(it.type, 'whitepaper'));
   assert.strictEqual(app.filter(fx, 'alles', '').length, fx.length);
 });
 test('zoeken op titel, samenvatting en tags', () => {

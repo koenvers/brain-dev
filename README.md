@@ -1,8 +1,8 @@
 # brain-dev
 
-Statische site (kennisbank + blog) voor GitHub Pages. Platte HTML, één
-CSS-bestand, vier kleine JS-bestanden, systeemfonts. Geen Node-build, geen
-Jekyll, geen dependencies (Node alleen voor tests en de meta-generator).
+Statische site (kennisbank + whitepapers + blog) voor GitHub Pages. Platte
+HTML, één CSS-bestand, vier kleine JS-bestanden, systeemfonts. Geen Node-build,
+geen Jekyll, geen dependencies (Node alleen voor tests en de meta-generator).
 
 ## Structuur
 
@@ -55,7 +55,7 @@ brain-dev/
 
    ```js
    {
-     type: 'kennis',                       // 'kennis' of 'blog'
+     type: 'kennis',                       // 'kennis', 'whitepaper' of 'blog'
      title: 'Titel van het stuk',
      url: 'posts/mijn-stuk.html',          // relatief ten opzichte van index.html
      summary: 'Eén samenvatting van 1-2 zinnen — wordt getoond en geïndexeerd.',
@@ -76,7 +76,8 @@ brain-dev/
    werken, het item verschijnt niet.
 
 De index is meteen de zoekindex: er is niets te genereren of bij te werken.
-Velden die je zoekt: titel, samenvatting, tags (en het type: `Kennis`/`Blog`).
+Velden die je zoekt: titel, samenvatting, tags (en het type:
+`knowledge`/`whitepaper`/`blog`).
 
 3. **Meta-generator draaien** (als er Node is): `node tools/build-meta.js`
    herschrijft `sitemap.xml` en `feed.xml` uit de index. Zonder Node: die twee
@@ -124,7 +125,8 @@ mee (geen vervuiling van de cijfers door previews).
 - Zoekveld bovenaan `index.html`; matches op titel + samenvatting + tags,
   hoofdletteronafhankelijk, meerdere woorden = EN. Zoeken is een
   substring-match: `ai` vindt ook `Airflow`.
-- Secties (typefilter) zitten in de navigatie: `all` / `knowledge` / `blog`; de
+- Secties (typefilter) zitten in de navigatie: `all` / `knowledge` /
+  `whitepapers` / `blog`; de
   resultaatregel staat onder de tagrij. Daaronder een tagrij
   met de meest gebruikte tags: klik = filteren op die tag, nog een klik heft het
   filter op. Klikken op een tag in een item zet dezelfde tagfilter.
