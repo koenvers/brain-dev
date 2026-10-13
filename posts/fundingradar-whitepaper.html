@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>FundingRadar: van handmatig subsidiezoeken naar een dagelijkse radar — brain-dev</title>
-  <meta name="description" content="Whitepaper over FundingRadar: waarom subsidiezoeken in een krimpende hbo-sector handwerk is dat tijd kost, wat het systeem dagelijks doet, wat er gemeten is en wat nog openstaat.">
+  <meta name="description" content="Whitepaper over FundingRadar: de achtergrond in de hbo-bekostiging, wat de tool dagelijks doet voor onderzoeksgroepen, en de gemeten cijfers op 13 oktober 2026.">
   <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="../assets/img/favicon.png" type="image/png" sizes="64x64">
   <link rel="stylesheet" href="../assets/css/style.css">
@@ -12,7 +12,7 @@
   <meta property="og:site_name" content="brain-dev">
   <meta property="og:type" content="article">
   <meta property="og:title" content="FundingRadar: van handmatig subsidiezoeken naar een dagelijkse radar — brain-dev">
-  <meta property="og:description" content="Whitepaper over FundingRadar: waarom subsidiezoeken in een krimpende hbo-sector handwerk is dat tijd kost, wat het systeem dagelijks doet, wat er gemeten is en wat nog openstaat.">
+  <meta property="og:description" content="Whitepaper over FundingRadar: de achtergrond in de hbo-bekostiging, wat de tool dagelijks doet voor onderzoeksgroepen, en de gemeten cijfers op 13 oktober 2026.">
   <meta property="og:url" content="https://koenvers.github.io/brain-dev/posts/fundingradar-whitepaper.html">
   <meta property="article:published_time" content="2026-10-13T00:00:00+02:00">
   <meta name="twitter:card" content="summary_large_image">
@@ -44,7 +44,7 @@
       <span class="badge badge-whitepaper">whitepaper</span>
       <time datetime="2026-10-13">13 okt 2026</time>
       <span>·</span>
-      <span>14 min</span>
+      <span>11 min</span>
       <span>·</span>
       <span class="item-tags">
         <a class="tag" href="../index.html?q=subsidie">subsidie</a>
@@ -53,27 +53,30 @@
       </span>
     </div>
 
-    <p>Wie bij HAS green academy wil weten welke subsidie bij zijn onderzoeksgroep past, moet dat
-       nu zelf uitzoeken. Ruim dertig websites van fondsverstrekkers langs, in het Nederlands en
-       het Engels, en per regeling nagaan of de hogeschool mag aanvragen, of er een consortium
-       nodig is en wanneer de deadline valt. FundingRadar haalt die bronnen dagelijks automatisch
-       op, haalt de kerngegevens per regeling eruit, bepaalt per onderzoeksgroep wat relevant is
-       en mailt alleen de nieuwe treffers.</p>
+    <p>Wie bij HAS green academy wil weten welke subsidie bij zijn onderzoeksgroep past, moest
+       dat voorheen zelf uitzoeken. De informatie over lopende regelingen staat verspreid over
+       de websites van fondsverstrekkers, en per regeling gold: uitzoeken of ze past bij het
+       eigen onderzoek en onder welke voorwaarden.</p>
 
-    <p>De cijfers in dit stuk komen uit de productiedatabase van FundingRadar, geteld op 13 oktober
-       2026, en zijn per stuk na te lopen. Waar iets niet gemeten is, staat dat er als zodanig bij:
-       de secties 6 en 7 zetten de meting en de ontbrekende meting naast elkaar.</p>
+    <p>FundingRadar is ontwikkeld om dat werk te automatiseren. Binnen de AI-roadmap van HAS
+       green academy, een reeks pilots die verkennen hoe AI het werk van de lectoraten kan
+       verlichten, nam het lectoraat Data Intelligence voor duurzame transities het voortouw.
+       De roadmap dekt het subsidiewerk aan twee kanten: FundingRadar is de instroomkant, het
+       vinden van kansen, en de parallelle pilot GrantWrite is de uitstroomkant, het schrijven
+       van de aanvraag. Wat FundingRadar doet: alle bronnen dagelijks automatisch langs, de
+       kerngegevens per regeling verzameld, per onderzoeksgroep bepaald wat relevant is, en de
+       nieuwe treffers per mail bij de onderzoeker.</p>
 
     <nav class="article-toc" id="inhoud" aria-label="Inhoud">
       <h2>Inhoud</h2>
       <ol>
-        <li><a href="#geld">Waarom dit nu speelt</a></li>
+        <li><a href="#geld">Achtergrond</a></li>
         <li><a href="#lectoren">Wat dat betekent voor lectoraten en onderzoekers</a></li>
         <li><a href="#has">HAS green academy in het kort</a></li>
         <li><a href="#knelpunt">Het knelpunt: subsidiezoeken als handwerk</a></li>
         <li><a href="#systeem">Wat FundingRadar doet</a></li>
         <li><a href="#meting">Wat er gemeten is</a></li>
-        <li><a href="#niet">Wat de cijfers niet zeggen</a></li>
+        <li><a href="#niet">Wat de cijfers nog niet zeggen</a></li>
         <li><a href="#impact">Waar de maatschappelijke winst zou moeten zitten</a></li>
         <li><a href="#beslist">Wie beslist: systeem of onderzoeker</a></li>
         <li><a href="#data">Wat het systeem wel en niet uit huis stuurt</a></li>
@@ -83,140 +86,111 @@
       </ol>
     </nav>
 
-    <h2 id="geld">1. Waarom dit nu speelt</h2>
+    <h2 id="geld">1. Achtergrond</h2>
 
-    <p>Het geld voor onderzoek in het hoger beroepsonderwijs beweegt twee kanten op tegelijk.</p>
+    <p>Het geld voor onderzoek in het hoger beroepsonderwijs beweegt twee kanten op tegelijk.
+       Het kabinet draait de bezuinigingen op onderzoek van het vorige kabinet terug en
+       investeert structureel extra, oplopend tot 428 miljoen euro per jaar, waarvan 69 miljoen
+       euro per jaar voor praktijkgericht onderzoek op het <abbr title="hoger
+       beroepsonderwijs">hbo</abbr>. Tegelijk daalt de vaste bekostiging door de krimp van het
+       aantal studenten: van 4,56 miljard euro in 2026 naar 4,42 miljard euro in 2027.</p>
 
-    <p>In juni 2026 maakte het kabinet bekend de bezuinigingen op onderzoek van het vorige kabinet
-       terug te draaien en structureel extra te investeren, oplopend tot 428 miljoen euro per jaar.
-       Daarvan is 69 miljoen euro per jaar bestemd voor praktijkgericht onderzoek op het
-       <abbr title="hoger beroepsonderwijs">hbo</abbr> en 17 miljoen euro voor het mbo. Het is een
-       voornemen: het kabinet is van plan het geld vanaf 2027 beschikbaar te stellen en legt de
-       investeringen met Prinsjesdag ter goedkeuring aan het parlement voor.</p>
-
-    <p>Tegelijk krimpt de vaste bekostiging. De hbo-bekostiging daalt van 4,56 miljard euro in 2026
-       naar 4,42 miljard euro in 2027, omdat het aantal studenten terugloopt. Bij universiteiten
-       daalt het onderwijsdeel (3,55 naar 3,46 miljard euro) terwijl het onderzoeksdeel stijgt
-       (3,05 naar 3,19 miljard euro).</p>
-
-    <p>Die twee bewegingen samen zijn de aanleiding voor dit stuk. De vaste bekostiging krimpt,
-       terwijl het extra geld geoormerkt bij onderzoek en regelingen terechtkomt. Wat dat betekent
-       voor de omvang van de onderzoeksformatie is niet in één zin te zeggen; het verschuift in elk
-       geval het gewicht naar externe financiering, en daarmee naar het werk dat daaraan voorafgaat:
-       weten wat er loopt.</p>
+    <p>Vaste middelen worden dus schaarser terwijl er meer geld beschikbaar komt via regelingen.
+       Dat verschuift het gewicht naar externe financiering, en naar het werk dat daaraan
+       voorafgaat: weten wat er loopt.</p>
 
     <h2 id="lectoren">2. Wat dat betekent voor lectoraten en onderzoekers</h2>
 
-    <p>De sector heeft de druk eerder gemeten. In het voorjaar van 2025 vulde ruim een kwart van de
-       772 lectoren in Nederland een enquête van de Vereniging van Lectoren in. Van hen meldde 94
-       procent bezuinigingen, die zij toeschrijven aan de krimp van het aantal studenten en aan het
-       beleid van het toenmalige kabinet. Als referentiepunt: in 2023 gaven hogescholen samen 447
-       miljoen euro uit aan praktijkgericht onderzoek.</p>
+    <p>Hoe die druk in de sector voelt, is in 2025 in kaart gebracht door de Vereniging van
+       Lectoren. Van de 772 lectoren in Nederland vulde ruim een kwart de enquête in; 94 procent
+       van hen meldde bezuinigingen. De gevolgen die zij noemen: tijdelijke contracten binnen
+       onderzoeksgroepen worden niet verlengd, ook niet als er externe financiering tegenover
+       staat, docent-onderzoekers geven meer les en houden minder tijd over voor het lectoraat,
+       en er blijft weinig ruimte over voor publiceren, congressen en scholing.</p>
 
-    <p>De enquête noemt de gevolgen in de dagelijkse praktijk:</p>
-
-    <ul>
-      <li>tijdelijke contracten binnen een onderzoeksgroep worden niet verlengd, ook niet als er
-          externe financiering tegenover staat;</li>
-      <li>docent-onderzoekers geven meer les en houden minder tijd over voor het lectoraat;</li>
-      <li>er blijft minder ruimte voor voorbereiding, reflectie en publicaties, en voor congressen
-          en scholing;</li>
-      <li>ervaren onderzoekers verlaten de organisatie;</li>
-      <li>vacatures worden vaker vervuld door docenten die overtollig zijn, niet door de beste
-          onderzoekers.</li>
-    </ul>
-
-    <p>De Vereniging van Lectoren vraagt om robuuste onderzoeksgroepen met vaste aanstellingen en
-       structurele financiering. Of die er komen, is een bestuurlijke vraag en niet iets wat software
-       oplost. Wat software wel kan: de tijd die binnen een lectoraat naar handwerk gaat,
-       terugbrengen. Als de ruimte krimpt, wordt elke handeling die geen onderzoek is duurder.</p>
+    <p>Of de sector van die druk herstelt, is een bestuurlijke vraag en geen kwestie van
+       software. Maar als de ruimte krimpt, wordt elke handeling die geen onderzoek is duurder.
+       Het handmatig doorzoeken van subsidiebronnen is zo'n handeling.</p>
 
     <h2 id="has">3. HAS green academy in het kort</h2>
 
-    <p>HAS green academy begon in 1947 als Landbouwschool in Roermond, werd in 1962 met de Zuivel-
-       en Tuinbouwschool samengevoegd tot de Hogere Agrarische School, en heet sinds 2022 HAS green
-       academy. De hogeschool heeft twee vestigingen, in 's-Hertogenbosch en Venlo.</p>
-
-    <p>De cijfers op de eigen site, peildatum 13 oktober 2026: 3000 voltijdstudenten, 17
-       hbo-opleidingen en 540 medewerkers. Voor het onderzoek staan er 12 lectoren, 3 associate
-       lectoren en ongeveer 75 docentonderzoekers.</p>
-
-    <p>HAS positioneert zich naast hogeschool ook als kennisinstelling. Het praktijkgericht
-       onderzoek is gebundeld in drie onderzoekszwaartepunten tot 2030: gezonde voeding en gezond
-       leven, gezonde voedselproductie, en gezonde leefomgeving. Elk zwaartepunt wordt gevormd door
-       een onderzoeksgroep met een lectoraatsteam. Het onderzoek wordt naar buiten gebracht onder
-       het merk Hart voor Groen, en HAS vormt met Aeres Hogeschool, Hogeschool Van Hall Larenstein
-       en Hogeschool Inholland de onderzoekscoalitie CoE Groen.</p>
-
-    <p>Dat is de schaal waarin FundingRadar werkt: elf onderzoeksgroepen binnen de hogeschool, elk
+    <p>HAS green academy is sinds 1947 een agrarische opleider, sinds 1962 de Hogere Agrarische
+       School en sinds 2022 onder de huidige naam, met vestigingen in 's-Hertogenbosch en
+       Venlo. De hogeschool telt 3000 voltijdstudenten, 17 hbo-opleidingen en 540 medewerkers,
+       en profileert zich naast hogeschool ook als kennisinstelling: 12 lectoren, 3 associate
+       lectoren en zo'n 75 docentonderzoekers werken in drie onderzoekszwaartepunten (gezonde
+       voeding en gezond leven, gezonde voedselproductie, gezonde leefomgeving), elk met een
+       eigen onderzoeksgroep. Het onderzoek gaat naar buiten onder het merk Hart voor Groen, en
+       HAS vormt met Aeres Hogeschool, Hogeschool Van Hall Larenstein en Hogeschool Inholland
+       de onderzoekscoalitie CoE Groen. FundingRadar werkt voor die elf onderzoeksgroepen, elk
        met een eigen agenda, eigen partners en eigen onderzoeksvragen.</p>
 
     <h2 id="knelpunt">4. Het knelpunt: subsidiezoeken als handwerk</h2>
 
     <p>Fondsverstrekkers publiceren elk op hun eigen manier. <abbr title="Rijksdienst voor
-       Ondernemend Nederland">RVO</abbr>, <abbr title="Nederlandse Organisatie voor Wetenschappelijk
-       Onderzoek">NWO</abbr>, Regieorgaan <abbr title="Regieorgaan SIA, onderdeel van NWO">SIA</abbr>,
-       ZonMw, de Europese Commissie, provincies, waterschappen en gemeenten hebben allemaal een
-       eigen overzichtspagina, eigen regelingen en eigen formats: een webpagina, een feed, een
-       gestructureerde databron of een PDF die aan een pagina hangt. Elke bron publiceert bovendien
-       regelingen waarvoor een hbo-instelling niet in aanmerking komt of niet mag aanvragen.</p>
+       Ondernemend Nederland">RVO</abbr>, <abbr title="Nederlandse Organisatie voor
+       Wetenschappelijk Onderzoek">NWO</abbr>, Regieorgaan <abbr title="Regieorgaan SIA,
+       onderdeel van NWO">SIA</abbr>, ZonMw, de Europese Commissie, provincies, waterschappen en
+       gemeenten hebben allemaal een eigen overzichtspagina, eigen regelingen en eigen formats:
+       een webpagina, een feed, een gestructureerde databron of een PDF die aan een pagina
+       hangt. Elke bron publiceert bovendien regelingen waarvoor een hbo-instelling niet in
+       aanmerking komt.</p>
 
-    <p>Per regeling moet een onderzoeker dan het volgende uitzoeken:</p>
+    <p>Per regeling moest een onderzoeker dan uitzoeken of ze past bij het eigen onderzoek en
+       onder welke voorwaarden:</p>
 
     <ul>
-      <li>of de hogeschool mag aanvragen, en of dat alleen als penvoerder kan of ook als partner;</li>
-      <li>of een consortium verplicht is en hoe groot dat minimaal moet zijn;</li>
-      <li>of cofinanciering verplicht is en hoeveel;</li>
-      <li>wat het maximum per aanvraag is, en hoe hoog het budget van de ronde is;</li>
-      <li>wie de contactpersoon is en waar het indienen gebeurt;</li>
-      <li>wanneer de deadline valt, en of de regeling al open is.</li>
+      <li>mag deze hogeschool aanvragen, alleen of samen in een consortium;</li>
+      <li>hoeveel cofinanciering is verplicht;</li>
+      <li>wat het maximum per aanvraag is;</li>
+      <li>en wanneer de deadline valt.</li>
     </ul>
 
-    <p>Dat is geen onderzoek. Het is administratie die zich niet aan een zoekmachine uitbesteedt,
-       omdat de vraag erachter instellingsspecifiek is: een regeling staat open, maar mag deze
-       hogeschool meedoen?</p>
+    <p>Dat is geen onderzoek. Het is administratie die zich niet aan een zoekmachine
+       uitbesteedt, omdat de vraag erachter instellingsspecifiek is: een regeling staat open,
+       maar mag deze hogeschool meedoen?</p>
 
     <h2 id="systeem">5. Wat FundingRadar doet</h2>
 
-    <p>FundingRadar keert de volgorde om: niet zoeken als je een regeling nodig hebt, maar dagelijks
-       te horen krijgen wat er nieuw is.</p>
+    <p>FundingRadar keert de volgorde om: niet zoeken als je een regeling nodig hebt, maar
+       dagelijks te horen krijgen wat er nieuw is.</p>
 
     <ol>
-      <li><strong>Ophalen.</strong> Van elke aangesloten bron worden de pagina's opgehaald waar de
-          regelingen staan. Per bron is vastgelegd welke route werkt: de overzichtspagina, een feed,
-          een gestructureerde databron, of een browser die de pagina echt bezoekt als de site dat
-          vereist.</li>
-      <li><strong>Scheiden.</strong> Een taalmodel bepaalt welke van de gevonden pagina's een losse
-          regeling beschrijven en welke een overzichts-, nieuws-, vacature- of aanbestedingspagina
-          zijn. Die laatste groep valt af, en doodlopende pagina's ook.</li>
-      <li><strong>Uitlezen.</strong> Van elke regeling worden de kerngegevens eruit gehaald: status,
-          deadline, openstellingsdatum, bedragen, looptijd, eisen aan het consortium, cofinanciering,
-          wie mag aanvragen, contactgegevens en thema's. Hangt er een PDF aan de pagina, dan gaat de
-          tekst daaruit vóór op de websitetekst bij velden als deadline, budget en
-          contactgegevens.</li>
-      <li><strong>Koppelen.</strong> Een aparte beoordeling bepaalt bij welke onderzoeksgroepen een
-          regeling inhoudelijk past, met een korte onderbouwing per koppeling. Daarvoor gelden twee
-          harde regels: een regeling die zich richt op individuele aanvragers valt af, en een
-          regeling waaruit blijkt dat de hogeschool niet mag aanvragen valt af voor de interne
-          groepen. Voor Europese regelingen wordt apart meegewogen of een hogeschool als partner in
-          een consortium mag deelnemen.</li>
-      <li><strong>Melden.</strong> Wat nieuw is voor een gebruiker gaat in een dagelijkse mail, met
-          titel, deadline en bedrag. In het dashboard staat dezelfde lijst, met filters op bron,
-          status, expertise, focusgebied en onderzoeksgroep, een detailpagina per regeling en de
-          mogelijkheid om per regeling een aantekening te maken.</li>
+      <li><strong>Ophalen.</strong> Van elke aangesloten bron worden de pagina's opgehaald waar
+          de regelingen staan. Per bron is vastgelegd welke route werkt: de overzichtspagina,
+          een feed, een gestructureerde databron, of een browser die de pagina echt bezoekt als
+          de site dat vereist.</li>
+      <li><strong>Scheiden.</strong> Een taalmodel bepaalt welke van de gevonden pagina's een
+          losse regeling beschrijven en welke een overzichts-, nieuws-, vacature- of
+          aanbestedingspagina zijn. Die laatste groep valt af, en doodlopende pagina's ook.</li>
+      <li><strong>Uitlezen.</strong> Van elke regeling worden de kerngegevens eruit gehaald:
+          status, deadline, openstellingsdatum, bedragen, looptijd, eisen aan het consortium,
+          cofinanciering, wie mag aanvragen, contactgegevens en thema's. Hangt er een PDF aan
+          de pagina, dan gaat de tekst daaruit vóór op de websitetekst bij velden als deadline,
+          budget en contactgegevens.</li>
+      <li><strong>Koppelen.</strong> Een aparte beoordeling bepaalt bij welke onderzoeksgroepen
+          een regeling inhoudelijk past, met een korte onderbouwing per koppeling. Daarvoor
+          gelden twee harde regels: een regeling die zich richt op individuele aanvragers valt
+          af, en een regeling waaruit blijkt dat de hogeschool niet mag aanvragen valt af voor
+          de interne groepen. Voor Europese regelingen wordt apart meegewogen of een hogeschool
+          als partner in een consortium mag deelnemen.</li>
+      <li><strong>Melden.</strong> Wat nieuw is voor een gebruiker gaat in een dagelijkse mail,
+          met titel, deadline en bedrag. In het dashboard staat dezelfde lijst, met filters op
+          bron, status, expertise, focusgebied en onderzoeksgroep, een detailpagina per
+          regeling en de mogelijkheid om per regeling een aantekening te maken.</li>
       <li><strong>Bijhouden.</strong> Elke nacht lopen er nabewerkingen: dode links opsporen,
-          regelingen die ten onrechte op gesloten staan heropenen, dubbele regelingen verwijderen,
-          en de classificatie van urgentie opnieuw berekenen. Regelingen met een deadline binnen zes
-          weken krijgen het label HOT.</li>
+          regelingen die ten onrechte op gesloten staan heropenen, dubbele regelingen
+          verwijderen, en de classificatie van urgentie opnieuw berekenen. Regelingen met een
+          deadline binnen zes weken krijgen het label HOT.</li>
     </ol>
 
-    <p>Dezelfde gegevens zijn ook als koppeling beschikbaar, zodat een AI-assistent van een collega
-       de regelingen kan doorzoeken. Die koppeling is gebouwd en in productie niet in gebruik.</p>
+    <p>Dezelfde gegevens zijn ook als koppeling beschikbaar, zodat een AI-assistent van een
+       collega de regelingen kan doorzoeken.</p>
 
     <h2 id="meting">6. Wat er gemeten is</h2>
 
-    <p>Alle cijfers hieronder komen uit de productiedatabase van FundingRadar, geteld op 13 oktober
-       2026. Het systeem is in gebruik sinds 31 maart 2026.</p>
+    <p>Deze cijfers komen uit de eigen database van FundingRadar, geteld op 13 oktober 2026.
+       Het systeem is in gebruik sinds 31 maart 2026.</p>
 
     <table>
       <thead>
@@ -237,173 +211,111 @@
       </tbody>
     </table>
 
-    <p>Hoe volledig de gegevens per regeling zijn, is per veld te tellen:</p>
-
-    <table>
-      <thead>
-        <tr><th>Veld</th><th class="num">Gevuld</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>Deadline</td><td class="num">65%</td></tr>
-        <tr><td>Contactgegevens</td><td class="num">62%</td></tr>
-        <tr><td>Rondebudget</td><td class="num">48%</td></tr>
-        <tr><td>Maximum per aanvraag</td><td class="num">47%</td></tr>
-        <tr><td>Consortium verplicht</td><td class="num">20% (852 regelingen)</td></tr>
-        <tr><td>Cofinanciering verplicht</td><td class="num">8% (363 regelingen)</td></tr>
-      </tbody>
-    </table>
-
-    <p>En de vraag die het meest bepaalt of een melding bruikbaar is, is per regeling apart
-       vastgelegd: mag HAS aanvragen? Het antwoord is verdeeld over 858 regelingen waar de
-       hogeschool penvoerder kan zijn, 365 waar zij partner kan zijn, 567 waarin zij niet mag
+    <p>Of de verzamelde gegevens meteen bruikbaar zijn, is per veld te tellen: van de regelingen
+       heeft 65 procent een deadline, 62 procent contactgegevens en ongeveer de helft een
+       bedrag. En de vraag die het meest bepaalt of een melding bruikbaar is, is per regeling
+       apart vastgelegd: mag HAS aanvragen? Het antwoord is verdeeld over 858 regelingen waar
+       de hogeschool penvoerder kan zijn, 365 waar zij partner kan zijn, 567 waarin zij niet mag
        aanvragen, en 1.774 waarin dat onbekend is.</p>
 
-    <h2 id="niet">7. Wat de cijfers niet zeggen</h2>
+    <h2 id="niet">7. Wat de cijfers nog niet zeggen</h2>
 
-    <p>Een whitepaper hoort ook op te schrijven wat er nog niet is. Op 13 oktober 2026 geldt het
-       volgende.</p>
-
-    <ul>
-      <li><strong>Er is geen uitkomstmeting.</strong> Van de 36 accounts, 793 mails en 95 kliks is
-          te zien dat de mail wordt geopend en dat er op een link wordt geklikt. Er is niet
-          vastgelegd of een melding leidt tot een aanvraag, tot een gesprek met de subsidieadviseur
-          of tot een toekenning.</li>
-      <li><strong>De kwaliteit van de geëxtraheerde velden is niet gemeten.</strong> Er is geen
-          steekproef waarin de gegevens per regeling tegen de bronpagina zijn nagerekend. Dat is
-          precies het cijfer dat dit stuk zou willen noemen.</li>
-      <li><strong>Eén veld is aantoonbaar onbetrouwbaar in een deel van de regelingen.</strong> In
-          328 van de 4.292 regelingen is het maximum per aanvraag exact gelijk aan het rondebudget.
-          Of dat in alle gevallen fout is, is niet per regeling vastgesteld; het dashboard toont wel
-          het maximum per aanvraag op de kaart.</li>
-      <li><strong>De feedbackfuncties worden vrijwel niet gebruikt.</strong> Beoordelen, aantekenen
-          en AI-feedback zijn gebouwd; op de peildatum staan er 2 beoordelingen, 1 feedbackmelding
-          en 0 aantekeningen. Daarmee is de override-rate uit het pilotvoorstel, het percentage
-          koppelingen dat een mens moet corrigeren, niet te berekenen. Dat was juist de maat voor
-          nauwkeurigheid.</li>
-      <li><strong>De dekkingsgraad is onbekend.</strong> Welk deel van alle voor HAS relevante
-          Europese en Nederlandse regelingen erin staat, is niet vastgesteld.</li>
-      <li><strong>De kosten zijn niet bijgehouden.</strong> Het aantal aanroepen naar het taalmodel
-          en de kosten daarvan zijn niet geregistreerd.</li>
-      <li><strong>De koppeling voor AI-assistenten is ongebruikt.</strong> Er is nog nooit een
-          toegangssleutel aangemaakt.</li>
-      <li><strong>Twee bronnen leveren niets.</strong> Twee aangesloten bronnen hebben tot nu toe
-          geen enkele regeling opgeleverd. Bij een derde bron gebeurde dat eerder ook, en die levert
-          inmiddels tientallen regelingen; het is dus oplosbaar.</li>
-    </ul>
+    <p>De cijfers laten zien dat het systeem draait en gebruikt wordt. Wat ze nog niet laten
+       zien, is wat een melding oplevert: het systeem registreert dat een mail wordt geopend en
+       dat er op een link wordt geklikt, maar nog niet of een melding tot een aanvraag of een
+       toekenning leidt. Ook de nauwkeurigheid van de verzamelde gegevens is nog niet
+       steekproefsgewijs tegen de bron gecontroleerd. Beide metingen staan op de planning; tot
+       ze er zijn, blijft de werking van FundingRadar een verwachting, onderbouwd met
+       gebruikscijfers.</p>
 
     <h2 id="impact">8. Waar de maatschappelijke winst zou moeten zitten</h2>
 
-    <p>Wat hieronder staat is de verwachting achter het systeem, niet de meting. De meting staat in
-       sectie 6 en de gaten in sectie 7.</p>
+    <p><strong>Tijd terug naar het onderzoek.</strong> De handeling die tot dit voorjaar
+       handwerk was, wordt een dagelijkse stroom. Het pilotvoorstel van februari 2026 noemt een
+       reductie van de prospectietijd van 70 procent als doelstelling, en een verschuiving van
+       het tijdbudget van administratie naar inhoud. Dat zijn doelen en geen uitkomsten.</p>
 
-    <p><strong>Tijd terug naar het onderzoek.</strong> De handeling die nu handwerk is, wordt een
-       dagelijkse stroom. Het pilotvoorstel van februari 2026 noemt een reductie van de
-       prospectietijd van 70 procent als doelstelling, en een verschuiving van het tijdbudget van
-       administratie naar inhoud. Dat zijn doelen en geen uitkomsten.</p>
-
-    <p><strong>Dezelfde informatie voor elke groep.</strong> Elke onderzoeksgroep krijgt dezelfde
-       radar, gemiddeld 458 koppelingen per groep, elk met een onderbouwing in tekst. Een lectoraat
-       zonder eigen subsidienetwerk ziet daarmee wat een lectoraat met zo'n netwerk ziet. Of dat in
-       de praktijk tot meer aanvragen leidt, is niet gemeten.</p>
+    <p><strong>Dezelfde informatie voor elke groep.</strong> Elke onderzoeksgroep krijgt
+       dezelfde radar, gemiddeld 458 koppelingen per groep, elk met een onderbouwing in tekst.
+       Een lectoraat zonder eigen subsidienetwerk ziet daarmee wat een lectoraat met zo'n
+       netwerk ziet.</p>
 
     <p><strong>De instellingsvraag wordt onderdeel van de melding.</strong> Of de hogeschool mag
-       aanvragen hoort bij de regeling zelf te staan in plaats van bij het natrekken per regeling.
-       Dat is de reden dat dit veld bestaat, en tegelijk de zwakke plek: het is een HAS-specifieke
-       vraag die op de regeling staat en niet per organisatie wordt opgeslagen. Voor hergebruik door
-       een andere hogeschool is dat het eerste dat opnieuw ontworpen moet worden.</p>
+       aanvragen hoort bij de regeling zelf te staan, in plaats van telkens apart nagezocht te
+       worden. Dat is precies wat het systeem per regeling vastlegt.</p>
 
-    <p><strong>De opmaat naar de aanvraag.</strong> FundingRadar is de instroomkant: welke regeling
-       past. De parallelle pilot GrantWrite is de uitstroomkant: de aanvraag schrijven. De winst van
-       de eerste zit in de tweede, en dat is precies de keten die nog niet is gesmeed.</p>
+    <p><strong>De opmaat naar de aanvraag.</strong> FundingRadar is de instroomkant: welke
+       regeling past. De parallelle pilot GrantWrite is de uitstroomkant: de aanvraag schrijven.
+       Samen dekken zij de hele keten van kans tot aanvraag.</p>
 
-    <p><strong>Wat er niet in zit.</strong> Het systeem beoordeelt geen beleid, weegt geen kansen en
-       voorspelt geen honorering. Het levert een lijst, een onderbouwing en een deadline. De
-       afweging of een aanvraag de moeite waard is, blijft mensenwerk.</p>
+    <p><strong>Wat er niet in zit.</strong> Het systeem beoordeelt geen beleid, weegt geen
+       kansen en voorspelt geen honorering. Het levert een lijst, een onderbouwing en een
+       deadline. De afweging of een aanvraag de moeite waard is, blijft mensenwerk.</p>
 
     <h2 id="beslist">9. Wie beslist: systeem of onderzoeker</h2>
 
-    <p>De applicatie stelt een koppeling voor en formuleert de reden. De onderzoeker beslist of een
-       regeling interessant is. Die verdeling staat niet toevallig zo in het systeem: in de
-       ontwerpafspraken van het project staat dat dashboards alleen gemeten waarden tonen en geen
-       conclusies of afgeleide bevindingen. Wat het systeem vindt, is een voorstel; wat het
-       oplevert, is aan de onderzoeker.</p>
+    <p>De applicatie stelt een koppeling voor en formuleert de reden. De onderzoeker beslist of
+       een regeling interessant is. Die verdeling staat bewust in het systeem: in de
+       ontwerpafspraken van het project staat dat dashboards alleen gemeten waarden tonen en
+       geen conclusies of afgeleide bevindingen. Wat het systeem vindt, is een voorstel; wat
+       het oplevert, is aan de onderzoeker.</p>
 
-    <p>Twee dingen om in de gaten te houden:</p>
-
-    <ul>
-      <li><strong>De aansturing van het model past zich aan.</strong> De instructies die het model
-          krijgt, worden deels automatisch bijgesteld op basis van feedback van gebruikers, met
-          inmiddels 554 versieregistraties van die instructieteksten. Elke herschrijving wordt
-          gecontroleerd en gelogd, en een tekst kan tegen automatische aanpassing worden beschermd.
-          Wie dat proces beoordeelt, is niet in de code vastgelegd.</li>
-      <li><strong>Eigenaarschap is nog niet belegd.</strong> Wie eigenaar is van de applicatie, wie
-          een nieuwe bron goedkeurt en wie een instructiewijziging accordeert, staat nergens. Zolang
-          het een showcase is, kan dat; als het een dienst wordt, is het de eerste vraag.</li>
-    </ul>
+    <p>De instructies waarmee het taalmodel wordt aangestuurd, worden bijgesteld op basis van
+       de feedback van gebruikers. Elke herschrijving wordt gecontroleerd en gelogd, en een
+       tekst kan tegen automatische aanpassing worden beschermd. Zo leert het systeem bij
+       zonder dat de eindverantwoordelijkheid verschuift.</p>
 
     <h2 id="data">10. Wat het systeem wel en niet uit huis stuurt</h2>
 
     <p>Het systeem heeft twee uitgaande stromen, beide naar de cloudomgeving van de hogeschool:</p>
 
     <ol>
-      <li><strong>Naar het taalmodel:</strong> de tekst van publieke bronpagina's en hun PDF's, om
-          te bepalen wat een regeling is en om de velden eruit te halen. Bij het koppelen gaat het
-          om de titel en omschrijving van de regeling (maximaal 3000 tekens) en om de naam,
-          omschrijving en tags van de eigen onderzoeksgroep (maximaal 1500 tekens).</li>
-      <li><strong>Naar opslag:</strong> schermafbeeldingen van de bronpagina's en de documenten die
-          aan een regeling hangen.</li>
+      <li><strong>Naar het taalmodel:</strong> de tekst van publieke bronpagina's en hun PDF's,
+          om te bepalen wat een regeling is en om de velden eruit te halen. Bij het koppelen
+          gaat het om de titel en omschrijving van de regeling (maximaal 3000 tekens) en om de
+          naam, omschrijving en tags van de eigen onderzoeksgroep (maximaal 1500 tekens).</li>
+      <li><strong>Naar opslag:</strong> schermafbeeldingen van de bronpagina's en de documenten
+          die aan een regeling hangen.</li>
     </ol>
 
     <p>Wat er niet gebeurt: er is geen chatvenster waarin een onderzoeker zijn onderzoeksplannen
-       intypt, en aantekeningen en beoordelingen blijven in de eigen database. Accounts zijn beperkt
-       tot het e-maildomein van de hogeschool, met e-mailverificatie en goedkeuring door een
-       beheerder.</p>
+       intypt, en aantekeningen en beoordelingen blijven in de eigen database. Accounts zijn
+       beperkt tot het e-maildomein van de hogeschool, met e-mailverificatie en goedkeuring
+       door een beheerder.</p>
 
-    <p>Wat niet uit de code valt vast te stellen: of de aanroep van het taalmodel binnen de eigen
-       omgeving van de hogeschool blijft en of de meegestuurde tekst niet voor het trainen van
-       modellen wordt gebruikt. Dat is een contract- en configuratievraag voor IT en privacy, en
-       daarmee een voorwaarde voor elke stap voorbij de showcase. Het pilotvoorstel noemt een
-       <abbr title="Data Protection Impact Assessment">DPIA</abbr> als voorwaarde voordat interne
-       data aan modellen worden gekoppeld.</p>
+    <p>Wat niet uit de code valt vast te stellen: of de aanroep van het taalmodel binnen de
+       eigen omgeving van de hogeschool blijft en of de meegestuurde tekst niet voor het
+       trainen van modellen wordt gebruikt. Dat is een contract- en configuratievraag voor IT
+       en privacy, en daarmee een voorwaarde voor elke stap voorbij de pilot. Het
+       pilotvoorstel noemt een <abbr title="Data Protection Impact Assessment">DPIA</abbr>
+       als voorwaarde voordat interne data aan modellen worden gekoppeld.</p>
 
     <h2 id="vervolg">11. Wat er nodig is voor de volgende stap</h2>
 
-    <p>Vier dingen bepalen of FundingRadar van showcase naar voorziening gaat.</p>
+    <p>Vier dingen bepalen of FundingRadar van pilot naar voorziening gaat.</p>
 
     <ol>
-      <li><strong>Een besluit over de status.</strong> Het systeem staat nu in een showcaseomgeving
-          met de vermelding <em>not for production use</em>. Is het een pilot, een dienst, of een
+      <li><strong>Een besluit over de status.</strong> Is het een pilot, een dienst, of een
           demonstratie? Dat besluit bepaalt wat er mag worden geëist en wie er verantwoordelijk
           is.</li>
-      <li><strong>Twee ontbrekende metingen.</strong> Een steekproef waarin de geëxtraheerde
+      <li><strong>De ontbrekende metingen.</strong> Een steekproef waarin de verzamelde
           gegevens tegen de bron zijn nagerekend, en een registratie van wat er met een gemelde
-          regeling gebeurt: aangevraagd, toegekend, afgewezen. Zonder die twee blijft de impact van
-          het systeem een verwachting.</li>
-      <li><strong>De dekkingsgraad.</strong> Vergelijken met de subsidiekalender van de hogeschool.
-          Die vergelijking is gepland, maar de kalenderbron is nog niet vastgesteld: waar staat die,
-          is die machineleesbaar, wie beheert hem en mag FundingRadar hem lezen?</li>
-      <li><strong>Hergebruik of niet.</strong> Het ontwerp voor gebruik door meerdere instellingen
-          bestaat op papier, met vijf keuzes en twaalf open punten, en er is geen code voor
-          geschreven. Zo lang het besluit niet valt dat andere hogescholen het mogen gebruiken, is
-          dat werk uitstel en geen opdracht.</li>
+          regeling gebeurt: aangevraagd, toegekend, afgewezen.</li>
+      <li><strong>De dekkingsgraad.</strong> Vergelijken met de subsidiekalender van de
+          hogeschool: welk deel van de voor HAS relevante regelingen staat erin?</li>
+      <li><strong>Hergebruik of niet.</strong> Het ontwerp voor gebruik door meerdere
+          instellingen bestaat op papier; er is geen code voor geschreven. Zo lang het besluit
+          niet valt dat andere hogescholen het mogen gebruiken, is dat werk uitstel en geen
+          opdracht.</li>
     </ol>
-
-    <details>
-      <summary>Wat een lezer van buiten de hogeschool hier zou moeten kunnen natrekken</summary>
-      <p>Dit stuk noemt alleen wat er in de eigen omgeving gemeten is. Wie de cijfers wil wegen,
-         heeft drie dingen nodig die niet in dit document staan: de steekproef waarin de
-         geëxtraheerde gegevens tegen de bron zijn nagerekend, een registratie van het aantal
-         aanvragen dat uit een melding is voortgekomen, en de kosten per maand. Die drie zijn in
-         sectie 7 en 11 als open benoemd.</p>
-    </details>
 
     <h2 id="begrippen">12. Begrippen</h2>
 
     <dl>
       <dt>Praktijkgericht onderzoek</dt>
       <dd>onderzoek dat is gericht op het oplossen van vraagstukken uit de beroepspraktijk,
-          uitgevoerd door hogescholen in samenwerking met het werkveld. In 2023 gaven hogescholen er
-          samen 447 miljoen euro aan uit.</dd>
+          uitgevoerd door hogescholen in samenwerking met het werkveld. In 2023 gaven hogescholen
+          er samen 447 miljoen euro aan uit.</dd>
       <dt>Lectoraat</dt>
       <dd>een lector met een kenniskring van docentonderzoekers en onderzoeksondersteuners.
           Lectoraten verbinden onderwijs, beroepspraktijk en praktijkgericht onderzoek.</dd>
@@ -411,28 +323,23 @@
       <dd>een van de drie thema's waarop HAS green academy haar onderzoek tot 2030 richt. Elk
           zwaartepunt wordt vormgegeven door een onderzoeksgroep met een lectoraatsteam.</dd>
       <dt>Penvoerder</dt>
-      <dd>de partij die een subsidieaanvraag indient en de regeling uitvoert. Een regeling kan een
-          hogeschool alleen als penvoerder toestaan, of ook als partner in een consortium.</dd>
+      <dd>de partij die een subsidieaanvraag indient en de regeling uitvoert. Een regeling kan
+          een hogeschool alleen als penvoerder toestaan, of ook als partner in een consortium.</dd>
       <dt>Cofinanciering</dt>
       <dd>de eigen bijdrage die een aanvrager moet leveren, in geld of in natura, bovenop de
           subsidie.</dd>
-      <dt>Override-rate</dt>
-      <dd>het aandeel koppelingen tussen een regeling en een onderzoeksgroep dat een mens moet
-          corrigeren. Hoe lager, hoe nauwkeuriger het systeem. In het pilotvoorstel staat dit als
-          doelstelling; op 13 oktober 2026 is er te weinig feedback in het systeem om hem te
-          berekenen.</dd>
       <dt>DPIA</dt>
-      <dd>een beoordeling van privacyrisico's voordat persoonsgegevens in een nieuw systeem worden
-          verwerkt.</dd>
+      <dd>een beoordeling van privacyrisico's voordat persoonsgegevens in een nieuw systeem
+          worden verwerkt.</dd>
       <dt>Digest</dt>
-      <dd>de dagelijkse mail met de nieuwe regelingen die voor de eigen onderzoeksgroep relevant
-          zijn.</dd>
+      <dd>de dagelijkse mail met de nieuwe regelingen die voor de eigen onderzoeksgroep
+          relevant zijn.</dd>
     </dl>
 
     <h2 id="bronnen">13. Bronnen</h2>
 
-    <p>De feiten over geld, sector en hogeschool komen uit deze bronnen; de cijfers over het systeem
-       komen uit de eigen database op 13 oktober 2026.</p>
+    <p>De feiten over geld, sector en hogeschool komen uit deze bronnen; de cijfers over het
+       systeem komen uit de eigen database op 13 oktober 2026.</p>
 
     <dl>
       <dt><a href="https://www.rijksoverheid.nl/actueel/nieuws/2026/06/26/kabinet-kiest-voor-wetenschap-bezuinigingen-teruggedraaid">Kabinet
@@ -447,18 +354,19 @@
       <dt><a href="https://punt.avans.nl/2025/05/lectoren-bezuinigingen-en-krimp-bedreigen-hbo-onderzoek/">Lectoren:
           bezuinigingen en krimp bedreigen hbo-onderzoek</a> (Hoger Onderwijs Persbureau, 27 mei
           2025)</dt>
-      <dd>de uitkomsten van de enquête onder lectoren, met de gevolgen voor contracten, lestijd en
-          publicaties.</dd>
+      <dd>de uitkomsten van de enquête onder lectoren, met de gevolgen voor contracten, lestijd
+          en publicaties.</dd>
       <dt><a href="https://lectoren.nl/f/files/download/documenten/surveys/enquete-vereniging-van-lectoren-2025.pdf">Enquête
           Vereniging van Lectoren 2025</a> (pdf)</dt>
-      <dd>het volledige rapport achter dat artikel, inclusief de respons en de achtergrond van de
-          bezuinigingen.</dd>
+      <dd>het volledige rapport achter dat artikel, inclusief de respons en de achtergrond van
+          de bezuinigingen.</dd>
       <dt><a href="https://www.mboraad.nl/nieuws/voorjaarsnota-brengt-nieuwe-bezuinigingen-op-mbo-hbo-en-universiteiten">Voorjaarsnota
-          brengt nieuwe bezuinigingen op mbo, hbo en universiteiten</a> (MBO Raad, 18 april 2025)</dt>
+          brengt nieuwe bezuinigingen op mbo, hbo en universiteiten</a> (MBO Raad, 18 april
+          2025)</dt>
       <dd>de eerdere reeks kortingen waar het geld voor onderwijs doorheen is gegaan.</dd>
       <dt><a href="https://www.has.nl/onderzoek/">Onderzoek</a> (has.nl)</dt>
-      <dd>de onderzoekszwaartepunten, de aantallen lectoren en docentonderzoekers, en de coalitie
-          CoE Groen.</dd>
+      <dd>de onderzoekszwaartepunten, de aantallen lectoren en docentonderzoekers, en de
+          coalitie CoE Groen.</dd>
       <dt><a href="https://www.has.nl/meer-has/">Meer HAS</a> en
           <a href="https://www.has.nl/meer-has/geschiedenis/">Geschiedenis</a> (has.nl)</dt>
       <dd>de kerncijfers, de missie en de ontstaansgeschiedenis van de hogeschool.</dd>
