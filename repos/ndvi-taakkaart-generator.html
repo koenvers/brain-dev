@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NDVI Taakkaart Generator — brain-dev</title>
+  <meta name="description" content="Open-source browsertool die van drone-NDVI (GeoTIFF) een variabele-dosering taakkaart maakt: automatische banddetectie, BRP-percelen via PDOK en export naar Shapefile, ISOXML, GeoJSON en CSV.">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../assets/img/favicon.png" type="image/png" sizes="64x64">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="canonical" href="https://brain-dev.nl/repos/ndvi-taakkaart-generator.html">
+  <meta property="og:site_name" content="brain-dev">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="NDVI Taakkaart Generator — brain-dev">
+  <meta property="og:description" content="Open-source browsertool die van drone-NDVI (GeoTIFF) een variabele-dosering taakkaart maakt: automatische banddetectie, BRP-percelen via PDOK en export naar Shapefile, ISOXML, GeoJSON en CSV.">
+  <meta property="og:url" content="https://brain-dev.nl/repos/ndvi-taakkaart-generator.html">
+  <meta property="article:published_time" content="2026-10-13T00:00:00+02:00">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:image" content="https://brain-dev.nl/assets/img/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="brain-dev — kennisbank en blog over AI, data science en tooling">
+  <meta name="twitter:image" content="https://brain-dev.nl/assets/img/og.png">
+  <link rel="alternate" type="application/rss+xml" title="brain-dev — feed" href="../feed.xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="../index.html"><img class="mark" src="../assets/img/logo-mark.svg" alt="" width="26" height="24">br<span class="ai">ai</span>n-dev</a>
+      <nav class="site-nav" aria-label="Hoofdmenu">
+        <a href="../index.html" data-type="alles">Alles</a>
+        <a href="../index.html?type=kennis" data-type="kennis">Kennisbank</a>
+        <a href="../index.html?type=whitepaper" data-type="whitepaper">Whitepapers</a>
+        <a href="../index.html?type=blog" data-type="blog">Blog</a>
+        <a href="../index.html?type=repo" data-type="repo">Code</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap article">
+    <a class="backlink" href="../index.html">← terug naar het overzicht</a>
+
+    <h1 id="top">NDVI Taakkaart Generator</h1>
+    <div class="article-meta">
+      <span class="badge badge-repo">code</span>
+      <time datetime="2026-10-13">13 okt 2026</time>
+      <span>·</span>
+      <span>5 min</span>
+      <span>·</span>
+      <span class="item-tags">
+        <a class="tag" href="../index.html?q=ndvi">ndvi</a>
+        <a class="tag" href="../index.html?q=remote-sensing">remote-sensing</a>
+        <a class="tag" href="../index.html?q=open-source">open-source</a>
+      </span>
+    </div>
+
+    <p>Een dronevlucht levert een <abbr title="Normalized Difference Vegetation Index">NDVI</abbr>-kaart
+       waarop te zien is waar het gewas achterblijft. Een tractor-terminal of
+       <abbr title="Farm Management Information System">FMIS</abbr> werkt daar niet mee: die wil een
+       taakbestand met een dosering per cel en een rijrichting. De NDVI Taakkaart Generator doet die
+       stap in de browser. Je laadt een multispectrale GeoTIFF, kiest de percelen en exporteert een
+       taakkaart in het formaat dat je terminal of FMIS inleest. De broncode staat in
+       <a href="https://github.com/HASUniversity/NDVItoTaskmap">HASUniversity/NDVItoTaskmap</a> onder
+       de <a href="https://choosealicense.com/licenses/mit/">MIT-licentie</a>.</p>
+
+    <p>Er is geen installatie en geen account nodig: de repository klonen, een lokale webserver
+       starten en de pagina openen. De verwerking gebeurt volledig in de browser, dus de
+       dronebeelden gaan niet naar een server. Alleen de perceelgrenzen komen van buiten, live uit
+       de <abbr title="Basisregistratie Gewaspercelen">BRP</abbr> van
+       <a href="https://www.pdok.nl/">PDOK</a>.</p>
+
+    <nav class="article-toc" id="inhoud" aria-label="Inhoud">
+      <h2>Inhoud</h2>
+      <ol>
+        <li><a href="#stappen">De zes stappen van de wizard</a></li>
+        <li><a href="#functies">Wat er in zit</a></li>
+        <li><a href="#exporteren">Exporteren naar de terminal</a></li>
+        <li><a href="#draaien">Lokaal draaien</a></li>
+        <li><a href="#opbouw">Opbouw en techniek</a></li>
+        <li><a href="#stand">Stand van zaken</a></li>
+        <li><a href="#begrippen">Begrippen</a></li>
+        <li><a href="#bronnen">Bronnen</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="stappen">1. De zes stappen van de wizard</h2>
+
+    <p>De interface volgt de volgorde van het werk: eerst het beeld, dan de index, dan het perceel,
+       dan de klassen, dan de kaart, dan het bestand.</p>
+
+    <ol>
+      <li><strong>Laden</strong> — een multispectrale <code>.tif</code> slepen of kiezen.</li>
+      <li><strong>Index en banden</strong> — een vegetatie-index kiezen, de resolutie instellen en
+          berekenen. De banden (Red, Green, NIR, RedEdge) worden herkend uit de
+          golflengte-metadata of uit de ODM-conventie; handmatig overschrijven kan.</li>
+      <li><strong>Percelen</strong> — inzoomen tot niveau 14 of dieper, waarna de BRP-percelen
+          automatisch laden. Een perceel aanklikken knipt de overlay en het histogram bij naar dat
+          perceel.</li>
+      <li><strong>Analyse</strong> — de klassegrenzen kiezen; de kaart wordt direct opnieuw
+          ingekleurd.</li>
+      <li><strong>Kaart</strong> — celgrootte, eenheid, rijrichting en doseringsklassen instellen,
+          met een live voorbeeld van de taakkaart.</li>
+      <li><strong>Export</strong> — het taakbestand downloaden. Tussen de stappen door beweeg je met
+          de knoppen onderaan, of met de pijltjestoetsen en PageUp/PageDown.</li>
+    </ol>
+
+    <h2 id="functies">2. Wat er in zit</h2>
+
+    <ul>
+      <li><strong>Meer dan twintig vegetatie-indexen</strong>, waaronder NDVI, GNDVI, NDRE, SAVI,
+          WDVI, EVI en VARI. De banden die een index nodig heeft, worden automatisch gekozen.</li>
+      <li><strong>WDVI met instelbare bodemlijn</strong>: de correctiefactor <code>a</code> in
+          <code>NIR − a×R</code> loopt van 0.50 tot 1.80 via een slider, met presets voor zand
+          (1.0), klei (1.25) en organische grond (0.95). De standaardwaarde is 1.0.</li>
+      <li><strong>Resolutie-slider van 512 tot 8192 px</strong> voor het inlezen van het raster:
+          hoger rekent nauwkeuriger en duurt langer.</li>
+      <li><strong>Zeven classificatiemethoden</strong>: Quantile (standaard), gelijk interval,
+          standaarddeviatie, geometrisch interval, pretty breaks, natural breaks (Jenks) en
+          handmatig. Auto-classificatie verdeelt de klassen naar gelijke oppervlakte.</li>
+      <li><strong>Zeven doseerklassen</strong> als standaard, in het ColorBrewer RdYlGn-palet.</li>
+      <li><strong>Elf eenheden</strong> in vijf categorieën (massa per hectare, volume per hectare,
+          oppervlakte, aantallen per hectare, algemeen), elk met de juiste
+          <abbr title="Data Dictionary Identifier">DDI</abbr>-code in de ISOXML-export.</li>
+      <li><strong>Rijrichting</strong>: Noord-Zuid, of automatisch de langste perceelzijde.</li>
+      <li><strong>Gewashistorie per perceel</strong> uit de BRP-registraties, met een histogram van
+          de indexwaarden over het perceel.</li>
+    </ul>
+
+    <details>
+      <summary>Welke GeoTIFF-typen de tool inleest</summary>
+      <table>
+        <thead>
+          <tr><th>Type</th><th>Herkend aan</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>WebODM / ODM, vijf banden</td><td>Golflengte-metadata (NIR 840 nm, R 650 nm)</td></tr>
+          <tr><td>DJI Mavic multispectraal</td><td>Bandnaam-metadata (<code>Red</code>, <code>Nir</code>)</td></tr>
+          <tr><td>Generiek multispectraal</td><td>Reflectantie-heuristiek (NIR heeft doorgaans de hoogste gemiddelde waarde)</td></tr>
+          <tr><td>Bestaande NDVI</td><td>Enkelbands float32 GeoTIFF</td></tr>
+          <tr><td>DJI Terra Plant Health</td><td>RGB-kleurenkaart, via de G/R-verhouding</td></tr>
+        </tbody>
+      </table>
+    </details>
+
+    <h2 id="exporteren">3. Exporteren naar de terminal</h2>
+
+    <p>De uitvoer is het punt waarop de meeste NDVI-tools stoppen: een kaart om naar te kijken.
+       Deze tool schrijft vier formaten, waarvan één dat een ISOBUS-terminal direct inleest.</p>
+
+    <table>
+      <thead>
+        <tr><th>Formaat</th><th>Bestand</th><th>Waar het in gaat</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>ISOXML TaskData</td>
+          <td><code>naam_TASKDATA.zip</code></td>
+          <td>ISOBUS-taskcontrollers — John Deere, Fendt, Claas, AGCO, CNH, Topcon, Trimble</td>
+        </tr>
+        <tr>
+          <td>Shapefile</td>
+          <td><code>naam.zip</code></td>
+          <td>ArcGIS, QGIS, John Deere Operations Center, Trimble Ag Software, CNH AFS</td>
+        </tr>
+        <tr>
+          <td>GeoJSON</td>
+          <td><code>naam.geojson</code></td>
+          <td>Web-GIS, Mapbox, QGIS, Leaflet</td>
+        </tr>
+        <tr>
+          <td>CSV</td>
+          <td><code>naam.csv</code></td>
+          <td>Spreadsheets, FMIS, Agromanager</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>De ISOXML-export volgt ISO 11783-10: een <code>TASKDATA.XML</code> met een binair
+       <code>GRD</code>-grid erbij. Daarnaast kun je tussen de stappen door de berekende
+       NDVI van de geselecteerde percelen als float32 GeoTIFF opslaan, met coördinatenstelsel,
+       GeoKeys en <code>GDAL_NODATA=nan</code> — de GeoTIFF wordt binair opgebouwd met
+       <code>DataView</code>, zonder hulpbibliotheek.</p>
+
+    <h2 id="draaien">4. Lokaal draaien</h2>
+
+    <p>De applicatie gebruikt ES-modules, en browsers weigeren die via het
+       <code>file://</code>-protocol. Een lokale webserver is dus genoeg, meer niet.</p>
+
+    <pre><code class="language-bash">git clone https://github.com/HASUniversity/NDVItoTaskmap.git
+cd NDVItoTaskmap
+python -m http.server 8080   # of: npx serve .</code></pre>
+
+    <p>Daarna open je <code>http://localhost:8080</code>. In VS Code kan het ook met de extensie
+       Live Server. Alle bibliotheken zitten in de repository, dus na het klonen is er geen
+       internetverbinding nodig, behalve voor de PDOK-percelen.</p>
+
+    <h2 id="opbouw">5. Opbouw en techniek</h2>
+
+    <p>Eén HTML-pagina en een map <code>static/</code> met ES-modules: <code>geotiff-loader.js</code>
+       voor het inlezen en de bandkeuze, <code>ndvi.js</code> voor de kleurrampen, het histogram en
+       de classificatie, <code>brp.js</code> voor de perceelgrenzen en de gewashistorie,
+       <code>taskmap.js</code> voor de klasseneditor en de rijrichting, <code>export.js</code> voor
+       de vier uitvoerformaten, en <code>i18n.js</code> voor Nederlands en Engels. Geen framework,
+       geen Node.js en geen build-stap.</p>
+
+    <p>De gebruikte bibliotheken zijn meegeleverd in <code>static/vendor/</code>, dus zonder
+       <abbr title="Content Delivery Network">CDN</abbr>-afhankelijkheid:
+       <a href="https://leafletjs.com/">Leaflet</a> voor de kaart,
+       <a href="https://geotiffjs.github.io/">GeoTIFF.js</a> voor het uitlezen van de rasters,
+       <a href="https://github.com/proj4js/proj4js">proj4js</a> voor de coördinatentransformaties
+       (RD New/EPSG:28992, UTM en WGS84) en
+       <a href="https://turfjs.org/">Turf.js</a> voor de ruimtelijke bewerkingen: grids,
+       doorsnijdingen, oppervlakte.</p>
+
+    <h2 id="stand">6. Stand van zaken</h2>
+
+    <p>De repository is openbaar en de versie staat vast: release <strong>v1.0.0</strong> is
+       gepubliceerd op 8 oktober 2026 met de functielijst erin. Wat er sindsdien in de
+       <a href="https://github.com/HASUniversity/NDVItoTaskmap/blob/main/CHANGELOG.md">changelog</a>
+       staat, is nog niet in een release uitgebracht:</p>
+
+    <ul>
+      <li>De bodemlijn van WDVI is van een vaste waarde 1.2 naar een slider gegaan, met 1.0 als
+          standaard voor DJI Mavic 3M-beelden zonder eigen kalibratie.</li>
+      <li>De classificatie is uitgebreid naar zeven methoden en de standaardklassen van vijf naar
+          zeven.</li>
+      <li>Een fout in <code>buildZipBlob</code> is gerepareerd: de byte-order van de
+          ZIP-handtekeningen stond omgekeerd, waardoor de Shapefile-export niet opende.</li>
+    </ul>
+
+    <p>Op 13 oktober 2026 geteld via de GitHub-API: 23 commits tussen 14 maart en 12 oktober 2026,
+       drie sterren, één fork, geen openstaande issues en geen GitHub Actions-workflows. De
+       afspraken over README, changelog en een syntaxcontrole staan als instructies in de
+       repository, niet in een pijplijn.</p>
+
+    <p>Wat er verder bij hoort: de licentie is MIT met "Contributors" als rechthebbende, en de
+       <a href="https://github.com/HASUniversity/NDVItoTaskmap/blob/main/CITATION.cff">CITATION.cff</a>
+       bevat naam, ORCID, affiliatie en de licentie, zodat GitHub de knop "Cite this repository"
+       toont. Een DOI via Zenodo is er op het moment van schrijven niet: in de Zenodo-index staat
+       geen record voor deze repository, dus citeren gaat voorlopig met de repository-URL. Er is ook
+       geen online demo; de tool draait per ontwerp lokaal, omdat de dronebeelden de browser niet
+       verlaten.</p>
+
+    <p>Eén beperking zit in de databron: de perceelgrenzen en gewasregistraties komen live uit de
+       BRP, en hoe ver de historie teruggaat hangt aan de publicatiecyclus van
+       <abbr title="Rijksdienst voor Ondernemend Nederland">RVO</abbr>. Buiten Nederland is er geen
+       perceellaag.</p>
+
+    <h2 id="begrippen">7. Begrippen</h2>
+
+    <dl>
+      <dt>NDVI</dt>
+      <dd>het genormaliseerde verschil tussen nabij-infrarood en rood; een maat voor groene
+          biomassa. Deze tool rekent hem uit de multispectrale opname.</dd>
+      <dt>GeoTIFF</dt>
+      <dd>een TIFF-bestand met aardrijkskundige informatie erin, zoals het
+          coördinatenstelsel.</dd>
+      <dt>Taakkaart</dt>
+      <dd>een bestand met een dosering per cel en een rijrichting, dat een terminal of FMIS
+          inleest om de machine variabel te laten werken.</dd>
+      <dt>BRP</dt>
+      <dd>de Basisregistratie Gewaspercelen: de Nederlandse perceelgrenzen met de gewassen die er
+          per jaar op staan. <a href="https://www.pdok.nl/introductie/-/article/basisregistratie-gewaspercelen-brp-">Beschrijving bij PDOK</a></dd>
+      <dt>PDOK</dt>
+      <dd>het platform waar de overheid haar geografische datasets aanbiedt.
+          <a href="https://www.pdok.nl/">pdok.nl</a></dd>
+      <dt>ISOBUS en ISOXML</dt>
+      <dd>ISO 11783 is de norm voor communicatie tussen trekker en werktuig; ISOXML TaskData is het
+          taakbestand binnen die norm.</dd>
+      <dt>FMIS</dt>
+      <dd>Farm Management Information System: de bedrijfssoftware waarin percelen, gewassen en
+          werkzaamheden worden bijgehouden.</dd>
+    </dl>
+
+    <h2 id="bronnen">8. Bronnen</h2>
+
+    <p>Alles hierboven komt uit de repository zelf, plus de documentatie van de twee externe
+       diensten.</p>
+
+    <ul class="references">
+      <li>NDVItoTaskmap. (2026). <em>README</em> [Functies, workflow, exportformaten, techniek].
+          <a href="https://github.com/HASUniversity/NDVItoTaskmap">https://github.com/HASUniversity/NDVItoTaskmap</a></li>
+      <li>NDVItoTaskmap. (2026). <em>Changelog</em> [WDVI-slider, classificatiemethoden, eenheden,
+          ZIP-correctie].
+          <a href="https://github.com/HASUniversity/NDVItoTaskmap/blob/main/CHANGELOG.md">https://github.com/HASUniversity/NDVItoTaskmap/blob/main/CHANGELOG.md</a></li>
+      <li>NDVItoTaskmap. (2026, 8 oktober). <em>v1.0.0: Initial public release</em> [Release notes].
+          <a href="https://github.com/HASUniversity/NDVItoTaskmap/releases/tag/v1.0.0">https://github.com/HASUniversity/NDVItoTaskmap/releases/tag/v1.0.0</a></li>
+      <li>NDVItoTaskmap. (2026). <em>CITATION.cff</em> [Auteursmetadata en licentie].
+          <a href="https://github.com/HASUniversity/NDVItoTaskmap/blob/main/CITATION.cff">https://github.com/HASUniversity/NDVItoTaskmap/blob/main/CITATION.cff</a></li>
+      <li>PDOK. (z.d.). <em>BRP Gewaspercelen WFS (GetCapabilities)</em>. Geraadpleegd op 13 oktober 2026, van
+          <a href="https://service.pdok.nl/rvo/gewaspercelen/wfs/v1_0?request=GetCapabilities&amp;service=WFS">https://service.pdok.nl/rvo/gewaspercelen/wfs/v1_0</a></li>
+      <li>Leaflet. (z.d.). <em>Leaflet — een JavaScript-bibliotheek voor interactieve kaarten</em>.
+          <a href="https://leafletjs.com/">https://leafletjs.com/</a></li>
+      <li>GeoTIFF.js. (z.d.). <em>GeoTIFF.js — TIFF-parsing in de browser</em>.
+          <a href="https://geotiffjs.github.io/">https://geotiffjs.github.io/</a></li>
+      <li>proj4js. (z.d.). <em>proj4js — coördinatentransformaties</em>.
+          <a href="https://github.com/proj4js/proj4js">https://github.com/proj4js/proj4js</a></li>
+      <li>Turf.js. (z.d.). <em>Turf.js — ruimtelijke analyse in JavaScript</em>.
+          <a href="https://turfjs.org/">https://turfjs.org/</a></li>
+    </ul>
+
+    <p><a class="backlink" href="#inhoud">↑ terug naar de inhoud</a></p>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>brain-dev</span>
+      <span>statisch · <a href="https://github.com/koenvers/brain-dev">broncode op GitHub</a></span>
+      <span><a href="mailto:k.verschuren@has.nl">k.verschuren@has.nl</a> · <a href="https://www.linkedin.com/in/koenverschuren">LinkedIn</a></span>
+    </div>
+  </footer>
+
+  <script src="../assets/js/highlight.js"></script>
+  <script src="../assets/js/analytics.js"></script>
+</body>
+</html>

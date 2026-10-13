@@ -1,6 +1,6 @@
 # brain-dev
 
-Statische site (kennisbank + whitepapers + blog) voor GitHub Pages. Platte
+Statische site (kennisbank + whitepapers + blog + code) voor GitHub Pages. Platte
 HTML, één CSS-bestand, vier kleine JS-bestanden, systeemfonts. Geen Node-build,
 geen Jekyll, geen dependencies (Node alleen voor tests en de meta-generator).
 
@@ -23,6 +23,7 @@ brain-dev/
 │       ├── highlight.js    mini syntax-highlighter voor codeblokken
 │       └── analytics.js    meting (standaard uit; zie "Meten")
 ├── posts/                  artikelen (één HTML-bestand per stuk)
+├── repos/                  projectpagina's van open-source repo's (type 'repo', dezelfde chrome als posts/)
 ├── tools/build-meta.js     genereert sitemap.xml + feed.xml uit de index
 ├── tests/run-tests.js      node tests/run-tests.js
 └── .nojekyll               schakelt de Jekyll-build van GitHub Pages uit
@@ -30,8 +31,9 @@ brain-dev/
 
 ## Nieuw item toevoegen (3 stappen, geen build)
 
-1. **Pagina maken.** Kopieer een bestaand bestand uit `posts/` en pas titel,
-   meta-blok en content aan. Codeblokken: `<pre><code class="language-python">…</code></pre>`
+1. **Pagina maken.** Kopieer een bestaand bestand uit `posts/` (of uit `repos/`
+   voor een projectpagina) en pas titel, meta-blok en content aan. Codeblokken:
+   `<pre><code class="language-python">…</code></pre>`
    (ondersteund: `python`, `js`, `bash`, `sql`, `css`, `json`; alles wat
    onbekend is krijgt neutrale opmaak).
 
@@ -55,29 +57,38 @@ brain-dev/
 
    ```js
    {
-     type: 'kennis',                       // 'kennis', 'whitepaper' of 'blog'
+     type: 'kennis',                       // 'kennis', 'whitepaper', 'blog' of 'repo'
      title: 'Titel van het stuk',
-     url: 'posts/mijn-stuk.html',          // relatief ten opzichte van index.html
+     url: 'posts/mijn-stuk.html',          // relatief ten opzichte van index.html; een
+                                           // projectpagina staat in repos/
      summary: 'Eén samenvatting van 1-2 zinnen — wordt getoond en geïndexeerd.',
      date: '2026-10-09',                   // YYYY-MM-DD
      minutes: 7,                           // leestijd in minuten
      tags: ['ai', 'tooling'],              // klein, aaneengesloten, herbruikbaar
+     subtag: 'fundingradar',               // optioneel: project of reeks → oranje label naast het type
      updated: '2026-10-20',                // optioneel: laatste wijziging → sitemap-lastmod
      repo: 'https://github.com/…'          // optioneel: broncode → "code ↗" in het overzicht
-   }
-   ```
+    }
+    ```
 
    `tags` zijn meteen ook de filterrij boven de lijst: de meest gebruikte tags
-   komen daar automatisch als pill te staan. `updated` en `repo` mogen weg.
-   Ongeldige waarden in die twee velden worden genegeerd, het item blijft staan.
+   komen daar automatisch als pill te staan. `subtag`, `updated` en `repo` mogen
+   weg. Ongeldige waarden in die drie velden worden genegeerd, het item blijft
+   staan.
+
+   `subtag` is geen tag maar een label voor het project of de reeks waar een stuk
+   bij hoort (bijvoorbeeld `fundingradar` bij een reeks rond één tool). Eén woord,
+   kleine letters, koppelstreepjes mogen; het staat in oranje naast het type in
+   het overzicht en op de artikelpagina. Meerdere sub-tags per item kan niet —
+   is een tweede nodig, dan is dat een teken dat het een tag had moeten zijn.
 
    Een item met een ongeldige regel (verkeerd type, ontbrekende titel/url,
    datum niet `YYYY-MM-DD`) wordt door de code overgeslagen — de site blijft
    werken, het item verschijnt niet.
 
 De index is meteen de zoekindex: er is niets te genereren of bij te werken.
-Velden die je zoekt: titel, samenvatting, tags (en het type:
-`knowledge`/`whitepaper`/`blog`).
+Velden die je zoekt: titel, samenvatting, subtag, tags (en het type:
+`knowledge`/`whitepaper`/`blog`/`code`).
 
 3. **Meta-generator draaien** (als er Node is): `node tools/build-meta.js`
    herschrijft `sitemap.xml` en `feed.xml` uit de index. Zonder Node: die twee
@@ -126,7 +137,7 @@ mee (geen vervuiling van de cijfers door previews).
   hoofdletteronafhankelijk, meerdere woorden = EN. Zoeken is een
   substring-match: `ai` vindt ook `Airflow`.
 - Secties (typefilter) zitten in de navigatie: `all` / `knowledge` /
-  `whitepapers` / `blog`; de
+  `whitepapers` / `blog` / `code`; de
   resultaatregel staat onder de tagrij. Daaronder een tagrij
   met de meest gebruikte tags: klik = filteren op die tag, nog een klik heft het
   filter op. Klikken op een tag in een item zet dezelfde tagfilter.
@@ -186,8 +197,10 @@ lokaal via `index.html` openen of `python -m http.server`.
 - **Kleuren:** CSS-variabelen bovenin `assets/css/style.css`; donkere modus in
   de `@media (prefers-color-scheme: dark)`-blok daaronder. Eén accentkleur
   (`--accent-strong`) voor links, het actieve filter en focus; de rest is
-  monochroom. Wisselen naar Hacker News-oranje (`#ff6600`) of terminalblauw
-  (`#3b5bdb`) is één regel, zie het commentaar bij de variabelen.
+  monochroom, op één uitzondering na: `--subtag` is oranje, want dat label moet
+  van het type en van de tags te onderscheiden blijven. Wisselen naar Hacker
+  News-oranje (`#ff6600`) of terminalblauw (`#3b5bdb`) is één regel, zie het
+  commentaar bij de variabelen.
 - **Fonts:** systeemfonts, geen webfonts. `--sans` en `--mono` staan bovenin
   `style.css` en verwijzen naar `system-ui` en `ui-monospace`. Inter en
   JetBrains Mono zijn eruit gehaald omdat twee woff2-bestanden 88 kB van de

@@ -7,7 +7,7 @@
   /* Type -> het woord in de marge. Dit object is de enige plek waar de types
      staan: het bepaalt welke regels de index accepteert (isPlainItem) en hoe
      de sectie in de URL heet (?type=…). */
-  var TYPE_LABEL = { kennis: 'knowledge', blog: 'blog', whitepaper: 'whitepaper' };
+  var TYPE_LABEL = { kennis: 'knowledge', blog: 'blog', whitepaper: 'whitepaper', repo: 'code' };
   var MAANDEN = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   var TAGBAR_MAX = 8;   /* tag-pills boven de lijst */
   var SUGGEST_MAX = 6;  /* tagsuggesties bij een leeg resultaat */
@@ -15,6 +15,11 @@
   /* Elke href komt uit de index; alleen relatieve paden en http(s) mogen erin.
      Zo kan een fout of kwaadwillende indexregel geen javascript:-URL injecteren. */
   var SCHEME = /^[a-z][a-z0-9+.-]*:/i;
+
+  /* Een sub-tag is het project of de reeks waar een stuk bij hoort ('fundingradar'),
+     naast de inhoudelijke tags. Eén woord in kleine letters; al het andere wordt
+     genegeerd (het item blijft staan, het label verdwijnt). */
+  var SUBTAG = /^[a-z0-9][a-z0-9-]*$/;
 
   function isLocalUrl(url) {
     return typeof url === 'string' && url !== '' && !SCHEME.test(url);
@@ -48,6 +53,8 @@
           .map(function (t) { return t.trim(); })
       : [];
     var summary = typeof it.summary === 'string' ? it.summary.trim() : '';
+    var subtag = typeof it.subtag === 'string' ? it.subtag.trim() : '';
+    if (!SUBTAG.test(subtag)) subtag = '';
     return {
       type: it.type,
       title: it.title.trim(),
@@ -58,11 +65,13 @@
       updated: isIsoDate(it.updated) ? it.updated : '',
       /* optioneel: broncode/repo van het beschreven project */
       repo: isHttpUrl(it.repo) ? it.repo.trim() : '',
+      /* optioneel: project of reeks waar dit stuk bij hoort */
+      subtag: subtag,
       minutes: typeof it.minutes === 'number' && it.minutes > 0 ? it.minutes : null,
       tags: tags,
       tagsLower: tags.map(function (t) { return t.toLowerCase(); }),
       /* alles waarop gezocht wordt, klein opgeslagen */
-      haystack: (it.title + ' ' + summary + ' ' + tags.join(' ') + ' ' + TYPE_LABEL[it.type]).toLowerCase()
+      haystack: (it.title + ' ' + summary + ' ' + subtag + ' ' + tags.join(' ') + ' ' + TYPE_LABEL[it.type]).toLowerCase()
     };
   }
 
@@ -186,6 +195,7 @@
 
     var head = el('div', 'item-head');
     head.appendChild(el('span', 'badge badge-' + it.type, TYPE_LABEL[it.type]));
+    if (it.subtag) head.appendChild(el('span', 'subtag', it.subtag));
     var a = el('a', 'item-title', it.title);
     a.href = it.url;
     head.appendChild(a);

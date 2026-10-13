@@ -18,6 +18,16 @@
     <category>ai</category>
   </item>
   <item>
+    <title>NDVI Taakkaart Generator</title>
+    <link>https://brain-dev.nl/repos/ndvi-taakkaart-generator.html</link>
+    <guid isPermaLink="true">https://brain-dev.nl/repos/ndvi-taakkaart-generator.html</guid>
+    <pubDate>Mon, 12 Oct 2026 22:00:00 GMT</pubDate>
+    <description>Open-source browsertool die van drone-NDVI (GeoTIFF) een variabele-dosering taakkaart maakt: automatische banddetectie, BRP-percelen via PDOK, en export naar Shapefile, ISOXML, GeoJSON en CSV.</description>
+    <category>ndvi</category>
+    <category>remote-sensing</category>
+    <category>open-source</category>
+  </item>
+  <item>
     <title>Onderzoekssoftware publiceren via Zenodo en de RSD</title>
     <link>https://brain-dev.nl/posts/onderzoekssoftware-publiceren-zenodo-rsd.html</link>
     <guid isPermaLink="true">https://brain-dev.nl/posts/onderzoekssoftware-publiceren-zenodo-rsd.html</guid>

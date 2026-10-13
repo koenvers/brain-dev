@@ -27,6 +27,14 @@ const RAW = global.window.BRAINDEV_INDEX;
 const app = require(path.join(root, 'assets', 'js', 'app.js'));
 const hl = require(path.join(root, 'assets', 'js', 'highlight.js'));
 
+/* Contentpagina's: artikelen in posts/, projectpagina's in repos/. Ze delen
+   dezelfde chrome (canonical, Open Graph, favicon, feed-link, analytics), dus
+   de pagina-tests lopen over beide mappen. */
+const CONTENT_DIRS = ['posts', 'repos'];
+const contentPages = () => CONTENT_DIRS
+  .flatMap((dir) => fs.readdirSync(path.join(root, dir)).map((f) => dir + '/' + f));
+const chromePages = () => ['index.html', '404.html'].concat(contentPages());
+
 console.log('index');
 test('index is een array met items', () => {
   assert.ok(Array.isArray(RAW) && RAW.length > 0);
@@ -35,7 +43,7 @@ test('alle items zijn geldig en worden genormaliseerd', () => {
   const items = app.loadIndex(RAW);
   assert.strictEqual(items.length, RAW.length);
   items.forEach((it) => {
-    assert.ok(['kennis', 'blog', 'whitepaper'].indexOf(it.type) !== -1, it.title + ': type');
+    assert.ok(['kennis', 'blog', 'whitepaper', 'repo'].indexOf(it.type) !== -1, it.title + ': type');
     assert.ok(it.title.length > 0);
     assert.ok(it.summary.length > 0);
     assert.ok(Array.isArray(it.tags) && it.tags.length > 0);
@@ -68,16 +76,20 @@ test('datums, leestijd en tags hebben het juiste formaat', () => {
     assert.ok(Number.isFinite(it.minutes) && it.minutes > 0, it.title + ': minutes');
     assert.ok(Array.isArray(it.tags) && it.tags.length > 0, it.title + ': tags');
     it.tags.forEach((t) => assert.ok(t.trim() === t && t.length > 0, it.title + ': tag-formaat'));
+    /* subtag is optioneel; staat hij er, dan moet hij de normalisatie overleven */
+    if (it.subtag !== undefined) {
+      assert.strictEqual(app.loadIndex([it])[0].subtag, it.subtag, it.title + ': subtag');
+    }
   });
 });
-test('posts verwijzen terug naar bestaande assets (script/css-pad)', () => {
-  fs.readdirSync(path.join(root, 'posts')).forEach((f) => {
-    const html = fs.readFileSync(path.join(root, 'posts', f), 'utf8');
+test('elke contentpagina verwijst naar bestaande assets (script/css-pad)', () => {
+  contentPages().forEach((p) => {
+    const html = fs.readFileSync(path.join(root, p), 'utf8');
     const refs = [...html.matchAll(/(?:href|src)="([^"#]+)"/g)].map((m) => m[1]);
     refs.forEach((r) => {
       if (/^(https?:|mailto:|data:)/.test(r)) return;
       const file = r.split('?')[0].split('#')[0];
-      assert.ok(fs.existsSync(path.join(root, 'posts', file)), f + ': ' + r);
+      assert.ok(fs.existsSync(path.join(root, path.dirname(p), file)), p + ': ' + r);
     });
   });
 });
@@ -103,6 +115,12 @@ const FIXTURE = [
     type: 'whitepaper', title: 'Een whitepaper over de pijplijn', url: 'z.html', date: '2026-10-13',
     summary: 'Wat er verandert als het zoeken naar regelingen uitbesteed wordt.',
     minutes: 14, tags: ['whitepaper', 'onderzoek']
+  },
+  {
+    type: 'repo', title: 'Taakkaartgenerator uit dronebeeld', url: 'w.html', date: '2026-10-13',
+    summary: 'Van multispectrale GeoTIFF naar een doseringsbestand voor de tractor.',
+    minutes: 5, tags: ['remote-sensing', 'opensource'],
+    repo: 'https://github.com/HASUniversity/NDVItoTaskmap'
   }
 ];
 const fx = app.loadIndex(FIXTURE);
@@ -117,6 +135,9 @@ test('type-filter levert alleen die type', () => {
   const whitepaper = app.filter(fx, 'whitepaper', '');
   assert.ok(whitepaper.length > 0);
   whitepaper.forEach((it) => assert.strictEqual(it.type, 'whitepaper'));
+  const repo = app.filter(fx, 'repo', '');
+  assert.ok(repo.length > 0);
+  repo.forEach((it) => assert.strictEqual(it.type, 'repo'));
   assert.strictEqual(app.filter(fx, 'alles', '').length, fx.length);
 });
 test('zoeken op titel, samenvatting en tags', () => {
@@ -202,6 +223,29 @@ test('repo en updated zijn optioneel en worden gevalideerd', () => {
   }]);
   assert.strictEqual(fout.updated, '', 'ongeldige datum negeren');
   assert.strictEqual(fout.repo, '', 'javascript:-URL weigeren');
+});
+test('subtag is optioneel; alleen een kleine-letter-slug wordt overgenomen', () => {
+  const met = (subtag) => app.loadIndex([{
+    type: 'kennis', title: 'x', url: 'x.html', date: '2026-01-01', subtag: subtag
+  }])[0].subtag;
+
+  assert.strictEqual(met('fundingradar'), 'fundingradar');
+  assert.strictEqual(met('  fundingradar  '), 'fundingradar', 'witruimte negeren');
+  assert.strictEqual(met('grant-write'), 'grant-write', 'koppelstreepje mag');
+  /* stil negeren: het item blijft staan, alleen het label verdwijnt */
+  ['FundingRadar', 'twee woorden', '<b>x</b>', 'a_b', '', 12, null].forEach((fout) => {
+    assert.strictEqual(met(fout), '', 'ongeldige subtag: ' + String(fout));
+  });
+
+  const [zonder] = app.loadIndex([{ type: 'kennis', title: 'x', url: 'x.html', date: '2026-01-01' }]);
+  assert.strictEqual(zonder.subtag, '', 'ontbrekend veld');
+});
+test('subtag is vindbaar in de zoekopdracht', () => {
+  const [it] = app.loadIndex([{
+    type: 'kennis', title: 'Een handleiding', url: 'x.html', date: '2026-01-01',
+    subtag: 'fundingradar'
+  }]);
+  assert.strictEqual(app.filter([it], 'alles', 'fundingradar').length, 1);
 });
 test('item-url met een schema (javascript:, data:) wordt overgeslagen', () => {
   assert.strictEqual(app.loadIndex([
@@ -306,8 +350,7 @@ test('robots.txt wijst naar de sitemap', () => {
   assert.ok(!/Disallow:\s*\//.test(rb));
 });
 test('canonical en Open Graph op elke contentpagina', () => {
-  const pages = ['index.html']
-    .concat(fs.readdirSync(path.join(root, 'posts')).map((f) => 'posts/' + f));
+  const pages = ['index.html'].concat(contentPages());
   pages.forEach((f) => {
     const html = fs.readFileSync(path.join(root, f), 'utf8');
     const canon = /rel="canonical" href="([^"]+)"/.exec(html);
@@ -318,7 +361,7 @@ test('canonical en Open Graph op elke contentpagina', () => {
     assert.ok(html.includes('property="og:url"'), f + ': og:url');
     assert.ok(html.includes('name="twitter:card"'), f + ': twitter:card');
     assert.ok(html.includes('href="https://github.com/koenvers/brain-dev"'), f + ': repo-link');
-    if (f.startsWith('posts/')) assert.ok(html.includes('article:published_time'), f + ': published_time');
+    if (f !== 'index.html') assert.ok(html.includes('article:published_time'), f + ': published_time');
   });
 });
 test('404-pagina bestaat en gebruikt absolute paden', () => {
@@ -330,8 +373,7 @@ test('404-pagina bestaat en gebruikt absolute paden', () => {
 
 test('custom domain: CNAME vastgelegd en geen resten van het github.io-subpad', () => {
   assert.strictEqual(fs.readFileSync(path.join(root, 'CNAME'), 'utf8').trim(), 'brain-dev.nl');
-  const pagina = ['index.html', '404.html']
-    .concat(fs.readdirSync(path.join(root, 'posts')).map((f) => 'posts/' + f));
+  const pagina = chromePages();
   pagina.concat(['robots.txt', 'sitemap.xml', 'feed.xml', 'CITATION.cff', 'tools/build-meta.js'])
     .forEach((f) => {
       const tekst = fs.readFileSync(path.join(root, f), 'utf8');
@@ -379,8 +421,7 @@ test('generator is idempotent: hervatten levert identieke bestanden', () => {
   assert.strictEqual(na.feed, voor.feed, 'feed.xml wijkt af van generator');
 });
 test('feed-link op elke pagina', () => {
-  const pages = ['index.html', '404.html']
-    .concat(fs.readdirSync(path.join(root, 'posts')).map((f) => 'posts/' + f));
+  const pages = chromePages();
   pages.forEach((f) => {
     const html = fs.readFileSync(path.join(root, f), 'utf8');
     assert.ok(html.includes('type="application/rss+xml"'), f + ': feed-link');
@@ -420,8 +461,7 @@ test('analytics: vuurt de juiste teller-URL, behalve op localhost/file', () => {
   assert.strictEqual(run({ hostname: '127.0.0.1', protocol: 'http:' }).length, 0, '127.0.0.1 moet overslaan');
   assert.strictEqual(run({ hostname: 'example.org', protocol: 'file:' }).length, 0, 'file:// moet overslaan');
 
-  const pages = ['index.html', '404.html']
-    .concat(fs.readdirSync(path.join(root, 'posts')).map((f) => 'posts/' + f));
+  const pages = chromePages();
   pages.forEach((f) => {
     const html = fs.readFileSync(path.join(root, f), 'utf8');
     const n = (html.match(/<script src="[^"]*analytics\.js"><\/script>/g) || []).length;
@@ -440,11 +480,10 @@ test('geen webfonts: systeemstack, geen fontbestanden en geen externe font-URL',
   assert.ok(!/\.woff2?|@font-face/.test(og), 'ook de OG-kaart gebruikt systeemfonts');
 });
 test('favicon en og-image: aanwezig, bestanden bestaan, echte PNG', () => {
-  const pages = ['index.html', '404.html']
-    .concat(fs.readdirSync(path.join(root, 'posts')).map((f) => 'posts/' + f));
+  const pages = chromePages();
   pages.forEach((f) => {
     const html = fs.readFileSync(path.join(root, f), 'utf8');
-    const pre = f.startsWith('posts/') ? '../' : f === '404.html' ? '/' : '';
+    const pre = f.includes('/') ? '../' : f === '404.html' ? '/' : '';
     assert.ok(html.includes(`href="${pre}assets/img/favicon.svg" type="image/svg+xml"`), f + ': svg-favicon');
     assert.ok(html.includes(`href="${pre}assets/img/favicon.png" type="image/png"`), f + ': png-fallback');
     assert.ok(!html.includes('logo-mark.svg" type="image/svg+xml"'), f + ': logo-mark.svg hoort geen favicon-link te zijn');

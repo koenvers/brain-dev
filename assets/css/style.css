@@ -22,6 +22,11 @@
   --accent: #a3c9a8;          /* pastelgroen uit het logo, alleen nog voor randen */
   --accent-strong: #3f7a4e;   /* leesbare tekstvariant op licht */
 
+  /* Sub-tag (het project waar een stuk bij hoort) in oranje: de tweede
+     functionele kleur, zodat hij niet met het type of met een tag te verwarren
+     is. Contrast op deze achtergrond 4,9:1 — gelijk aan --accent-strong. */
+  --subtag: #b3521c;
+
   --code-bg: #f3f3f3;
   --tok-kw: #2f6b41;
   --tok-str: #8a5a2b;
@@ -43,6 +48,8 @@
 
     --accent: #a3c9a8;
     --accent-strong: #a3c9a8;
+
+    --subtag: #e8894a;
 
     --code-bg: #1b1b1b;
     --tok-kw: #a3c9a8;
@@ -342,8 +349,10 @@ main { padding: 26px 0 56px; }
   gap: 8px;
 }
 
-/* Type als klein woord in de marge, niet als badge met een achtergrond */
-.badge {
+/* Type als klein woord in de marge, niet als badge met een achtergrond.
+   De sub-tag deelt die vorm en verschilt alleen in kleur. */
+.badge,
+.subtag {
   font-family: var(--mono);
   font-size: 11px;
   line-height: 1.6;
@@ -356,6 +365,12 @@ main { padding: 26px 0 56px; }
 .badge-whitepaper { color: var(--accent-strong); }
 
 .badge-blog { color: var(--faint); }
+
+/* Een repo is geen naslag maar het artefact zelf: de tussenliggende grijstint. */
+.badge-repo { color: var(--muted); }
+
+/* Project of reeks waar een stuk bij hoort (indexveld `subtag`) */
+.subtag { color: var(--subtag); }
 
 .item-title {
   font-size: 15.5px;

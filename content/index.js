@@ -1,9 +1,20 @@
 /* brain-dev — zoekindex en enige bron van waarheid voor het overzicht.
    Elk nieuw artikel/blog krijgt hier één regel; het overzicht rendert hieruit.
-   Velden: type ('kennis' | 'blog' | 'whitepaper'), title, url, summary, date (YYYY-MM-DD),
-           minutes (leestijd), tags (array). Slechte entries worden overgeslagen.
+   Velden: type ('kennis' | 'blog' | 'whitepaper' | 'repo'), title, url, summary, date (YYYY-MM-DD),
+           minutes (leestijd), tags (array), subtag (optioneel: project of reeks, kleine
+           letters, één woord). Slechte entries worden overgeslagen.
    Welk type een stuk krijgt staat in de skill `blogpost-schrijven`. */
 window.BRAINDEV_INDEX = [
+  {
+    type: 'repo',
+    title: 'NDVI Taakkaart Generator',
+    url: 'repos/ndvi-taakkaart-generator.html',
+    summary: 'Open-source browsertool die van drone-NDVI (GeoTIFF) een variabele-dosering taakkaart maakt: automatische banddetectie, BRP-percelen via PDOK, en export naar Shapefile, ISOXML, GeoJSON en CSV.',
+    date: '2026-10-13',
+    minutes: 5,
+    tags: ['ndvi', 'remote-sensing', 'open-source'],
+    repo: 'https://github.com/HASUniversity/NDVItoTaskmap'
+  },
   {
     type: 'whitepaper',
     title: 'FundingRadar: van handmatig subsidiezoeken naar een dagelijkse radar',
@@ -11,7 +22,8 @@ window.BRAINDEV_INDEX = [
     summary: 'Whitepaper over FundingRadar: de achtergrond in de hbo-bekostiging, wat de tool uit de AI-roadmap dagelijks doet voor de onderzoeksgroepen, de gemeten cijfers op 13 oktober 2026, en een fasering van handwerk naar keten.',
     date: '2026-10-13',
     minutes: 12,
-    tags: ['subsidie', 'onderzoek', 'ai']
+    tags: ['subsidie', 'onderzoek', 'ai'],
+    subtag: 'fundingradar'
   },
   {
     type: 'kennis',
