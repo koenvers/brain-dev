@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you use this site or its content in your work, please cite it as below."
 title: "brain-dev"
-abstract: "Statische kennisbank en blog over AI, data science en tooling."
+abstract: "Onderzoeksnotities over de data-infrastructuur achter meten en monitoren: datatransport, opslag, computervisie en reproduceerbaarheid in praktijkgericht onderzoek."
 authors:
   - family-names: Verschuren
     given-names: Koen
@@ -9,8 +9,8 @@ authors:
 url: "https://koenvers.github.io/brain-dev/"
 repository-code: "https://github.com/koenvers/brain-dev"
 keywords:
-  - kennisbank
-  - blog
-  - AI
-  - data science
-  - tooling
+  - onderzoeksnotities
+  - data-infrastructuur
+  - computervisie
+  - reproduceerbaarheid
+  - praktijkgericht onderzoek
