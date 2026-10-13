@@ -1,24 +1,24 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>brain-dev — kennisbank &amp; blog</title>
-  <meta name="description" content="Onderzoeksnotities van Koen Verschuren over betrouwbaar meten: waarneming, interpretatie en herhaalbaarheid in praktijkgericht onderzoek.">
+  <title>brain-dev — knowledge base and blog</title>
+  <meta name="description" content="Research notes by Koen Verschuren on AI and data science in agri-food and the living environment: data pipelines, computer vision and the tooling around them.">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="assets/img/favicon.png" type="image/png" sizes="64x64">
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="canonical" href="https://koenvers.github.io/brain-dev/">
   <meta property="og:site_name" content="brain-dev">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="brain-dev — kennisbank &amp; blog">
-  <meta property="og:description" content="Onderzoeksnotities van Koen Verschuren over betrouwbaar meten: waarneming, interpretatie en herhaalbaarheid in praktijkgericht onderzoek.">
+  <meta property="og:title" content="brain-dev — knowledge base and blog">
+  <meta property="og:description" content="Research notes by Koen Verschuren on AI and data science in agri-food and the living environment: data pipelines, computer vision and the tooling around them.">
   <meta property="og:url" content="https://koenvers.github.io/brain-dev/">
   <meta name="twitter:card" content="summary_large_image">
   <meta property="og:image" content="https://koenvers.github.io/brain-dev/assets/img/og.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="brain-dev — Koen Verschuren over de dataketen achter meten">
+  <meta property="og:image:alt" content="brain-dev — notes on AI and data science in agri-food">
   <meta name="twitter:image" content="https://koenvers.github.io/brain-dev/assets/img/og.png">
   <link rel="alternate" type="application/rss+xml" title="brain-dev — feed" href="feed.xml">
 </head>
@@ -26,50 +26,43 @@
   <header class="site-header">
     <div class="wrap">
       <a class="wordmark" href="index.html"><img class="mark" src="assets/img/logo-mark.svg" alt="" width="26" height="24">br<span class="ai">ai</span>n-dev</a>
-      <nav class="site-nav" aria-label="Hoofdmenu">
-        <a href="index.html" data-type="alles">alles</a>
-        <a href="index.html?type=kennis" data-type="kennis">kennis</a>
+      <nav class="site-nav" aria-label="Sections">
+        <a href="index.html" data-type="alles">all</a>
+        <a href="index.html?type=kennis" data-type="kennis">knowledge</a>
         <a href="index.html?type=blog" data-type="blog">blog</a>
-        <a href="over.html">over</a>
       </nav>
     </div>
   </header>
 
   <main class="wrap">
     <p class="tagline">
-      brain-dev bundelt notities over betrouwbaar meten: de weg van waarneming naar
-      interpretatie, en de voorwaarden waaronder die weg herhaalbaar en
-      controleerbaar blijft. De stukken komen voort uit praktijkgericht onderzoek en
-      noemen de werkwijze, de uitkomsten en de beperkingen.
+      Research notes on AI and data science in agri-food and the living environment:
+      data pipelines, computer vision and the tooling that keeps them running. Written
+      from projects at HAS green academy and Groenpact; every piece states the method,
+      the results and the limits.
       <span class="tagline-stats" id="tagline-stats"></span>
     </p>
     <p class="tagline-links">
-      volgen: <a href="feed.xml">rss</a> ·
-      <a href="https://www.linkedin.com/in/koenverschuren">LinkedIn</a>
+      follow: <a href="feed.xml">rss</a>
     </p>
 
     <div class="search">
-      <label class="visually-hidden" for="q">Zoeken in titel, samenvatting en tags</label>
+      <label class="visually-hidden" for="q">Search in title, summary and tags</label>
       <input id="q" type="search" autocomplete="off" spellcheck="false"
-             placeholder="zoek titel, samenvatting, tag">
-      <kbd class="hint" id="q-hint" aria-hidden="true" title="/ zoekt, esc wist">/</kbd>
-      <button class="clear" id="q-clear" type="button" hidden aria-label="Zoekopdracht wissen">✕</button>
+             placeholder="search title, summary, tag">
+      <kbd class="hint" id="q-hint" aria-hidden="true" title="/ to search, esc to clear">/</kbd>
+      <button class="clear" id="q-clear" type="button" hidden aria-label="Clear the search">✕</button>
     </div>
 
-    <div class="toolbar" role="group" aria-label="Filter op type">
-      <button class="pill" type="button" data-filter="alles" aria-pressed="true">alles</button>
-      <button class="pill" type="button" data-filter="kennis" aria-pressed="false">kennis</button>
-      <button class="pill" type="button" data-filter="blog" aria-pressed="false">blog</button>
-      <span class="count" id="count" aria-live="polite"></span>
-    </div>
-
-    <div class="toolbar tagbar" id="tagbar" role="group" aria-label="Filter op tag" hidden>
+    <div class="toolbar tagbar" id="tagbar" role="group" aria-label="Filter by tag" hidden>
       <span class="toolbar-label">tags</span>
     </div>
 
+    <p class="count" id="count" aria-live="polite"></p>
+
     <ol class="results" id="results"></ol>
     <div class="empty" id="empty" hidden>
-      <p class="empty-text" id="empty-text">Geen resultaten. Wijzig de zoekopdracht of het filter.</p>
+      <p class="empty-text" id="empty-text">No results. Change the query or the filter.</p>
       <div class="empty-tags" id="empty-tags" hidden></div>
     </div>
   </main>
@@ -77,7 +70,8 @@
   <footer class="site-footer">
     <div class="wrap">
       <span>brain-dev</span>
-      <span>statisch · <a href="https://github.com/koenvers/brain-dev">broncode op GitHub</a></span>
+      <span>static · <a href="https://github.com/koenvers/brain-dev">source on GitHub</a></span>
+      <span><a href="mailto:k.verschuren@has.nl">k.verschuren@has.nl</a> · <a href="https://www.linkedin.com/in/koenverschuren">LinkedIn</a></span>
     </div>
   </footer>
 

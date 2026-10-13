@@ -8,8 +8,7 @@ Jekyll, geen dependencies (Node alleen voor tests en de meta-generator).
 
 ```
 brain-dev/
-├── index.html              overzicht: zoeken + filterpills, rendert uit de index
-├── over.html               over-pagina
+├── index.html              overzicht: zoeken + secties in de navigatie, rendert uit de index
 ├── 404.html                eigen 404 (absolute paden, vanaf elke diepe URL bruikbaar)
 ├── robots.txt              crawl-toegang + verwijzing naar de sitemap
 ├── sitemap.xml             gegenereerd door tools/build-meta.js
@@ -103,7 +102,7 @@ Velden die je zoekt: titel, samenvatting, tags (en het type: `Kennis`/`Blog`).
 - `404.html` — eigen 404 met terugweg naar het overzicht. Gebruikt **absolute**
   paden (`/brain-dev/…`), want GitHub Pages serveert het vanaf elke diepe URL.
   Vermijdt dus per ongeluk relatieve links op die pagina.
-- Repo-link in de footer van elke pagina.
+- Repo-link en contactgegevens (e-mail, LinkedIn) in de footer van elke pagina.
 
 ## Meten (actief)
 
@@ -125,7 +124,8 @@ mee (geen vervuiling van de cijfers door previews).
 - Zoekveld bovenaan `index.html`; matches op titel + samenvatting + tags,
   hoofdletteronafhankelijk, meerdere woorden = EN. Zoeken is een
   substring-match: `ai` vindt ook `Airflow`.
-- Filters: `alles` / `kennis` / `blog` (kleine letters, platte tekstlinks). Daaronder een tagrij
+- Secties (typefilter) zitten in de navigatie: `all` / `knowledge` / `blog`; de
+  resultaatregel staat onder de tagrij. Daaronder een tagrij
   met de meest gebruikte tags: klik = filteren op die tag, nog een klik heft het
   filter op. Klikken op een tag in een item zet dezelfde tagfilter.
 - Vindt een zoekopdracht niets, dan zegt de lege staat wat er niet gevonden is
@@ -177,4 +177,8 @@ lokaal via `index.html` openen of `python -m http.server`.
   JetBrains Mono zijn eruit gehaald omdat twee woff2-bestanden 88 kB van de
   107 kB van een koude paginalading waren; de map `assets/fonts/` bestaat niet
   meer. De test `geen webfonts` houdt dat zo.
+- **Taal:** de site-omgeving is Engels (navigatie, microcopy, meta, feed, OG-kaart);
+  de artikelen zelf zijn Nederlands. Nieuwe UI-tekst dus in het Engels, nieuwe
+  content in het Nederlands. De chrome-pagina's hebben `lang="en"`, een artikel
+  houdt `lang="nl"`.
 - **Zoekvelden uitbreiden:** pas `haystack` in `assets/js/app.js` (`normalize`).

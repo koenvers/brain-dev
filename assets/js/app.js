@@ -4,8 +4,8 @@
 (function () {
   'use strict';
 
-  var TYPE_LABEL = { kennis: 'kennis', blog: 'blog' };
-  var MAANDEN = ['jan', 'feb', 'mrt', 'apr', 'mei', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
+  var TYPE_LABEL = { kennis: 'knowledge', blog: 'blog' };
+  var MAANDEN = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   var TAGBAR_MAX = 8;   /* tag-pills boven de lijst */
   var SUGGEST_MAX = 6;  /* tagsuggesties bij een leeg resultaat */
 
@@ -138,11 +138,11 @@
   /* Toelichting bij een lege lijst: benoem wat er niet gevonden is. */
   function emptyMessage(state, total) {
     var s = state || {};
-    if (total === 0) return 'De index is nog leeg.';
-    if (String(s.q || '').trim() !== '') return 'Geen resultaten voor "' + String(s.q).trim() + '".';
-    if (normTag(s.tag) !== '') return 'Geen artikelen met de tag "' + s.tag + '".';
-    if (s.type && s.type !== 'alles') return 'Geen artikelen in deze categorie.';
-    return 'Geen resultaten.';
+    if (total === 0) return 'The index is empty.';
+    if (String(s.q || '').trim() !== '') return 'No results for "' + String(s.q).trim() + '".';
+    if (normTag(s.tag) !== '') return 'No articles tagged "' + s.tag + '".';
+    if (s.type && s.type !== 'alles') return 'No articles in this section.';
+    return 'No results.';
   }
 
   function readState() {
@@ -273,7 +273,7 @@
       emptyTags.appendChild(el('span', 'empty-label', 'tags:'));
       suggest.forEach(function (t) { emptyTags.appendChild(tagButton(t)); });
       if (state.q.trim() !== '' || state.tag !== '' || state.type !== 'alles') {
-        var reset = el('button', 'reset', 'wis filters');
+        var reset = el('button', 'reset', 'clear filters');
         reset.type = 'button';
         emptyTags.appendChild(reset);
       }
@@ -287,7 +287,7 @@
       list.forEach(function (it) { frag.appendChild(itemNode(it)); });
       results.appendChild(frag);
 
-      count.textContent = list.length + (list.length === 1 ? ' resultaat' : ' resultaten');
+      count.textContent = list.length + (list.length === 1 ? ' result' : ' results');
       empty.hidden = list.length !== 0;
       if (list.length === 0) renderEmpty();
 
@@ -388,8 +388,8 @@
       var nieuwste = items.reduce(function (m, it) {
         return it.updated > m ? it.updated : (it.date > m ? it.date : m);
       }, '');
-      stats.textContent = items.length + (items.length === 1 ? ' artikel' : ' artikelen') +
-        ' · laatst bijgewerkt ' + fmtDate(nieuwste);
+      stats.textContent = items.length + (items.length === 1 ? ' article' : ' articles') +
+        ' · last updated ' + fmtDate(nieuwste);
     }
 
     render();

@@ -72,7 +72,7 @@ test('posts verwijzen terug naar bestaande assets (script/css-pad)', () => {
     const html = fs.readFileSync(path.join(root, 'posts', f), 'utf8');
     const refs = [...html.matchAll(/(?:href|src)="([^"#]+)"/g)].map((m) => m[1]);
     refs.forEach((r) => {
-      if (/^(https?:|data:)/.test(r)) return;
+      if (/^(https?:|mailto:|data:)/.test(r)) return;
       const file = r.split('?')[0].split('#')[0];
       assert.ok(fs.existsSync(path.join(root, 'posts', file)), f + ': ' + r);
     });
@@ -171,7 +171,7 @@ test('emptyMessage benoemt wat er niet gevonden is', () => {
   assert.ok(app.emptyMessage({ type: 'alles', q: 'zzz', tag: '' }, fx.length).includes('zzz'));
   assert.ok(app.emptyMessage({ type: 'alles', q: '', tag: 'ai' }, fx.length).includes('ai'));
   assert.ok(app.emptyMessage({ type: 'kennis', q: '', tag: '' }, fx.length).length > 0);
-  assert.strictEqual(app.emptyMessage({ type: 'alles', q: '', tag: '' }, 0), 'De index is nog leeg.');
+  assert.strictEqual(app.emptyMessage({ type: 'alles', q: '', tag: '' }, 0), 'The index is empty.');
 });
 test('repo en updated zijn optioneel en worden gevalideerd', () => {
   const [vol] = app.loadIndex([{
@@ -207,9 +207,9 @@ test('resultaten zijn op datum gesorteerd, nieuw eerst', () => {
     assert.ok(list[i - 1].date >= list[i].date, 'volgorde fout op index ' + i);
   }
 });
-test('datumnotatie: 2026-09-12 -> 12 sep 2026', () => {
-  assert.strictEqual(app.fmtDate('2026-09-12'), '12 sep 2026');
-  assert.strictEqual(app.fmtDate('2026-12-01'), '1 dec 2026');
+test('datumnotatie: 2026-09-12 -> 12 Sep 2026', () => {
+  assert.strictEqual(app.fmtDate('2026-09-12'), '12 Sep 2026');
+  assert.strictEqual(app.fmtDate('2026-12-01'), '1 Dec 2026');
   assert.strictEqual(app.fmtDate('ongeldig'), 'ongeldig');
 });
 
@@ -269,9 +269,9 @@ test('sitemap verwijst alleen naar bestaande bestanden', () => {
   const locs = [...sm.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
   /* de site heeft geen vast aantal pagina's: tel de vaste pagina's en laat de
      dekking van de artikelen aan de test hieronder */
-  assert.ok(locs.length >= 3, 'te weinig URLs: ' + locs.length);
+  assert.ok(locs.length >= 2, 'te weinig URLs: ' + locs.length);
   assert.ok(locs.some((u) => u === 'https://koenvers.github.io/brain-dev/'), 'startpagina mist');
-  assert.ok(locs.some((u) => u.endsWith('/over.html')), 'over.html mist');
+  assert.ok(!locs.some((u) => u.endsWith('/over.html')), 'over.html hoort niet meer in de sitemap');
   locs.forEach((u) => {
     assert.ok(u.startsWith('https://koenvers.github.io/brain-dev/'), u);
     const rel = u.replace('https://koenvers.github.io/brain-dev/', '');
@@ -295,7 +295,7 @@ test('robots.txt wijst naar de sitemap', () => {
   assert.ok(!/Disallow:\s*\//.test(rb));
 });
 test('canonical en Open Graph op elke contentpagina', () => {
-  const pages = ['index.html', 'over.html']
+  const pages = ['index.html']
     .concat(fs.readdirSync(path.join(root, 'posts')).map((f) => 'posts/' + f));
   pages.forEach((f) => {
     const html = fs.readFileSync(path.join(root, f), 'utf8');
@@ -348,7 +348,7 @@ test('generator is idempotent: hervatten levert identieke bestanden', () => {
   assert.strictEqual(na.feed, voor.feed, 'feed.xml wijkt af van generator');
 });
 test('feed-link op elke pagina', () => {
-  const pages = ['index.html', 'over.html', '404.html']
+  const pages = ['index.html', '404.html']
     .concat(fs.readdirSync(path.join(root, 'posts')).map((f) => 'posts/' + f));
   pages.forEach((f) => {
     const html = fs.readFileSync(path.join(root, f), 'utf8');
@@ -389,7 +389,7 @@ test('analytics: vuurt de juiste teller-URL, behalve op localhost/file', () => {
   assert.strictEqual(run({ hostname: '127.0.0.1', protocol: 'http:' }).length, 0, '127.0.0.1 moet overslaan');
   assert.strictEqual(run({ hostname: 'example.org', protocol: 'file:' }).length, 0, 'file:// moet overslaan');
 
-  const pages = ['index.html', 'over.html', '404.html']
+  const pages = ['index.html', '404.html']
     .concat(fs.readdirSync(path.join(root, 'posts')).map((f) => 'posts/' + f));
   pages.forEach((f) => {
     const html = fs.readFileSync(path.join(root, f), 'utf8');
@@ -409,7 +409,7 @@ test('geen webfonts: systeemstack, geen fontbestanden en geen externe font-URL',
   assert.ok(!/\.woff2?|@font-face/.test(og), 'ook de OG-kaart gebruikt systeemfonts');
 });
 test('favicon en og-image: aanwezig, bestanden bestaan, echte PNG', () => {
-  const pages = ['index.html', 'over.html', '404.html']
+  const pages = ['index.html', '404.html']
     .concat(fs.readdirSync(path.join(root, 'posts')).map((f) => 'posts/' + f));
   pages.forEach((f) => {
     const html = fs.readFileSync(path.join(root, f), 'utf8');
@@ -436,7 +436,11 @@ test('favicon en og-image: aanwezig, bestanden bestaan, echte PNG', () => {
     assert.deepStrictEqual([...buf.subarray(0, 4)], [0x89, 0x50, 0x4e, 0x47], f + ': geen PNG-signatuur');
   });
   const og = fs.readFileSync(path.join(root, 'assets/img/og.png'));
-  assert.ok(og.length > 30000, 'og.png te licht voor een 1200x630 kaart');
+  /* De kaart is grotendeels wit; sinds de systeemfonts is hij ~30 kB (was 32 kB
+     met Inter). Een lege kaart van dit formaat blijft onder de 5 kB, dus 20 kB is
+     nog steeds een scherpe ondergrens; formaat en PNG-signatuur zijn de echte
+     controle. */
+  assert.ok(og.length > 20000, 'og.png te licht voor een 1200x630 kaart');
   assert.strictEqual(og.readUInt32BE(16), 1200, 'og.png breedte');
   assert.strictEqual(og.readUInt32BE(20), 630, 'og.png hoogte');
 });

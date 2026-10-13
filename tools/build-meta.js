@@ -9,9 +9,9 @@ const path = require('path');
 
 const root = path.join(__dirname, '..');
 const BASE = 'https://koenvers.github.io/brain-dev';
-const SITE_TITLE = 'brain-dev — kennisbank en blog';
-const SITE_DESC = 'Kennisartikelen en blogs over AI, data science en tooling.';
-const STATIC = ['index.html', 'over.html'];
+const SITE_TITLE = 'brain-dev — knowledge base and blog';
+const SITE_DESC = 'Research notes on AI and data science in agri-food and the living environment.';
+const STATIC = ['index.html'];
 
 function xml(s) {
   return String(s)
@@ -35,7 +35,6 @@ function loadItems() {
 function buildSitemap(items, lastmodStatisch) {
   const rows = [
     { loc: `${BASE}/`, lastmod: lastmodStatisch },
-    { loc: `${BASE}/over.html`, lastmod: lastmodStatisch },
     ...items.map((it) => ({ loc: `${BASE}/${it.url}`, lastmod: it.updated || it.date }))
   ];
   return `<?xml version="1.0" encoding="UTF-8"?>

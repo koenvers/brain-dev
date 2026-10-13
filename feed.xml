@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
-  <title>brain-dev — kennisbank en blog</title>
+  <title>brain-dev — knowledge base and blog</title>
   <link>https://koenvers.github.io/brain-dev/</link>
-  <description>Kennisartikelen en blogs over AI, data science en tooling.</description>
+  <description>Research notes on AI and data science in agri-food and the living environment.</description>
   <language>nl</language>
   <lastBuildDate>Mon, 12 Oct 2026 22:00:00 GMT</lastBuildDate>
   <atom:link href="https://koenvers.github.io/brain-dev/feed.xml" rel="self" type="application/rss+xml"/>
