@@ -745,3 +745,18 @@ abbr[title] {
   padding-right: 0;
   text-align: right;
 }
+
+/* --- Artikel: bronnen in APA ------------------------------------------ */
+
+/* APA vraagt een alfabetische lijst met hangende inspringing: geen
+   opsommingstekens, en de tweede regel van een item springt in. */
+.article ul.references {
+  list-style: none;
+  padding-left: 0;
+}
+
+.article ul.references li {
+  padding-left: 22px;
+  text-indent: -22px;
+  margin-bottom: 10px;
+}
