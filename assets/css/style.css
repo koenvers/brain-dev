@@ -350,13 +350,12 @@ main { padding: 26px 0 56px; }
   white-space: nowrap;
 }
 
-.badge-kennis { color: var(--accent-strong); }
+/* Kennis en whitepaper zijn beide naslag: hetzelfde accent, één functionele
+   kleur. Alleen een blog krijgt de neutrale grijstint. */
+.badge-kennis,
+.badge-whitepaper { color: var(--accent-strong); }
 
 .badge-blog { color: var(--faint); }
-
-/* Het whitepaper is het zwaarste stuk in de lijst: dezelfde plek, maar in
-   volle tekstkleur in plaats van een accent- of grijstint. */
-.badge-whitepaper { color: var(--text); }
 
 .item-title {
   font-size: 15.5px;
