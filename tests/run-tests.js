@@ -81,38 +81,54 @@ test('posts verwijzen terug naar bestaande assets (script/css-pad)', () => {
 
 console.log('filteren en zoeken');
 const items = app.loadIndex(RAW);
+
+/* Fixture voor de logica-tests: bewust onafhankelijk van de artikelen die live staan.
+   Zo breekt de suite niet als er een artikel bijkomt of verdwijnt. */
+const FIXTURE = [
+  {
+    type: 'kennis', title: 'Vectorzoekindexen en HNSW', url: 'x.html', date: '2026-09-12',
+    summary: 'Brute-force zoeken is exact maar traag; HNSW zoekt in O(log n).',
+    minutes: 9, tags: ['ai', 'retrieval']
+  },
+  {
+    type: 'blog', title: 'Eerste week lokaal werken', url: 'y.html', date: '2026-10-07',
+    summary: 'Wat er op 16 GB geheugen draait en waar de quantisatie wringt.',
+    minutes: 6, tags: ['ai', 'experiment']
+  }
+];
+const fx = app.loadIndex(FIXTURE);
+
 test('type-filter levert alleen die type', () => {
-  const kennis = app.filter(items, 'kennis', '');
+  const kennis = app.filter(fx, 'kennis', '');
   assert.ok(kennis.length > 0);
   kennis.forEach((it) => assert.strictEqual(it.type, 'kennis'));
-  const blog = app.filter(items, 'blog', '');
+  const blog = app.filter(fx, 'blog', '');
   assert.ok(blog.length > 0);
   blog.forEach((it) => assert.strictEqual(it.type, 'blog'));
-  assert.strictEqual(app.filter(items, 'alles', '').length, items.length);
+  assert.strictEqual(app.filter(fx, 'alles', '').length, fx.length);
 });
 test('zoeken op titel, samenvatting en tags', () => {
-  assert.ok(app.filter(items, 'alles', 'airflow').some((it) => it.type === 'kennis'));
-  assert.ok(app.filter(items, 'alles', 'retrieval').length >= 1);   // tag
-  assert.ok(app.filter(items, 'alles', 'quantisatie').length >= 1); // samenvatting
-  assert.ok(app.filter(items, 'alles', 'HNSW').length >= 1);        // titel, hoofdlettergevoelig?
-  assert.strictEqual(app.filter(items, 'alles', 'bestaat-niet-ook-niet').length, 0);
+  assert.ok(app.filter(fx, 'alles', 'HNSW').some((it) => it.type === 'kennis'));    // titel
+  assert.ok(app.filter(fx, 'alles', 'retrieval').length >= 1);                      // tag
+  assert.ok(app.filter(fx, 'alles', 'quantisatie').length >= 1);                    // samenvatting
+  assert.strictEqual(app.filter(fx, 'alles', 'bestaat-niet-ook-niet').length, 0);
 });
 test('zoeken is hoofdletteronafhankelijk en overleeft extra witruimte', () => {
   assert.deepStrictEqual(app.tokenize('  AIRFLOW   DAG '), ['airflow', 'dag']);
-  assert.strictEqual(app.filter(items, 'alles', '  AIRFLOW ').length,
-                     app.filter(items, 'alles', 'airflow').length);
+  assert.strictEqual(app.filter(fx, 'alles', '  HNSW ').length,
+                     app.filter(fx, 'alles', 'hnsw').length);
 });
 test('meerdere woorden zijn een EN (elk token moet matchen)', () => {
-  const both = app.filter(items, 'alles', 'airflow dag');
+  const both = app.filter(fx, 'alles', 'vectorzoekindexen hnsw');
   assert.ok(both.length >= 1);
-  const impossible = app.filter(items, 'alles', 'airflow llm');
+  const impossible = app.filter(fx, 'alles', 'vectorzoekindexen quantisatie');
   assert.strictEqual(impossible.length, 0);
 });
 test('onbekend type geeft leeg resultaat; readState valideert de URL', () => {
-  assert.strictEqual(app.filter(items, 'onbekend', '').length, 0);
+  assert.strictEqual(app.filter(fx, 'onbekend', '').length, 0);
 });
 test('resultaten zijn op datum gesorteerd, nieuw eerst', () => {
-  const list = app.filter(items, 'alles', '');
+  const list = app.filter(fx, 'alles', '');
   for (let i = 1; i < list.length; i++) {
     assert.ok(list[i - 1].date >= list[i].date, 'volgorde fout op index ' + i);
   }
@@ -177,7 +193,10 @@ console.log('vindbaarheid');
 test('sitemap verwijst alleen naar bestaande bestanden', () => {
   const sm = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
   const locs = [...sm.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
-  assert.ok(locs.length >= 6, 'te weinig URLs: ' + locs.length);
+  /* de site heeft geen vast aantal pagina's; dekking van artikelen doet de test hieronder */
+  assert.ok(locs.length >= 3, 'te weinig URLs: ' + locs.length);
+  assert.ok(locs.some((u) => u === 'https://koenvers.github.io/brain-dev/'), 'startpagina mist');
+  assert.ok(locs.some((u) => u.endsWith('/over.html')), 'over.html mist');
   locs.forEach((u) => {
     assert.ok(u.startsWith('https://koenvers.github.io/brain-dev/'), u);
     const rel = u.replace('https://koenvers.github.io/brain-dev/', '');

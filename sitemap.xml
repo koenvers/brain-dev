@@ -2,30 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://koenvers.github.io/brain-dev/</loc>
-    <lastmod>2026-10-09</lastmod>
+    <lastmod>2026-10-13</lastmod>
   </url>
   <url>
     <loc>https://koenvers.github.io/brain-dev/over.html</loc>
-    <lastmod>2026-10-09</lastmod>
+    <lastmod>2026-10-13</lastmod>
   </url>
   <url>
     <loc>https://koenvers.github.io/brain-dev/posts/onderzoekssoftware-publiceren-zenodo-rsd.html</loc>
     <lastmod>2026-10-13</lastmod>
-  </url>
-  <url>
-    <loc>https://koenvers.github.io/brain-dev/posts/lokale-llm-laptop.html</loc>
-    <lastmod>2026-10-07</lastmod>
-  </url>
-  <url>
-    <loc>https://koenvers.github.io/brain-dev/posts/platte-html-kennisbank.html</loc>
-    <lastmod>2026-10-01</lastmod>
-  </url>
-  <url>
-    <loc>https://koenvers.github.io/brain-dev/posts/vectorzoekindexen-hnsw.html</loc>
-    <lastmod>2026-09-12</lastmod>
-  </url>
-  <url>
-    <loc>https://koenvers.github.io/brain-dev/posts/airflow-dag-patronen.html</loc>
-    <lastmod>2026-08-03</lastmod>
   </url>
 </urlset>
