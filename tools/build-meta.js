@@ -8,7 +8,7 @@ const fs = require('fs');
 const path = require('path');
 
 const root = path.join(__dirname, '..');
-const BASE = 'https://koenvers.github.io/brain-dev';
+const BASE = 'https://brain-dev.nl';
 const SITE_TITLE = 'brain-dev — knowledge base and blog';
 const SITE_DESC = 'Research notes on AI and data science in agri-food and the living environment.';
 const STATIC = ['index.html'];

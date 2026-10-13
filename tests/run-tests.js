@@ -281,11 +281,11 @@ test('sitemap verwijst alleen naar bestaande bestanden', () => {
   /* de site heeft geen vast aantal pagina's: tel de vaste pagina's en laat de
      dekking van de artikelen aan de test hieronder */
   assert.ok(locs.length >= 2, 'te weinig URLs: ' + locs.length);
-  assert.ok(locs.some((u) => u === 'https://koenvers.github.io/brain-dev/'), 'startpagina mist');
+  assert.ok(locs.some((u) => u === 'https://brain-dev.nl/'), 'startpagina mist');
   assert.ok(!locs.some((u) => u.endsWith('/over.html')), 'over.html hoort niet meer in de sitemap');
   locs.forEach((u) => {
-    assert.ok(u.startsWith('https://koenvers.github.io/brain-dev/'), u);
-    const rel = u.replace('https://koenvers.github.io/brain-dev/', '');
+    assert.ok(u.startsWith('https://brain-dev.nl/'), u);
+    const rel = u.replace('https://brain-dev.nl/', '');
     const file = rel === '' ? 'index.html' : rel;
     assert.ok(fs.existsSync(path.join(root, file)), 'ontbreekt: ' + file);
   });
@@ -302,7 +302,7 @@ test('elke index-entry staat in de sitemap (met lastmod)', () => {
 });
 test('robots.txt wijst naar de sitemap', () => {
   const rb = fs.readFileSync(path.join(root, 'robots.txt'), 'utf8');
-  assert.ok(rb.includes('Sitemap: https://koenvers.github.io/brain-dev/sitemap.xml'));
+  assert.ok(rb.includes('Sitemap: https://brain-dev.nl/sitemap.xml'));
   assert.ok(!/Disallow:\s*\//.test(rb));
 });
 test('canonical en Open Graph op elke contentpagina', () => {
@@ -312,7 +312,7 @@ test('canonical en Open Graph op elke contentpagina', () => {
     const html = fs.readFileSync(path.join(root, f), 'utf8');
     const canon = /rel="canonical" href="([^"]+)"/.exec(html);
     assert.ok(canon, f + ': canonical');
-    assert.ok(canon[1].startsWith('https://koenvers.github.io/brain-dev/'), f + ': ' + canon[1]);
+    assert.ok(canon[1].startsWith('https://brain-dev.nl/'), f + ': ' + canon[1]);
     assert.ok(html.includes('property="og:title"'), f + ': og:title');
     assert.ok(html.includes('property="og:description"'), f + ': og:description');
     assert.ok(html.includes('property="og:url"'), f + ': og:url');
@@ -324,12 +324,32 @@ test('canonical en Open Graph op elke contentpagina', () => {
 test('404-pagina bestaat en gebruikt absolute paden', () => {
   const html = fs.readFileSync(path.join(root, '404.html'), 'utf8');
   assert.ok(html.includes('404'));
-  assert.ok(html.includes('href="/brain-dev/"'), 'startpagina-ontsnapping');
+  assert.ok(html.includes('href="/"'), 'startpagina-ontsnapping');
   assert.ok(!/href="(?:\.\.\/|(?:assets|posts|content)\/)/.test(html), 'relatieve pad in 404');
 });
 
+test('custom domain: CNAME vastgelegd en geen resten van het github.io-subpad', () => {
+  assert.strictEqual(fs.readFileSync(path.join(root, 'CNAME'), 'utf8').trim(), 'brain-dev.nl');
+  const pagina = ['index.html', '404.html']
+    .concat(fs.readdirSync(path.join(root, 'posts')).map((f) => 'posts/' + f));
+  pagina.concat(['robots.txt', 'sitemap.xml', 'feed.xml', 'CITATION.cff', 'tools/build-meta.js'])
+    .forEach((f) => {
+      const tekst = fs.readFileSync(path.join(root, f), 'utf8');
+      assert.ok(!tekst.includes('koenvers.github.io'), f + ': verwijst nog naar het github.io-adres');
+      assert.ok(!tekst.includes('/brain-dev/'), f + ': absoluut subpad /brain-dev/');
+    });
+  pagina.filter((f) => f !== '404.html').forEach((f) => {
+    const html = fs.readFileSync(path.join(root, f), 'utf8');
+    ['property="og:url" content="', 'property="og:image" content="'].forEach((veld) => {
+      const m = new RegExp(veld + '([^"]+)"').exec(html);
+      assert.ok(m, f + ': ' + veld);
+      assert.ok(m[1].startsWith('https://brain-dev.nl/'), f + ': ' + m[1]);
+    });
+  });
+});
+
 console.log('feed, generator en assets');
-const BASE = 'https://koenvers.github.io/brain-dev';
+const BASE = 'https://brain-dev.nl';
 test('feed.xml: geldige structuur, alle items, niets rauw', () => {
   const feed = fs.readFileSync(path.join(root, 'feed.xml'), 'utf8');
   assert.ok(feed.startsWith('<?xml version="1.0" encoding="UTF-8"?>'));
@@ -388,7 +408,7 @@ test('analytics: vuurt de juiste teller-URL, behalve op localhost/file', () => {
   };
 
   // productie-achtig: script wordt aangemaakt met de juiste URLs
-  const normaal = run({ hostname: 'koenvers.github.io', protocol: 'https:' });
+  const normaal = run({ hostname: 'brain-dev.nl', protocol: 'https:' });
   assert.strictEqual(normaal.length, 1, 'script moet 1x aangemaakt worden');
   assert.strictEqual(normaal[0].attrs['data-goatcounter'],
     'https://koenverschuren.goatcounter.com/count', 'teller-URL');
@@ -424,7 +444,7 @@ test('favicon en og-image: aanwezig, bestanden bestaan, echte PNG', () => {
     .concat(fs.readdirSync(path.join(root, 'posts')).map((f) => 'posts/' + f));
   pages.forEach((f) => {
     const html = fs.readFileSync(path.join(root, f), 'utf8');
-    const pre = f.startsWith('posts/') ? '../' : f === '404.html' ? '/brain-dev/' : '';
+    const pre = f.startsWith('posts/') ? '../' : f === '404.html' ? '/' : '';
     assert.ok(html.includes(`href="${pre}assets/img/favicon.svg" type="image/svg+xml"`), f + ': svg-favicon');
     assert.ok(html.includes(`href="${pre}assets/img/favicon.png" type="image/png"`), f + ': png-fallback');
     assert.ok(!html.includes('logo-mark.svg" type="image/svg+xml"'), f + ': logo-mark.svg hoort geen favicon-link te zijn');
@@ -435,7 +455,7 @@ test('favicon en og-image: aanwezig, bestanden bestaan, echte PNG', () => {
     const html = fs.readFileSync(path.join(root, f), 'utf8');
     const m = /property="og:image" content="([^"]+)"/.exec(html);
     assert.ok(m, f + ': og:image');
-    const rel = m[1].replace('https://koenvers.github.io/brain-dev/', '');
+    const rel = m[1].replace('https://brain-dev.nl/', '');
     assert.ok(fs.existsSync(path.join(root, rel)), f + ': og:image-bestand ontbreekt');
     assert.ok(html.includes('name="twitter:image"'), f + ': twitter:image');
     assert.ok(/name="twitter:card" content="summary_large_image"/.test(html),

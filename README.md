@@ -149,14 +149,22 @@ vrije tekst), datumnotatie, highlighter (escaping, XSS, roundtrip), vindbaarheid
 
 ## GitHub Pages (actief)
 
-Repo: <https://github.com/koenvers/brain-dev> · site:
-<https://koenvers.github.io/brain-dev/> (Pages: `main` / `(root)`, `.nojekyll`
-houdt de Jekyll-build buiten de deur).
+Repo: <https://github.com/koenvers/brain-dev> · site: <https://brain-dev.nl/>
+(Pages: `main` / `(root)`, `.nojekyll` houdt de Jekyll-build buiten de deur).
+
+Custom domain `brain-dev.nl`, vastgelegd in het bestand `CNAME` in de root.
+Het oude adres <https://koenvers.github.io/brain-dev/> blijft werken: GitHub
+stuurt het door naar het custom domain. Apex is de canonical host; `www` verwijst
+daar automatisch naartoe. DNS staat bij Strato (`docks18.rzone.de`): `A`/`AAAA`
+op `@` naar de GitHub Pages-IP's, `www` als CNAME naar `koenvers.github.io` (niet
+naar de apex — dat breekt Enforce HTTPS). Een eigen doorverwijzing op de apex
+moet uit staan, anders lus je tussen Strato en Pages.
 
 Wijzigingen publiceren:
 
 ```bash
-node tools/build-meta.js   # als de index veranderde (sitemap + feed)
+node tools/build-meta.js   # na elke wijziging in content/index.js of index.html:
+                           # de lastmod van de startpagina komt uit de mtime van index.html
 node tests/run-tests.js    # moet groen
 git add -A && git commit -m "…" && git push
 ```

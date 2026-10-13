@@ -2,15 +2,15 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
   <title>brain-dev — knowledge base and blog</title>
-  <link>https://koenvers.github.io/brain-dev/</link>
+  <link>https://brain-dev.nl/</link>
   <description>Research notes on AI and data science in agri-food and the living environment.</description>
   <language>nl</language>
   <lastBuildDate>Mon, 12 Oct 2026 22:00:00 GMT</lastBuildDate>
-  <atom:link href="https://koenvers.github.io/brain-dev/feed.xml" rel="self" type="application/rss+xml"/>
+  <atom:link href="https://brain-dev.nl/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
     <title>FundingRadar: van handmatig subsidiezoeken naar een dagelijkse radar</title>
-    <link>https://koenvers.github.io/brain-dev/posts/fundingradar-whitepaper.html</link>
-    <guid isPermaLink="true">https://koenvers.github.io/brain-dev/posts/fundingradar-whitepaper.html</guid>
+    <link>https://brain-dev.nl/posts/fundingradar-whitepaper.html</link>
+    <guid isPermaLink="true">https://brain-dev.nl/posts/fundingradar-whitepaper.html</guid>
     <pubDate>Mon, 12 Oct 2026 22:00:00 GMT</pubDate>
     <description>Whitepaper over FundingRadar: de achtergrond in de hbo-bekostiging, wat de tool uit de AI-roadmap dagelijks doet voor de onderzoeksgroepen, de gemeten cijfers op 13 oktober 2026, en een fasering van handwerk naar keten.</description>
     <category>subsidie</category>
@@ -19,8 +19,8 @@
   </item>
   <item>
     <title>Onderzoekssoftware publiceren via Zenodo en de RSD</title>
-    <link>https://koenvers.github.io/brain-dev/posts/onderzoekssoftware-publiceren-zenodo-rsd.html</link>
-    <guid isPermaLink="true">https://koenvers.github.io/brain-dev/posts/onderzoekssoftware-publiceren-zenodo-rsd.html</guid>
+    <link>https://brain-dev.nl/posts/onderzoekssoftware-publiceren-zenodo-rsd.html</link>
+    <guid isPermaLink="true">https://brain-dev.nl/posts/onderzoekssoftware-publiceren-zenodo-rsd.html</guid>
     <pubDate>Mon, 12 Oct 2026 22:00:00 GMT</pubDate>
     <description>Van een afgeschermde repository naar een citeerbare publicatie: GitHub aan Zenodo koppelen, een release met DOI, en een pagina in de Research Software Directory. Wat verplicht is, wat optioneel is, en waar het misgaat.</description>
     <category>onderzoekssoftware</category>

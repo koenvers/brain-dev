@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://koenvers.github.io/brain-dev/sitemap.xml
+Sitemap: https://brain-dev.nl/sitemap.xml
