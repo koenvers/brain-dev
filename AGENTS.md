@@ -13,6 +13,11 @@ drie stappen — dat is de bron; dit bestand houdt alleen wat een agent vóór e
 - **Opleveringscheck, in deze volgorde:** eerst `node --check "<gewijzigd bestand>.js"` (seconden),
   dan `node tests/run-tests.js` (30 tests, zonder browser). Stop bij de eerste fout. Geef node een
   Windows-pad (`D:/GIT/brain-dev/...`); een MSYS-pad als `/d/GIT/...` geeft *Cannot find module*.
+- **Content gaat altijd via de skill `blogpost-schrijven`** (nieuw item, bestaande post aanpassen,
+  redigeren, reviewen). Die skill draagt de drie poorten: feiten (elk getal met een aanwijsbare bron,
+  links machinaal gecheckt, niets toevoegen wat er niet staat), repo (indexregel → generator → tests)
+  en stijl (vier grep-controles op het body-bereik). De Engelstalige writing-skills van derden staan
+  als naslag in `D:/GIT/loadout/External/` — lees ze, maar pas de regels toe via die skill.
 - **Geen dependencies en geen buildstap toevoegen.** Dat is een eigenschap van dit project (GitHub
   Pages met `.nojekyll`), niet een tussenstand — een bundler of framework verandert de publicatiewijze.
 - **Documentatie:** één `readme.md`. Een nieuw los `.md`-bestand hoort hier niet; een stuk content is
