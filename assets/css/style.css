@@ -500,3 +500,110 @@ pre code {
 @media (prefers-color-scheme: dark) {
   .wordmark .mark { filter: invert(1); }
 }
+
+/* --- Artikel: links, verwijzingen en uitklapbare blokken -------------- */
+
+/* Een link in de lopende tekst hoort zichtbaar te zijn, niet pas bij hover:
+   een kennisartikel staat of valt bij de verwijzingen ernaar. */
+.article p a,
+.article li a,
+.article dd a,
+.article dt a,
+.article blockquote a {
+  color: var(--text);
+  text-decoration: underline;
+  text-decoration-color: var(--faint);
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+
+.article p a:hover,
+.article li a:hover,
+.article dd a:hover,
+.article dt a:hover,
+.article blockquote a:hover {
+  text-decoration-color: var(--text);
+}
+
+/* Afkortingen: laat zien dat er een uitleg achter zit (title blijft de tooltip). */
+abbr[title] {
+  text-decoration: underline dotted var(--faint);
+  text-underline-offset: 2px;
+  cursor: help;
+}
+
+/* De inhoudsopgave als blok, niet als gewone lijst. */
+.article-toc {
+  margin: 0 0 30px;
+  padding: 14px 18px 6px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+}
+
+.article-toc h2 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.article-toc ol { margin-bottom: 8px; }
+.article-toc a { color: var(--text); text-decoration: none; }
+.article-toc a:hover { text-decoration: underline; text-underline-offset: 2px; }
+
+/* Begrippenlijst: term met de uitleg eronder, zonder in te springen. */
+.article dl { margin: 0 0 16px; }
+
+.article dt {
+  font-weight: 600;
+  margin-top: 12px;
+}
+
+.article dd {
+  margin: 2px 0 0;
+  padding-left: 0;
+  color: var(--muted);
+}
+
+/* Uitklapbare blokken: optionele inhoud achter een klik, de hoofdstroom blijft kort. */
+.article details {
+  margin: 0 0 16px;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+}
+
+.article details > summary {
+  cursor: pointer;
+  color: var(--muted);
+}
+
+.article details > summary:hover { color: var(--text); }
+
+.article details[open] > summary {
+  margin-bottom: 10px;
+  color: var(--text);
+}
+
+.article details p:last-child { margin-bottom: 0; }
+
+/* De tags in de meta zijn klikbaar: ze zoeken op die tag in het overzicht.
+   Specifieker dan de bestaande `.article-meta .tag`, dus dit wint. */
+.article-meta a.tag { cursor: pointer; }
+
+.article-meta a.tag:hover {
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+/* De terugweg naar de inhoudsopgave onderaan het artikel. */
+.article > p > a.backlink { margin: 24px 0 0; }
+
+@media (max-width: 560px) {
+  .article-toc { padding: 12px 14px 4px; }
+  .article details { padding: 8px 11px; }
+}
