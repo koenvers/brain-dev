@@ -174,7 +174,7 @@ a:hover { text-decoration: underline; }
 main { padding: 36px 0 72px; }
 
 .tagline {
-  margin: 0 0 24px;
+  margin: 0 0 10px;
   color: var(--muted);
   font-size: 15px;
 }
@@ -186,6 +186,16 @@ main { padding: 36px 0 72px; }
   font-size: 12.5px;
   color: var(--faint);
 }
+
+/* volgen-opties onder de intro: de enige plek waar de site om een terugkeer vraagt */
+.tagline-links {
+  margin: 0 0 24px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--faint);
+}
+
+.tagline-links a { color: var(--muted); }
 
 .search { position: relative; margin-bottom: 14px; }
 
