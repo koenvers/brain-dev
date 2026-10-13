@@ -63,9 +63,15 @@ brain-dev/
      summary: 'Eén samenvatting van 1-2 zinnen — wordt getoond en geïndexeerd.',
      date: '2026-10-09',                   // YYYY-MM-DD
      minutes: 7,                           // leestijd in minuten
-     tags: ['ai', 'tooling']               // klein, aaneengesloten, herbruikbaar
+     tags: ['ai', 'tooling'],              // klein, aaneengesloten, herbruikbaar
+     updated: '2026-10-20',                // optioneel: laatste wijziging → sitemap-lastmod
+     repo: 'https://github.com/…'          // optioneel: broncode → "code ↗" in het overzicht
    }
    ```
+
+   `tags` zijn meteen ook de filterrij boven de lijst: de meest gebruikte tags
+   komen daar automatisch als pill te staan. `updated` en `repo` mogen weg —
+   ongeldige waarden in die twee velden worden genegeerd, het item blijft staan.
 
    Een item met een ongeldige regel (verkeerd type, ontbrekende titel/url,
    datum niet `YYYY-MM-DD`) wordt door de code overgeslagen — de site blijft
@@ -120,11 +126,16 @@ mee (geen vervuiling van de cijfers door previews).
 - Zoekveld bovenaan `index.html`; matches op titel + samenvatting + tags,
   hoofdletteronafhankelijk, meerdere woorden = EN. Zoeken is een
   substring-match: `ai` vindt ook `Airflow`.
-- Pills: Alle content / Alleen Kennisbank / Alleen Blog.
-- `/` focust de zoekbalk, `Esc` wist de zoekopdracht, klik op een tag = zoeken
-  op die tag.
-- Status zit in de URL: `index.html?type=kennis&q=airflow` — deelbaar en
-  overleft een refresh. Alles client-side, geen `fetch`, geen netwerkverkeer.
+- Pills: Alle content / Alleen Kennisbank / Alleen Blog. Daaronder een tagrij
+  met de meest gebruikte tags: klik = filteren op die tag, nog een klik heft het
+  filter op. Klikken op een tag in een item zet dezelfde tagfilter.
+- Vindt een zoekopdracht niets, dan zegt de lege staat wat er niet gevonden is
+  (zoekterm of tag) en staan er populaire tags als alternatief, plus "wis alle
+  filters" als er een filter actief is.
+- `/` focust de zoekbalk; `Esc` wist de zoekopdracht en verlaat daarna het veld.
+- Status zit in de URL: `index.html?type=kennis&q=airflow&tag=retrieval` —
+  deelbaar en overleft een refresh. Alles client-side, geen `fetch`, geen
+  netwerkverkeer.
 
 ## Tests
 
@@ -132,8 +143,8 @@ mee (geen vervuiling van de cijfers door previews).
 node tests/run-tests.js
 ```
 
-Dekt: indexvalidatie, bestandsverwijzingen, zoeken/filteren/sortering,
-datumnotatie, highlighter (escaping, XSS, roundtrip), vindbaarheid
+Dekt: indexvalidatie, bestandsverwijzingen, zoeken/filteren/sorteren (type, tag,
+vrije tekst), datumnotatie, highlighter (escaping, XSS, roundtrip), vindbaarheid
 (sitemap/feed/canonical/OG/404), generator-idempotentie, fonts en analytics.
 
 ## GitHub Pages (actief)

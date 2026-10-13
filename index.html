@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>brain-dev — kennisbank &amp; blog</title>
-  <meta name="description" content="Kennisartikelen en blogs over AI, data science en tooling. Doorzoekbaar, zonder build-stap.">
+  <meta name="description" content="Kennisbank en blog van Koen Verschuren over datapijplines, computervisie en tooling in toegepast onderzoek. Doorzoekbaar, statisch, zonder build-stap.">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="assets/img/favicon.png" type="image/png" sizes="64x64">
   <link rel="stylesheet" href="assets/css/style.css">
@@ -12,7 +12,7 @@
   <meta property="og:site_name" content="brain-dev">
   <meta property="og:type" content="website">
   <meta property="og:title" content="brain-dev — kennisbank &amp; blog">
-  <meta property="og:description" content="Kennisartikelen en blogs over AI, data science en tooling. Doorzoekbaar, zonder build-stap.">
+  <meta property="og:description" content="Kennisbank en blog van Koen Verschuren over datapijplines, computervisie en tooling in toegepast onderzoek. Doorzoekbaar, statisch, zonder build-stap.">
   <meta property="og:url" content="https://koenvers.github.io/brain-dev/">
   <meta name="twitter:card" content="summary_large_image">
   <meta property="og:image" content="https://koenvers.github.io/brain-dev/assets/img/og.png">
@@ -37,7 +37,9 @@
 
   <main class="wrap">
     <p class="tagline">
-      Naslag en notities van Koen Verschuren over AI, data science en tooling.
+      Koen Verschuren — AI &amp; Data Specialist in toegepast onderzoek en hoger onderwijs.
+      Hier: robuuste datapijplines, computervisie en tooling voor de praktijk — Airflow,
+      PostgreSQL/PostGIS, Python, open source. Per stuk wat werkt, wat niet, en waarom.
       <span class="tagline-stats" id="tagline-stats"></span>
     </p>
 
@@ -45,7 +47,7 @@
       <label class="visually-hidden" for="q">Zoeken in titel, samenvatting en tags</label>
       <input id="q" type="search" autocomplete="off" spellcheck="false"
              placeholder="Zoek op titel, samenvatting of tag…">
-      <span class="hint" id="q-hint">/ om te zoeken</span>
+      <kbd class="hint" id="q-hint" aria-hidden="true" title="Druk / om te zoeken; Esc wist de zoekopdracht">/</kbd>
       <button class="clear" id="q-clear" type="button" hidden aria-label="Zoekopdracht wissen">✕</button>
     </div>
 
@@ -56,8 +58,15 @@
       <span class="count" id="count" aria-live="polite"></span>
     </div>
 
+    <div class="toolbar tagbar" id="tagbar" role="group" aria-label="Filter op tag" hidden>
+      <span class="toolbar-label">tags</span>
+    </div>
+
     <ol class="results" id="results"></ol>
-    <p class="empty" id="empty" hidden>Geen resultaten. Wijzig de zoekopdracht of het filter.</p>
+    <div class="empty" id="empty" hidden>
+      <p class="empty-text" id="empty-text">Geen resultaten. Wijzig de zoekopdracht of het filter.</p>
+      <div class="empty-tags" id="empty-tags" hidden></div>
+    </div>
   </main>
 
   <footer class="site-footer">

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Over — brain-dev</title>
-  <meta name="description" content="Wat brain-dev is: twee contentstromen, platte HTML, geen build-stap.">
+  <meta name="description" content="Over brain-dev: de naslag van Koen Verschuren over datapijplines, computervisie en tooling, met de onderzoeksgroepen waar hij werkt en contactgegevens.">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="assets/img/favicon.png" type="image/png" sizes="64x64">
   <link rel="stylesheet" href="assets/css/style.css">
@@ -12,7 +12,7 @@
   <meta property="og:site_name" content="brain-dev">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Over — brain-dev">
-  <meta property="og:description" content="Wat brain-dev is: twee contentstromen, platte HTML, geen build-stap.">
+  <meta property="og:description" content="Over brain-dev: de naslag van Koen Verschuren over datapijplines, computervisie en tooling, met de onderzoeksgroepen waar hij werkt en contactgegevens.">
   <meta property="og:url" content="https://koenvers.github.io/brain-dev/over.html">
   <meta name="twitter:card" content="summary_large_image">
   <meta property="og:image" content="https://koenvers.github.io/brain-dev/assets/img/og.png">
@@ -30,7 +30,7 @@
         <a href="index.html" data-type="alles">Alles</a>
         <a href="index.html?type=kennis" data-type="kennis">Kennisbank</a>
         <a href="index.html?type=blog" data-type="blog">Blog</a>
-        <a href="over.html">Over</a>
+        <a href="over.html" class="is-active" aria-current="page">Over</a>
       </nav>
     </div>
   </header>
@@ -39,12 +39,13 @@
     <a class="backlink" href="index.html">← terug naar het overzicht</a>
 
     <h1>Over</h1>
-    <div class="article-meta"><span>laatst bijgewerkt: 9 okt 2026</span></div>
+    <div class="article-meta"><span>laatst bijgewerkt: 13 okt 2026</span></div>
 
-    <p><strong>brain-dev</strong> is de persoonlijke naslag van Koen Verschuren
-       over AI, data science en tooling. Geschreven vooral omdat ik het zelf
-       weer op wil zoeken: als het hier staat, hoef ik het niet opnieuw uit te
-       zoeken — en als jij het ook nodig hebt, mag je het gebruiken.</p>
+    <p><strong>brain-dev</strong> is mijn persoonlijke naslag over datapijplines,
+       computervisie en de tooling daaromheen: Airflow, PostgreSQL/PostGIS, Python
+       en open source. Wat hier staat heb ik zelf uitgezocht en getest, meestal
+       omdat het in een project terugkwam. Per stuk staat er wat werkt, wat niet,
+       en waarom.</p>
 
     <h2>Twee stromen</h2>
     <ul>
@@ -60,25 +61,52 @@
       <li><a href="index.html?type=kennis">Kennisbank-overzicht</a> — alles wat
           als naslag bedoeld is, op datum.</li>
       <li><a href="index.html">Recentste content</a> — beide stromen door elkaar.</li>
-      <li><kbd>/</kbd> in de browser focust de zoekbalk; een tag aanklikken
-          filtert direct op die tag.</li>
+      <li><kbd>/</kbd> focust de zoekbalk, <kbd>Esc</kbd> wist de zoekopdracht.
+          Klik op een tag, in de tagrij of onder een stuk, om alleen dat
+          onderwerp te zien; nog een klik heft het filter op.</li>
     </ul>
 
     <h2>Hoe vaak</h2>
     <p>Geen ritme beloofd. Ik publiceer wanneer er iets is dat ik op wil slaan;
        elk stuk toont zijn eigen datum, zodat je zelf ziet hoe actueel het is.</p>
 
+    <h2>Waar ik werk</h2>
+    <p>Bij HAS green academy werk ik als AI &amp; dataspecialist en als regisseur
+       AI en Data in het versnellingsprogramma Digitalisering en Technologie van
+       Groenpact. Dit zijn de onderzoeksgroepen waar ik bij betrokken ben:</p>
+
+    <ul>
+      <li><a href="https://www.has.nl/onderzoek/lectoraten/lectoraat-data-intelligence-voor-duurzame-transities/">Lectoraat Data Intelligence voor duurzame transities</a>
+          — kenniskringlid: toegepaste datastromen voor landbouw en leefomgeving,
+          ETL en PostgreSQL.</li>
+      <li><a href="https://www.has.nl/onderzoek/lectoraten/lectoraat-dierenwelzijn-en-technologie/">Lectoraat Dierenwelzijn en Technologie</a>
+          — kenniskringlid: computervisie voor diergedrag en welzijn,
+          3D-beeldvorming.</li>
+      <li><a href="https://www.has.nl/onderzoek/lectoraten/lectoraat-horticulture-technologies/">Lectoraat Horticulture Technologies</a>
+          — daarnaast bij betrokken.</li>
+    </ul>
+
+    <h2>Contact</h2>
+    <ul>
+      <li>Zakelijke e-mail: <a href="mailto:k.verschuren@has.nl">k.verschuren@has.nl</a></li>
+      <li>LinkedIn: <a href="https://www.linkedin.com/in/koenverschuren">linkedin.com/in/koenverschuren</a></li>
+    </ul>
+    <p>Vragen of correcties op een stuk kun je mailen of als issue op de repo
+       zetten.</p>
+
     <h2>Hoe het gebouwd is</h2>
-    <p>Platte HTML, één CSS-bestand, drie kleine JavaScript-bestanden,
+    <p>Platte HTML, één CSS-bestand, vier kleine JavaScript-bestanden,
        zelfgehoste fonts. Geen framework, geen build-stap:</p>
 
     <ul>
       <li><code>content/index.js</code> bevat de zoekindex — enige bron van
-          waarheid voor het overzicht.</li>
+          waarheid voor het overzicht, het zoeken en de feed.</li>
       <li><code>assets/js/app.js</code> rendert de lijst en verzorgt zoeken en
-          filteren volledig client-side.</li>
+          filteren (type, tag, vrije tekst) volledig client-side.</li>
       <li><code>assets/js/highlight.js</code> is een mini syntax-highlighter
           voor codeblokken.</li>
+      <li><code>assets/js/analytics.js</code> laadt de teller, en alleen buiten
+          <code>localhost</code>.</li>
       <li><code>tools/build-meta.js</code> genereert sitemap en RSS-feed uit de
           index; optioneel en handmatig te draaien — de site werkt er niet vanaf.</li>
     </ul>

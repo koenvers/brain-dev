@@ -36,7 +36,7 @@ function buildSitemap(items, lastmodStatisch) {
   const rows = [
     { loc: `${BASE}/`, lastmod: lastmodStatisch },
     { loc: `${BASE}/over.html`, lastmod: lastmodStatisch },
-    ...items.map((it) => ({ loc: `${BASE}/${it.url}`, lastmod: it.date }))
+    ...items.map((it) => ({ loc: `${BASE}/${it.url}`, lastmod: it.updated || it.date }))
   ];
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

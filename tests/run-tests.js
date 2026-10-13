@@ -83,7 +83,8 @@ console.log('filteren en zoeken');
 const items = app.loadIndex(RAW);
 
 /* Fixture voor de logica-tests: bewust onafhankelijk van de artikelen die live staan.
-   Zo breekt de suite niet als er een artikel bijkomt of verdwijnt. */
+   Zo breekt de suite niet als er een artikel bijkomt of verdwijnt — die twee soorten
+   tests horen niet door elkaar te lopen. */
 const FIXTURE = [
   {
     type: 'kennis', title: 'Vectorzoekindexen en HNSW', url: 'x.html', date: '2026-09-12',
@@ -126,6 +127,79 @@ test('meerdere woorden zijn een EN (elk token moet matchen)', () => {
 });
 test('onbekend type geeft leeg resultaat; readState valideert de URL', () => {
   assert.strictEqual(app.filter(fx, 'onbekend', '').length, 0);
+});
+test('tagfilter: alleen items met die tag, hoofdletteronafhankelijk', () => {
+  const ai = app.filter(fx, 'alles', '', 'ai');
+  assert.ok(ai.length >= 1);
+  ai.forEach((it) => assert.ok(it.tagsLower.indexOf('ai') !== -1));
+  assert.strictEqual(app.filter(fx, 'alles', '', 'AI').length, ai.length);
+  assert.strictEqual(app.filter(fx, 'alles', '', 'bestaat-niet').length, 0);
+  /* leeg of ontbrekend = geen tagfilter (bestaande aanroepen blijven werken) */
+  assert.strictEqual(app.filter(fx, 'alles', '').length, fx.length);
+  assert.strictEqual(app.filter(fx, 'alles', '', '').length, fx.length);
+});
+test('tagfilter en zoekopdracht werken samen (EN)', () => {
+  assert.ok(app.filter(fx, 'alles', 'hnsw', 'ai').length >= 1);
+  assert.strictEqual(app.filter(fx, 'alles', 'lokaal', 'retrieval').length, 0);
+});
+test('type- en tagfilter stapelen', () => {
+  const blog = app.filter(fx, 'blog', '', 'ai');
+  blog.forEach((it) => assert.strictEqual(it.type, 'blog'));
+  assert.strictEqual(app.filter(fx, 'kennis', '', 'experiment').length, 0);
+});
+test('resolveTag: bestaande tag in de spelling van de index, anders leeg', () => {
+  assert.strictEqual(app.resolveTag(fx, 'AI'), 'ai');
+  assert.strictEqual(app.resolveTag(fx, '  ai '), 'ai');
+  assert.strictEqual(app.resolveTag(fx, ''), '');
+  assert.strictEqual(app.resolveTag(fx, 'bestaat-niet'), '');
+});
+test('popularTags: meest gebruikt eerst, exclude laat de actieve tag weg', () => {
+  const top = app.popularTags(fx, 3);
+  assert.strictEqual(top.length, 3);
+  const aantal = (t) => fx.filter((it) => it.tags.includes(t)).length;
+  for (let i = 1; i < top.length; i++) {
+    assert.ok(aantal(top[i - 1]) >= aantal(top[i]), 'volgorde fout: ' + top.join(', '));
+  }
+  const zonder = app.popularTags(fx, 5, top[0]);
+  assert.ok(zonder.indexOf(top[0]) === -1);
+  /* zonder limiet krijg je de volledige taglijst; onbekende exclude filtert niets weg */
+  const alle = app.popularTags(fx, 0);
+  assert.ok(alle.length >= top.length);
+  assert.strictEqual(app.popularTags(fx, 5, 'bestaat-niet').length, Math.min(5, alle.length));
+});
+test('emptyMessage benoemt wat er niet gevonden is', () => {
+  assert.ok(app.emptyMessage({ type: 'alles', q: 'zzz', tag: '' }, fx.length).includes('zzz'));
+  assert.ok(app.emptyMessage({ type: 'alles', q: '', tag: 'ai' }, fx.length).includes('ai'));
+  assert.ok(app.emptyMessage({ type: 'kennis', q: '', tag: '' }, fx.length).length > 0);
+  assert.strictEqual(app.emptyMessage({ type: 'alles', q: '', tag: '' }, 0), 'De index is nog leeg.');
+});
+test('repo en updated zijn optioneel en worden gevalideerd', () => {
+  const [vol] = app.loadIndex([{
+    type: 'kennis', title: 'x', url: 'x.html', date: '2026-01-01',
+    updated: '2026-02-01', repo: 'https://github.com/koenvers/brain-dev'
+  }]);
+  assert.strictEqual(vol.updated, '2026-02-01');
+  assert.strictEqual(vol.repo, 'https://github.com/koenvers/brain-dev');
+
+  const [leeg] = app.loadIndex([{ type: 'kennis', title: 'x', url: 'x.html', date: '2026-01-01' }]);
+  assert.strictEqual(leeg.updated, '');
+  assert.strictEqual(leeg.repo, '');
+
+  const [fout] = app.loadIndex([{
+    type: 'kennis', title: 'x', url: 'x.html', date: '2026-01-01',
+    updated: 'gisteren', repo: 'javascript:alert(1)'
+  }]);
+  assert.strictEqual(fout.updated, '', 'ongeldige datum negeren');
+  assert.strictEqual(fout.repo, '', 'javascript:-URL weigeren');
+});
+test('item-url met een schema (javascript:, data:) wordt overgeslagen', () => {
+  assert.strictEqual(app.loadIndex([
+    { type: 'blog', title: 'x', url: 'javascript:alert(1)', date: '2026-01-01' },
+    { type: 'blog', title: 'x', url: 'data:text/html,<b>x', date: '2026-01-01' }
+  ]).length, 0);
+  assert.strictEqual(app.loadIndex([
+    { type: 'blog', title: 'x', url: 'https://example.org/x.html', date: '2026-01-01' }
+  ]).length, 0, 'artikelen zijn altijd lokaal');
 });
 test('resultaten zijn op datum gesorteerd, nieuw eerst', () => {
   const list = app.filter(fx, 'alles', '');
@@ -193,7 +267,8 @@ console.log('vindbaarheid');
 test('sitemap verwijst alleen naar bestaande bestanden', () => {
   const sm = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
   const locs = [...sm.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
-  /* de site heeft geen vast aantal pagina's; dekking van artikelen doet de test hieronder */
+  /* de site heeft geen vast aantal pagina's: tel de vaste pagina's en laat de
+     dekking van de artikelen aan de test hieronder */
   assert.ok(locs.length >= 3, 'te weinig URLs: ' + locs.length);
   assert.ok(locs.some((u) => u === 'https://koenvers.github.io/brain-dev/'), 'startpagina mist');
   assert.ok(locs.some((u) => u.endsWith('/over.html')), 'over.html mist');
@@ -211,7 +286,7 @@ test('elke index-entry staat in de sitemap (met lastmod)', () => {
     const blok = sm.split('<url>').find((b) => b.includes(it.url));
     const lastmod = /<lastmod>(\d{4}-\d{2}-\d{2})<\/lastmod>/.exec(blok);
     assert.ok(lastmod, 'geen lastmod bij ' + it.url);
-    assert.strictEqual(lastmod[1], it.date, 'lastmod != datum bij ' + it.url);
+    assert.strictEqual(lastmod[1], it.updated || it.date, 'lastmod != datum bij ' + it.url);
   });
 });
 test('robots.txt wijst naar de sitemap', () => {
