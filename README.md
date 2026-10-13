@@ -154,11 +154,17 @@ Repo: <https://github.com/koenvers/brain-dev> · site: <https://brain-dev.nl/>
 
 Custom domain `brain-dev.nl`, vastgelegd in het bestand `CNAME` in de root.
 Het oude adres <https://koenvers.github.io/brain-dev/> blijft werken: GitHub
-stuurt het door naar het custom domain. Apex is de canonical host; `www` verwijst
-daar automatisch naartoe. DNS staat bij Strato (`docks18.rzone.de`): `A`/`AAAA`
-op `@` naar de GitHub Pages-IP's, `www` als CNAME naar `koenvers.github.io` (niet
-naar de apex — dat breekt Enforce HTTPS). Een eigen doorverwijzing op de apex
-moet uit staan, anders lus je tussen Strato en Pages.
+stuurt het door naar het custom domain (gemeten: na het zetten van het domein
+duurt dat tot de cache-TTL van 10 minuten verstreken is; dieper gelegen paden
+gaan mee). Apex is de canonical host; `www` verwijst daar automatisch naartoe.
+DNS staat bij Strato (`docks18.rzone.de`): `A`/`AAAA` op `@` naar de GitHub
+Pages-IP's, `www` als CNAME naar `koenvers.github.io` (niet naar de apex — dat
+breekt Enforce HTTPS). Een eigen doorverwijzing op de apex moet uit staan, anders
+lus je tussen Strato en Pages. Het paneel van Strato neemt één A- en één
+AAAA-record aan; dat is genoeg, want elk van de vier GitHub-IP's serveert de site
+zelfstandig (alle vier met 200 getest). Het TXT-record
+`_github-pages-challenge-koenvers` laat je staan: dat houdt het domein verified
+en blokkeert overname door een andere repo.
 
 Wijzigingen publiceren:
 
