@@ -8,9 +8,9 @@ window.BRAINDEV_INDEX = [
     type: 'whitepaper',
     title: 'FundingRadar: van handmatig subsidiezoeken naar een dagelijkse radar',
     url: 'posts/fundingradar-whitepaper.html',
-    summary: 'Whitepaper over FundingRadar: de achtergrond in de hbo-bekostiging, wat de tool uit de AI-roadmap dagelijks doet voor de onderzoeksgroepen van HAS green academy, en de gemeten cijfers op 13 oktober 2026.',
+    summary: 'Whitepaper over FundingRadar: de achtergrond in de hbo-bekostiging, wat de tool uit de AI-roadmap dagelijks doet voor de onderzoeksgroepen, de gemeten cijfers op 13 oktober 2026, en een fasering van handwerk naar keten.',
     date: '2026-10-13',
-    minutes: 11,
+    minutes: 12,
     tags: ['subsidie', 'onderzoek', 'ai']
   },
   {
