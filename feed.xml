@@ -5,8 +5,18 @@
   <link>https://koenvers.github.io/brain-dev/</link>
   <description>Kennisartikelen en blogs over AI, data science en tooling.</description>
   <language>nl</language>
-  <lastBuildDate>Tue, 06 Oct 2026 22:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Mon, 12 Oct 2026 22:00:00 GMT</lastBuildDate>
   <atom:link href="https://koenvers.github.io/brain-dev/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Onderzoekssoftware publiceren via Zenodo en de RSD</title>
+    <link>https://koenvers.github.io/brain-dev/posts/onderzoekssoftware-publiceren-zenodo-rsd.html</link>
+    <guid isPermaLink="true">https://koenvers.github.io/brain-dev/posts/onderzoekssoftware-publiceren-zenodo-rsd.html</guid>
+    <pubDate>Mon, 12 Oct 2026 22:00:00 GMT</pubDate>
+    <description>Van een afgeschermde repository naar een citeerbare publicatie: GitHub aan Zenodo koppelen, een release met DOI, en een pagina in de Research Software Directory. Wat verplicht is, wat optioneel is, en waar het misgaat.</description>
+    <category>onderzoekssoftware</category>
+    <category>zenodo</category>
+    <category>doi</category>
+  </item>
   <item>
     <title>Eerste week lokale LLM’s op een laptop</title>
     <link>https://koenvers.github.io/brain-dev/posts/lokale-llm-laptop.html</link>

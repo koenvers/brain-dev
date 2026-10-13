@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Onderzoekssoftware publiceren via Zenodo en de RSD — brain-dev</title>
+  <meta name="description" content="Onderzoekssoftware citeerbaar maken: de repository publiek maken, GitHub aan Zenodo koppelen, een release met DOI, en een pagina in de Research Software Directory.">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../assets/img/favicon.png" type="image/png" sizes="64x64">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="canonical" href="https://koenvers.github.io/brain-dev/posts/onderzoekssoftware-publiceren-zenodo-rsd.html">
+  <meta property="og:site_name" content="brain-dev">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Onderzoekssoftware publiceren via Zenodo en de RSD — brain-dev">
+  <meta property="og:description" content="Onderzoekssoftware citeerbaar maken: de repository publiek maken, GitHub aan Zenodo koppelen, een release met DOI, en een pagina in de Research Software Directory.">
+  <meta property="og:url" content="https://koenvers.github.io/brain-dev/posts/onderzoekssoftware-publiceren-zenodo-rsd.html">
+  <meta property="article:published_time" content="2026-10-13T00:00:00+02:00">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="og:image" content="https://koenvers.github.io/brain-dev/assets/img/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="brain-dev — kennisbank en blog over AI, data science en tooling">
+  <meta name="twitter:image" content="https://koenvers.github.io/brain-dev/assets/img/og.png">
+  <link rel="alternate" type="application/rss+xml" title="brain-dev — feed" href="../feed.xml">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="wordmark" href="../index.html"><img class="mark" src="../assets/img/logo-mark.svg" alt="" width="26" height="24">br<span class="ai">ai</span>n-dev</a>
+      <nav class="site-nav" aria-label="Hoofdmenu">
+        <a href="../index.html" data-type="alles">Alles</a>
+        <a href="../index.html?type=kennis" data-type="kennis">Kennisbank</a>
+        <a href="../index.html?type=blog" data-type="blog">Blog</a>
+        <a href="../over.html">Over</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap article">
+    <a class="backlink" href="../index.html">← terug naar het overzicht</a>
+
+    <h1>Onderzoekssoftware publiceren via Zenodo en de RSD</h1>
+    <div class="article-meta">
+      <span class="badge badge-kennis">[Kennis]</span>
+      <span>13 okt 2026</span>
+      <span>·</span>
+      <span>12 min</span>
+      <span>·</span>
+      <span class="item-tags">
+        <span class="tag">onderzoekssoftware</span>
+        <span class="tag">zenodo</span>
+        <span class="tag">doi</span>
+      </span>
+    </div>
+
+    <p>In deze handleiding leer je hoe je eigen onderzoekssoftware citeerbaar maakt,
+       duurzaam archiveert en presenteert aan de buitenwereld. Ik schrijf hem voor
+       onderzoekers en ontwikkelaars bij HAS green academy die zelf software bouwen;
+       je hebt geen technische voorkennis nodig, wel een GitHub-account en
+       schrijfrechten.</p>
+
+    <p>Binnen praktijkgericht onderzoek blijft ontwikkelde software vaak steken in een
+       afgeschermde of ongedocumenteerde repository. Daardoor gaan methoden verloren
+       na afloop van een project en krijgen de makers zelden formele erkenning voor
+       hun programmeerwerk. Door software gestructureerd te publiceren volgens de
+       FAIR-principes (Findable, Accessible, Interoperable, Reusable), maak je van een
+       verzameling codebestanden een volwaardige wetenschappelijke output.</p>
+
+    <p>Hierbij spelen twee instrumenten een centrale rol:</p>
+
+    <ul>
+      <li><strong>De Digital Object Identifier (DOI):</strong> Een DOI is een
+          wereldwijd unieke, persistente identificatiecode die levenslang naar een
+          exacte, onveranderlijke momentopname van jouw broncode verwijst, ook als het
+          webadres van de repository verandert. Zo neem je de software formeel op in de
+          literatuurlijst van een paper of rapport, net als een wetenschappelijk
+          artikel.</li>
+      <li><strong>De Research Software Directory:</strong> waar Zenodo archiveert,
+          presenteert dit platform. De Research Software Directory (in de rest van deze
+          handleiding: de Directory) toont de software in de context waarin die is
+          gemaakt: wie eraan meewerkte (met ORCID), welke organisatie en welk project
+          erachter zitten, welke publicaties erbij horen en hoe actief de ontwikkeling
+          is. Het Netherlands eScience Center bouwt en gebruikt het platform, met
+          Nederlandse instellingen en de Helmholtz Association. De gegevens komen
+          automatisch uit GitHub, GitLab en Zenodo. Zo krijgen de makers erkenning en
+          wordt de impact zichtbaar.</li>
+    </ul>
+
+    <nav class="article-toc" aria-label="Inhoud">
+      <h2>Inhoud</h2>
+      <ol>
+        <li><a href="#accounts">Wat is verplicht, en welke accounts heb je nodig</a></li>
+        <li><a href="#repository">De repository klaarzetten</a></li>
+        <li><a href="#koppelen">GitHub aan Zenodo koppelen</a></li>
+        <li><a href="#release">Een release maken en de DOI ophalen</a></li>
+        <li><a href="#directory">Een pagina maken in de Directory</a></li>
+        <li><a href="#badges">Badges in de README</a></li>
+        <li><a href="#valkuilen">Als het niet meteen lukt</a></li>
+        <li><a href="#controlelijst">Controlelijst</a></li>
+        <li><a href="#begrippen">Begrippen en beheer</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="accounts">1. Wat is verplicht, en welke accounts heb je nodig</h2>
+
+    <p><strong>Wat is verplicht en wat niet?</strong> Het minimum om een DOI en een
+       pagina in de Directory te krijgen:</p>
+
+    <ul>
+      <li><strong>Verplicht:</strong> een publieke GitHub-repository, een
+          Zenodo-account gekoppeld aan GitHub, de repository aanzetten in Zenodo, en
+          één gepubliceerde release. Voor de Directory: een naam voor de software.</li>
+      <li><strong>Aanbevolen:</strong> een licentiebestand, een korte Engelse
+          omschrijving, de Concept DOI op de softwarepagina, en jezelf als contributor
+          (dat koppelt de software aan jou).</li>
+      <li><strong>Optioneel, mag je overslaan:</strong> <code>CITATION.cff</code>, je
+          ORCID koppelen aan GitHub, logo, keywords, badges, mentions, testimonials en
+          de overige onderdelen van de Directory. Die voeg je later toe.</li>
+    </ul>
+
+    <p><strong>Verplicht — GitHub.</strong> Gebruik je reguliere GitHub-account.
+       Staat de repository onder een organisatie zoals <code>HASUniversity</code>,
+       controleer dan of je daar lid van bent (of vraag om schrijfrechten).</p>
+
+    <p><strong>Verplicht — Zenodo.</strong> Ga naar
+       <a href="https://zenodo.org/">zenodo.org</a> en kies <strong>Sign up</strong> of
+       <strong>Log in</strong>, met de knop <strong>Log in with GitHub</strong>.
+       Daarmee koppel je je GitHub-account in één stap aan Zenodo; een ORCID is hier
+       niet voor nodig.</p>
+
+    <p><strong>Optioneel (aanbevolen) — ORCID.</strong> Een ORCID geeft je software
+       een ondubbelzinnige auteurskoppeling. Vraag er een aan op
+       <a href="https://orcid.org/">orcid.org</a> en zet je profiel op 'Everyone'
+       (openbaar), zodat platformen de metadata kunnen uitlezen. Neem het ID exact
+       over zoals ORCID het toont: 16 tekens, waarbij het laatste teken een
+       controleteken is dat ook een hoofdletter X kan zijn. Je hoeft je ORCID
+       <strong>niet</strong> aan GitHub te koppelen; je vult hem later in bij Zenodo
+       (per upload) en in de Directory.</p>
+
+    <p><strong>Nodig voor de Directory — SURFconext.</strong> Inloggen gaat met je
+       instellingsaccount via SURFconext. HAS green academy is aangesloten op
+       SURFconext (HBO), maar je instelling moet de Directory ook daadwerkelijk hebben
+       aangezet in het SURFconext-dashboard. Is dat (nog) niet zo, dan kun je bij de
+       beheerders een account op basis van je ORCID aanvragen.</p>
+
+    <p><strong>Optioneel — LinkedIn.</strong> Alleen handig voor je auteurskaart in de
+       Directory; houd de volledige URL naar je profiel bij de hand.</p>
+
+    <p>Officiële achtergrondinformatie:</p>
+
+    <ul>
+      <li><a href="https://support.orcid.org/">ORCID Support Documentatie</a></li>
+      <li><a href="https://www.nature.com/articles/s41597-022-01710-x">Introducing the
+          FAIR Principles for research software (FAIR4RS)</a></li>
+    </ul>
+
+    <h2 id="repository">2. De repository klaarzetten</h2>
+
+    <p><strong>Stap 1 (verplicht) — maak de repository publiek.</strong> Zenodo
+       archiveert alleen publieke repository's. Op GitHub: <strong>Settings</strong> →
+       onderaan <strong>Danger Zone</strong> → <strong>Change visibility</strong> →
+       <em>Make public</em>.</p>
+
+    <p><strong>Stap 2 (aanbevolen, niet nodig voor Zenodo) — licentie.</strong> Zonder
+       licentie rust er auteursrecht op de code en mag niemand je software juridisch
+       gebruiken of hergebruiken. Kies er een via
+       <a href="https://choosealicense.com/">choosealicense.com</a> (MIT en Apache-2.0
+       komen het meest voor) en zet het bestand <code>LICENSE</code> in de root. Vul
+       ook de copyrighthouder in (je eigen naam of HAS green academy); GitHub zet daar
+       standaard het woord "Contributors".</p>
+
+    <p><strong>Stap 3 (optioneel) — <code>CITATION.cff</code>.</strong> Dit mag je
+       overslaan: Zenodo werkt ook zonder. Het bestand doet twee dingen: GitHub toont
+       een "Cite this repository"-knop met een kant-en-klare citatie, en Zenodo neemt
+       de makers (inclusief ORCID), de titel en de keywords eruit over in plaats van je
+       GitHub-login en een automatisch gegenereerde titel. Wil je het toevoegen, zet
+       het dan in de repository <strong>vóór</strong> je de release maakt — Zenodo
+       leest het op het moment dat de release verschijnt.</p>
+
+    <p>Let op twee dingen: laat geen verzonnen ORCID staan — met een nummer als
+       <code>0000-0000-0000-0000</code> is het bestand ongeldig en negeert Zenodo het
+       volledig. En voeg je het bestand pas ná de release toe, dan staat die release al
+       in Zenodo met je GitHub-login als maker; dat is te repareren zonder nieuwe
+       versie, want de metadata van een gepubliceerde Zenodo-record mag je bewerken.
+       Hulp bij het opstellen en valideren vind je in de
+       <a href="https://citation-file-format.github.io/">Citation File Format
+       documentatie</a>.</p>
+
+    <h2 id="koppelen">3. GitHub aan Zenodo koppelen</h2>
+
+    <p>Dit is de stap die de automatisering aanzet: daarna maakt elke release
+       automatisch een gearchiveerde Zenodo-versie met DOI.</p>
+
+    <ol>
+      <li>Zorg dat je repository publiek is (stap 1 van sectie 2).</li>
+      <li>Ga naar <a href="https://zenodo.org/">zenodo.org</a> en log in met
+          <strong>Log in with GitHub</strong>. Je GitHub-account is nu gekoppeld.</li>
+      <li>Klik rechtsboven op je <strong>profielmenu</strong> en kies
+          <strong>GitHub</strong>. Je krijgt de lijst met repository's van je
+          account.</li>
+      <li>Klik op <strong>Sync now</strong> als je repository er nog niet bij staat;
+          Zenodo haalt de lijst dan opnieuw op.</li>
+      <li>Zoek je repository in de lijst en zet de <strong>schakelaar</strong> erachter
+          op <strong>ON</strong>.</li>
+      <li>Ververs de pagina. De repository staat nu als gekoppeld in de lijst.</li>
+      <li>Lukt het aanzetten niet bij een organisatie-repository, controleer dan op
+          GitHub: <strong>Settings</strong> → <strong>Applications</strong> →
+          <strong>Authorized OAuth Apps</strong> of de organisatie-instellingen
+          (<a href="https://docs.github.com/en/organizations/managing-oauth-access-to-your-organizations-data">GitHub
+          documentatie over OAuth-toegang</a>). Alleen als de organisatie externe
+          OAuth-apps heeft beperkt, moet een organisatie-eigenaar de Zenodo-app
+          goedkeuren.</li>
+    </ol>
+
+    <p>Vanaf nu is er geen verdere configuratie nodig: Zenodo luistert naar nieuwe
+       releases van deze repository.</p>
+
+    <h2 id="release">4. Een release maken (en de DOI ophalen)</h2>
+
+    <p>De DOI ontstaat niet bij het koppelen, maar bij het publiceren van een
+       release.</p>
+
+    <ol>
+      <li>Open je repository op GitHub.</li>
+      <li>Klik in de rechterkolom op <strong>Releases</strong> en daarna op
+          <strong>Create a new release</strong> (soms weergegeven als
+          <strong>Draft a new release</strong>).</li>
+      <li>Klik bij <strong>Choose a tag</strong> en typ een versienummer, bijvoorbeeld
+          <code>v1.0.0</code>. Kies <strong>Create new tag: v1.0.0 on
+          publish</strong>.</li>
+      <li>Vul een <strong>titel</strong> in, bijvoorbeeld
+          <code>v1.0.0 — eerste publieke release</code>. Laat je dit leeg, dan
+          gebruikt GitHub de tagnaam.</li>
+      <li>De <strong>beschrijving</strong> is optioneel; noteer er bijvoorbeeld in wat
+          er in deze versie zit.</li>
+      <li>Klik op <strong>Publish release</strong>. Gebruik je <strong>Save
+          draft</strong>, dan blijft de release concept, gaat er geen seintje naar
+          Zenodo en komt er dus geen DOI.</li>
+      <li>Wacht ongeveer een halve minuut. Ga naar Zenodo →
+          <strong>profielmenu</strong> → <strong>Uploads</strong> (of je repository in
+          de Zenodo-lijst): daar staat nu de record met een DOI-badge.</li>
+      <li>Noteer twee identifiers uit die record: de <strong>versie-DOI</strong> (hoort
+          bij deze release) en de <strong>Concept DOI</strong> onder "Cite all
+          versions" (hoort bij de software als geheel).</li>
+      <li>Optioneel: open de record en vul aan wat je wilt (ORCID bij de makers,
+          keywords, een Zenodo-community). Dat mag zonder nieuwe versie.</li>
+      <li>Bij een volgende update: werk de code bij, maak een nieuwe release
+          (bijvoorbeeld <code>v1.1.0</code>), en Zenodo maakt automatisch een nieuwe
+          versie met een nieuwe versie-DOI. De Concept DOI blijft gelijk en wijst naar
+          de nieuwste versie.</li>
+    </ol>
+
+    <p>Versie-DOI of Concept DOI: in een paper citeer je de DOI van de specifieke
+       versie, zodat de lezer precies weet welke code is gebruikt. De Concept DOI
+       gebruik je op de softwarepagina en in de badge, want die blijft naar de nieuwste
+       versie wijzen. Zenodo neemt het archief daarnaast ook op in Software
+       Heritage.</p>
+
+    <h2 id="directory">5. Een pagina maken in de Research Software Directory</h2>
+
+    <p>In de Research Software Directory staat je software in context: gekoppeld aan
+       jou als maker, aan de instelling en aan de publicaties die erbij horen. Deze
+       sectie loopt de pagina stap voor stap langs.</p>
+
+    <ol>
+      <li>Ga naar
+          <a href="https://research-software-directory.org/">research-software-directory.org</a>
+          en klik op <strong>Sign in</strong> (via SURFconext).</li>
+      <li>Klik op de <code>+</code> naast je avatar en kies <strong>New
+          Software</strong>.</li>
+      <li>Vul een <strong>naam</strong> in (verplicht) en een <strong>korte
+          omschrijving</strong> in het Engels (aanbevolen) en klik op
+          <strong>Save</strong>. De pagina bestaat nu, maar is nog niet openbaar.</li>
+      <li>Ga naar het tabblad <strong>Information</strong> en plak bij <strong>Software
+          DOI</strong> de Concept DOI van Zenodo. Klik op <strong>Validate</strong>: de
+          Directory accepteert alleen een Concept DOI en vervangt een versie-DOI
+          automatisch door de juiste. Na een geldige DOI kun je met één knop de
+          <strong>keywords, licentie en contributors uit de DOI-metadata
+          importeren</strong>.</li>
+      <li>Vul bij <strong>Source code</strong> de URL van je repository in. Dit is de
+          entry die de activiteitsgrafiek en de programmeertalen op de pagina
+          bepaalt.</li>
+      <li>Voeg bij <strong>Contributors</strong> jezelf toe (zoek op je naam of
+          ORCID) met je rol en affiliatie. Dit is de stap die de software aan jouw
+          profiel koppelt; zonder contributors is de software van niemand.</li>
+      <li>Voeg bij <strong>Participating organisations</strong> de organisatie
+          <strong>HAS green academy</strong> toe.</li>
+      <li>Zet bij <strong>Publish</strong> de pagina op openbaar. Wil je eerst kijken,
+          gebruik dan de preview.</li>
+      <li>Zet in je persoonlijke instellingen je <strong>publieke profiel</strong> aan,
+          anders zie je je eigen bijdragen niet terug.</li>
+    </ol>
+
+    <p><strong>Optioneel, later aan te vullen — je hoeft dit niet in te vullen om te
+       publiceren:</strong> Description (de tekst op de pagina, los van de korte
+       omschrijving), Logo (SVG, max 2 MB), Get started-URL, Licenses, Keywords,
+       Badges, Contact person (één contributor met e-mailknop), Mentions (Reference
+       papers en Related output; citaties oogst het platform via OpenAlex),
+       Testimonials, Package managers (alleen bij PyPI/conda), Software Heritage
+       (SWHID-badge), Communities, Related software, Related projects, Maintainers.
+       <strong>Categories</strong> ken je niet zelf toe: dat doen de beheerders van de
+       Directory.</p>
+
+    <p>Twee dingen om te weten: zolang je je schrijfrechten houdt, kun je je pagina
+       niet verwijderen (neem daarvoor contact op met de beheerders), en voor het
+       uitproberen is er een demoversie die het platform periodiek leegmaakt.</p>
+
+    <h2 id="badges">6. Optioneel: badges in de README</h2>
+
+    <p>Dit is een uiterlijk detail, geen vereiste. Wil je op GitHub meteen laten zien
+       dat de repository een DOI en een pagina in de Directory heeft, zet dan de twee
+       badges bovenaan je <code>README.md</code>: de DOI-badge van Zenodo en de
+       RSD-badge van shields.io, met je eigen DOI en je eigen slug erin.</p>
+
+    <p>Wat je daarna bijhoudt: werk je de code bij, maak dan een nieuwe release.
+       Zenodo maakt automatisch een nieuwe versie en de Directory haalt de nieuwe
+       release en citaties vanzelf op. Gebruik je een <code>CITATION.cff</code>, hoog
+       dan ook het versienummer daarin op.</p>
+
+    <h2 id="valkuilen">7. Als het niet meteen lukt</h2>
+
+    <ul>
+      <li><strong>Na de release verschijnt er geen record in Zenodo.</strong>
+          Controleer of de repository publiek is en of de schakelaar in Zenodo op ON
+          staat (sectie 3). Een concept-release (<strong>Save draft</strong>) stuurt
+          geen seintje; publiceer de release alsnog.</li>
+      <li><strong>De maker op de Zenodo-pagina is mijn GitHub-login, niet mijn
+          naam.</strong> Zenodo heeft je <code>CITATION.cff</code> dan niet gebruikt:
+          het bestand stond er niet of was ongeldig. Bewerk de metadata van de record,
+          dat mag zonder nieuwe versie.</li>
+      <li><strong>De Directory accepteert mijn DOI niet.</strong> Vul de Concept DOI
+          in, niet de versie-DOI; de Validate-knop vervangt hem anders automatisch.
+          Plak de DOI zonder spaties.</li>
+      <li><strong>Mijn pagina is niet zichtbaar.</strong> Publiceer de pagina
+          (sectie 5, stap 8) en zet je publieke profiel aan in je persoonlijke
+          instellingen.</li>
+      <li><strong>Ik zie mijn bijdragen niet terug.</strong> Je account in de Directory
+          is een beheeraccount; je bijdragen verschijnen op je publieke profiel zodra
+          je overal je ORCID invult en het publieke profiel aanzet.</li>
+      <li><strong>Ik heb een typefout gemaakt in de naam.</strong> Een pagina in de
+          Directory kun je niet verwijderen. Pas de velden aan, of neem contact op met
+          de beheerders.</li>
+    </ul>
+
+    <h2 id="controlelijst">8. Controlelijst</h2>
+
+    <p>Loop deze lijst na voordat je de publicatie afrondt:</p>
+
+    <ul>
+      <li>De repository is publiek.</li>
+      <li>Optioneel: <code>LICENSE</code> staat in de root, met jouw naam als
+          copyrighthouder.</li>
+      <li>Optioneel: <code>CITATION.cff</code> staat in de root, met je eigen
+          ORCID.</li>
+      <li>De repository staat op ON in Zenodo (profielmenu → GitHub).</li>
+      <li>Je publiceerde een release, geen concept.</li>
+      <li>De Zenodo-record heeft een DOI; je noteerde de Concept DOI.</li>
+      <li>De pagina in de Directory heeft een naam, een korte omschrijving en een
+          gevalideerde Concept DOI.</li>
+      <li>De pagina in de Directory heeft de repository-URL, jouw contributor-kaart en
+          HAS green academy als organisatie.</li>
+      <li>De pagina in de Directory staat op gepubliceerd.</li>
+      <li>Optioneel: de badges staan in je README.</li>
+    </ul>
+
+    <h2 id="begrippen">9. Begrippen en beheer</h2>
+
+    <ul>
+      <li><strong>DOI</strong> — een blijvende verwijzing naar precies deze versie van
+          je software, ook als het webadres verandert.</li>
+      <li><strong>Concept DOI</strong> — de verwijzing naar alle versies samen; hij
+          wijst naar de nieuwste release. Gebruik deze op de softwarepagina en in de
+          badge.</li>
+      <li><strong>Versie-DOI</strong> — de verwijzing naar één release. Gebruik deze
+          als je in een paper naar de gebruikte versie verwijst.</li>
+      <li><strong>ORCID</strong> — je persoonlijke onderzoekers-ID (16 tekens, het
+          laatste kan een X zijn).</li>
+      <li><strong>Release en tag</strong> — de publicatie van een vastgelegde versie op
+          GitHub, met een label als <code>v1.0.0</code>.</li>
+      <li><strong>SWHID</strong> — de identificatiecode van het archief in Software
+          Heritage.</li>
+      <li><strong>SPDX</strong> — de standaardlijst met licentienamen waaruit de
+          Directory je licentie laat kiezen.</li>
+    </ul>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>brain-dev</span>
+      <span>statisch · <a href="https://github.com/koenvers/brain-dev">broncode op GitHub</a></span>
+    </div>
+  </footer>
+
+  <script src="../assets/js/highlight.js"></script>
+  <script src="../assets/js/analytics.js"></script>
+</body>
+</html>

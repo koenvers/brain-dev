@@ -5,6 +5,15 @@
 window.BRAINDEV_INDEX = [
   {
     type: 'kennis',
+    title: 'Onderzoekssoftware publiceren via Zenodo en de RSD',
+    url: 'posts/onderzoekssoftware-publiceren-zenodo-rsd.html',
+    summary: 'Van een afgeschermde repository naar een citeerbare publicatie: GitHub aan Zenodo koppelen, een release met DOI, en een pagina in de Research Software Directory. Wat verplicht is, wat optioneel is, en waar het misgaat.',
+    date: '2026-10-13',
+    minutes: 12,
+    tags: ['onderzoekssoftware', 'zenodo', 'doi']
+  },
+  {
+    type: 'kennis',
     title: 'Vectorzoekindexen: waarom HNSW werkt',
     url: 'posts/vectorzoekindexen-hnsw.html',
     summary: 'Brute-force zoeken op embeddings is exact maar O(n). HNSW bouwt een gelaagd graafnetwerk en zoekt in O(log n) — met drie knelpunten die je moet kennen voordat je de standaardparameters overneemt.',
