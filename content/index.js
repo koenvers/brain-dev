@@ -19,7 +19,7 @@ window.BRAINDEV_INDEX = [
     url: 'posts/onderzoekssoftware-publiceren-zenodo-rsd.html',
     summary: 'Van een afgeschermde repository naar een citeerbare publicatie: GitHub aan Zenodo koppelen, een release met DOI, en een pagina in de Research Software Directory. Wat verplicht is, wat optioneel is, en waar het misgaat.',
     date: '2026-10-13',
-    minutes: 11,
+    minutes: 12,
     tags: ['onderzoekssoftware', 'zenodo', 'doi']
   }
 ];
